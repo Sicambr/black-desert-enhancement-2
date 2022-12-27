@@ -1,0 +1,8 @@
+{
+    "Concentrated_Black_Gem": 9350000,
+    "Black_Gem": 935000,
+    "Manos_Sailing_Life_Mastery_Clothes": 195000000,
+    "Memory_Fragment": 2800000,
+    "Black_Stone_Weapon": 160000,
+    "Black_Stone_Armor": 160000
+}
