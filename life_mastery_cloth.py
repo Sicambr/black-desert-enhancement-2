@@ -24,42 +24,134 @@ def conv_nice_view(number):
         return str(number)
 
 
+def durability_price(item_price, item_grade, memory_fragment_price):
+    memory_fr_restore = {'RED': 1, 'YELLOW': 1,
+                         'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
+    if (item_price / 10) >= (memory_fragment_price / (memory_fr_restore[item_grade])):
+        worth_one_point_dur = (memory_fragment_price /
+                               (memory_fr_restore[item_grade]))
+    else:
+        worth_one_point_dur = item_price / 10
+    return worth_one_point_dur
+
+
 def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_price):
-    memory_fr_restore = {'RED': 1, 'YELLOW': 1, 'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
+    memory_fr_restore = {'RED': 1, 'YELLOW': 1,
+                         'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
     dur_message = []
-    dur_message.append(f'Price for one ITEM on auction house: {item_price} silver')
-    dur_message.append(f'One memory fragment will restore {memory_fr_restore[item_grade]} points')
-    dur_message.append(f'Worth for 1 durability point with item uses = {round((item_price / 10), 3)} silver')
+    dur_message.append(
+        f'Price for one ITEM on auction house: {item_price} silver')
+    dur_message.append(
+        f'One memory fragment will restore {memory_fr_restore[item_grade]} points')
+    dur_message.append(
+        f'Worth for 1 durability point with item uses = {round((item_price / 10), 3)} silver')
     dur_message.append(f'Worth for 1 durability point with memore fragment uses '
-                        f'= {round(memory_fragment_price / (memory_fr_restore[item_grade]), 3)} silver')
+                       f'= {round(memory_fragment_price / (memory_fr_restore[item_grade]), 3)} silver')
     temp_message = ''
     artisans_memory = 0
     if (item_price / 10) >= (memory_fragment_price / (memory_fr_restore[item_grade])):
-        dur_message.append(f'Use {durability} MEMORY FRAGMENTS to restore durability!')
-        worth = (memory_fragment_price / memory_fr_restore[item_grade]) * durability
+        dur_message.append(
+            f'Use {durability} MEMORY FRAGMENTS to restore durability!')
+        worth = (memory_fragment_price /
+                 memory_fr_restore[item_grade]) * durability
         artisans_memory = math.ceil(durability / 5)
         temp_message = (f'And then use {math.ceil(durability / 5)} memory'
                         f' fragments = {conv_nice_view(worth / 5)} silver')
     else:
-        dur_message.append(f'Use {math.ceil(durability / 10)} ITEMs to restore durability!')
+        dur_message.append(
+            f'Use {math.ceil(durability / 10)} ITEMs to restore durability!')
         worth = (item_price / 10) * durability
         artisans_memory = math.ceil((durability / 10)/5)
         temp_message = (f'And then use {math.ceil((durability / 10)/5)} items'
                         f' = {conv_nice_view(worth / 5)} silver')
-    dur_message.append(f'LOST {durability} points of DURABILITY = {conv_nice_view(worth)} silver')
+    dur_message.append(
+        f'LOST {durability} points of DURABILITY = {conv_nice_view(worth)} silver')
     dur_message.append(f"Or you can use {artisans_memory} Artisan's Memory")
     dur_message.append(temp_message)
     return (artisans_memory, worth, dur_message)
 
 
+def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, name_of_item,
+                con_black_gem_price, total_durability, total_price, begin_lev, end_lev,
+                price_dur_restore, item_price, memory_fragment_price, item_grade,
+                auction_price):
+    memory_fr_restore = {'RED': 1, 'YELLOW': 1,
+                         'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
+    string = []
+    string.append(f'<<< RESULT OF {tests} ENCHANTMENTS >>>')
+    string.append(f'ITEM: {name_of_item}')
+    string.append(f'From +{begin_lev} to +{end_lev}')
+    string.append('')
+    string.append('EXPENSES:')
+    string.append('We got next average values: ')
+    temp_worth = total_black_gems * black_gem_price
+    string.append(
+        f'Spent {total_black_gems} black gems = {conv_nice_view(temp_worth)} silver')
+    temp_worth = total_con_black_gems * con_black_gem_price
+    string.append(f'Spent {total_con_black_gems} Concentrated'
+                  f' black gems = {conv_nice_view(temp_worth)} silver')
+    temp_worth = price_dur_restore * total_durability
+    string.append(
+        f'Lost {total_durability} durability points = {conv_nice_view(temp_worth)} silver')
+    string.append(f'Full price = {conv_nice_view(total_price)} silver')
+    temp_message = ''
+    artisans_memory = 0
+    if (item_price / 10) >= (memory_fragment_price / (memory_fr_restore[item_grade])):
+        string.append(
+            f'Use {total_durability} MEMORY FRAGMENTS to restore durability!')
+        worth = (memory_fragment_price /
+                 memory_fr_restore[item_grade]) * total_durability
+        artisans_memory = math.ceil(total_durability / 5)
+        temp_message = (f'And then use {math.ceil(total_durability / 5)} memory'
+                        f' fragments = {conv_nice_view(worth / 5)} silver')
+    else:
+        string.append(
+            f'Use {math.ceil(total_durability / 10)} ITEMs to restore durability!')
+        worth = (item_price / 10) * total_durability
+        artisans_memory = math.ceil((total_durability / 10)/5)
+        temp_message = (f'And then use {math.ceil((total_durability / 10)/5)} items'
+                        f' = {conv_nice_view(worth / 5)} silver')
+    string.append('')
+    string.append('SAVE MONEY:')
+    string.append(f"Or you can use {artisans_memory} Artisan's Memory")
+    string.append(temp_message)
+    temp_worth = (total_black_gems * black_gem_price +
+                  total_con_black_gems * con_black_gem_price +
+                  price_dur_restore * (total_durability / 5))
+    string.append(
+        f'You will save {conv_nice_view(total_price - temp_worth)} silver')
+    string.append(f'Then full price = {conv_nice_view(temp_worth)} silver')
+    string.append('')
+    string.append('SELL:')
+    string.append(
+        f'On auction house item +{end_lev} costs {conv_nice_view(auction_price[str(end_lev)])} silver')
+    string.append(
+        f'If you bought 1 item for {conv_nice_view(item_price)} silver')
+    string.append(
+        f'and spent for enhancement {conv_nice_view(total_price)} silver')
+    string.append(
+        f'and put on auction hous for {conv_nice_view(auction_price[str(end_lev)])} silver')
+    string.append('You will get:')
+    temp_worth = (auction_price[str(end_lev)] *
+                  0.65 - total_price - item_price)
+    string.append(
+        f'Standart profit (65%)= {conv_nice_view(temp_worth)} silver')
+    temp_worth = (auction_price[str(end_lev)] *
+                  0.85 - total_price - item_price)
+    string.append(
+        f'Premium profit (85%) = {conv_nice_view(temp_worth)} silver')
+
+    return string
+
+
 def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_gems, con_black_gems,
-                name_of_item, black_gem_price, con_black_gem_price, item_grade, 
-                memory_fragment_price, stuff_price, show_one_test=False):
+                name_of_item, black_gem_price, con_black_gem_price, item_grade,
+                memory_fragment_price, stuff_price, auction_price, show_one_test=False):
     spent_durability = 0
     spent_black_gems = 0
     spent_con_black_gems = 0
-    temp_begin_lev = begin_lev
     if show_one_test == True:
+        temp_begin_lev = begin_lev
         rolls = 0
         string = ['*** FULL TEST ***', f'ENHANCEMENT: {name_of_item}',
                   f'from +{begin_lev} to +{end_lev}']
@@ -75,6 +167,8 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
             else:
                 spent_durability += lost_durability[str(begin_lev + 1)]
                 string.append(f'rolls: {rolls}, failed.')
+                if begin_lev >= 17:
+                    begin_lev -= 1
             string.append(f"Current enhancement's level +{begin_lev}")
             string.append(f"Chance was {enhancement_chance} %")
             string.append('WE SPENT:')
@@ -90,30 +184,65 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         string.append(f'Item: {name_of_item}')
         string.append(f'Sharpering from +{temp_begin_lev} to +{end_lev}')
         string.append(f'ROLLS: {rolls}')
-        artisans_memory, worth, dur_message = best_way_restore_dur(stuff_price, spent_durability, 
-                                                item_grade, memory_fragment_price)
+        artisans_memory, worth, dur_message = best_way_restore_dur(stuff_price, spent_durability,
+                                                                   item_grade, memory_fragment_price)
         string.extend(dur_message)
         string.append('SPENT:')
         temp_full_price = spent_black_gems * black_gem_price
         string.append(f'Spent {spent_black_gems} black gems'
                       f' = {conv_nice_view(spent_black_gems * black_gem_price)} silver')
-        temp_full_price += spent_con_black_gems * con_black_gem_price               
+        temp_full_price += spent_con_black_gems * con_black_gem_price
         string.append(f'Spent {spent_con_black_gems} concentrated black gems'
                       f' = {conv_nice_view(spent_con_black_gems * con_black_gem_price)} silver')
         string.append('TOTAL:')
-        string.append(f'All price: {conv_nice_view(temp_full_price + worth)} silver')
-        string.append(f"With {artisans_memory} Artisan's Memory: {conv_nice_view(temp_full_price + (worth / 5))} silver")
+        string.append(
+            f'All price: {conv_nice_view(temp_full_price + worth)} silver')
+        string.append(
+            f"With {artisans_memory} Artisan's Memory: {conv_nice_view(temp_full_price + (worth / 5))} silver")
         return string
 
     else:
-        while begin_lev != end_lev:
-            spent_black_gems += black_gems[str(begin_lev + 1)]
-            spent_con_black_gems += con_black_gems[str(begin_lev + 1)]
-            if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
-                begin_lev += 1
-
-            else:
-                spent_durability += lost_durability[str(begin_lev + 1)]
+        full_tests_result = []
+        total_gem = 0
+        total_con_gem = 0
+        total_dur = 0
+        total_price = 0
+        for i in range(tests):
+            spent_durability = 0
+            spent_black_gems = 0
+            spent_con_black_gems = 0
+            sharp_price = 0
+            temp_begin_lev = begin_lev
+            price_dur_restore = durability_price(
+                stuff_price, item_grade, memory_fragment_price)
+            while temp_begin_lev != end_lev:
+                spent_black_gems += black_gems[str(temp_begin_lev + 1)]
+                spent_con_black_gems += con_black_gems[str(temp_begin_lev + 1)]
+                if 1 <= random.randint(1, 10000) <= (base_persent[str(temp_begin_lev + 1)]*100):
+                    temp_begin_lev += 1
+                else:
+                    spent_durability += lost_durability[str(
+                        temp_begin_lev + 1)]
+                    if temp_begin_lev >= 17:
+                        temp_begin_lev -= 1
+            sharp_price += (spent_black_gems * black_gem_price) + \
+                (spent_con_black_gems * con_black_gem_price) + \
+                (spent_durability * price_dur_restore)
+            total_gem += spent_black_gems
+            total_con_gem += spent_con_black_gems
+            total_dur += spent_durability
+            total_price += sharp_price
+            full_tests_result.append(
+                [spent_black_gems, spent_con_black_gems, spent_durability, sharp_price])
+        total_gem = math.ceil(total_gem / tests)
+        total_con_gem = math.ceil(total_con_gem / tests)
+        total_dur = math.ceil(total_dur / tests)
+        total_price = math.ceil(total_price / tests)
+        string = test_report(total_gem, total_con_gem, tests, black_gem_price, name_of_item,
+                             con_black_gem_price, total_dur, total_price, begin_lev, end_lev,
+                             price_dur_restore, stuff_price, memory_fragment_price, item_grade,
+                             auction_price)
+        return string
 
 
 def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_test=False):
@@ -134,11 +263,13 @@ def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_tes
     lost_durability = item_settings['lost_durability']
     item_grade = item_settings['item_grade']
     item_type = item_settings['item_type']
+    auction_price = item_settings['auction_price']
 
     report = enhancement(begin_lev, end_lev, tests, base_persent,
                          lost_durability, black_gems, con_black_gems,
                          name_of_item, black_gem_price, con_black_gem_price,
-                         item_grade, memory_fragment_price, stuff_price, show_one_test)
+                         item_grade, memory_fragment_price, stuff_price,
+                         auction_price, show_one_test)
     return report
 
 

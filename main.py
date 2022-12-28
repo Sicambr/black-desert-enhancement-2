@@ -3,14 +3,15 @@ import life_mastery_cloth
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit
 
 
-my_list = life_mastery_cloth.Manos_Life_Mastery_Clothes(begin_lev=13, end_lev=17, show_one_test = True)
+my_list = life_mastery_cloth.Manos_Life_Mastery_Clothes(
+    begin_lev=0, end_lev=19, tests=1000, show_one_test=False)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("My App")
+        self.setWindowTitle("Sharpering test for Black Desert")
         self.setMinimumSize(800, 600)
 
         button = QPushButton("Press Megit!")
