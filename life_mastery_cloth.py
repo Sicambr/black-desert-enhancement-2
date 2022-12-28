@@ -12,27 +12,56 @@ def load_data():
     return item_settings
 
 
-def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_gems, con_black_gems):
+def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_gems, con_black_gems,
+                name_of_item, black_gem_price, con_black_gem_price, show_one_test=False):
     spent_durability = 0
     spent_black_gems = 0
     spent_con_black_gems = 0
-    while begin_lev != end_lev:
-        if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
-            begin_lev += 1
+    if show_one_test == True:
+        rolls = 0
+        string = ['*** FULL TEST ***', f'ENHANCEMENT: {name_of_item}',
+                  f'from {begin_lev} to +{end_lev}']
+        while begin_lev != end_lev:
+            string.append('')
+            rolls += 1
             spent_black_gems += black_gems[str(begin_lev + 1)]
             spent_con_black_gems += con_black_gems[str(begin_lev + 1)]
-        else:
-            spent_durability += lost_durability[str(begin_lev + 1)]
+            enhancement_chance = base_persent[str(begin_lev + 1)]
+            if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
+                begin_lev += 1
+                string.append(f'rolls: {rolls}, success!')
+            else:
+                spent_durability += lost_durability[str(begin_lev + 1)]
+                string.append(f'rolls: {rolls}, failed.')
+            string.append(f"Current enhancement's level +{begin_lev}")
+            string.append(f"Chance was {enhancement_chance} %")
+            string.append('WE SPENT:')
+            string.append(
+                f'Black gems: {spent_black_gems}'
+                f' = {black_gem_price * spent_black_gems} silver')
+            string.append(
+                f'Concentrated black gems: {spent_con_black_gems}'
+                f' = {con_black_gem_price * spent_con_black_gems} silver')
+            string.append(f'Lost {spent_durability} durability points')
+        return string
+
+    else:
+        while begin_lev != end_lev:
             spent_black_gems += black_gems[str(begin_lev + 1)]
             spent_con_black_gems += con_black_gems[str(begin_lev + 1)]
-    print(spent_durability, spent_black_gems, spent_con_black_gems)
+            if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
+                begin_lev += 1
+
+            else:
+                spent_durability += lost_durability[str(begin_lev + 1)]
 
 
-def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000):
+def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_test=False):
     items_prices = load_prices()
     black_gem_price = items_prices['Black_Gem']
     con_black_gem_price = items_prices['Concentrated_Black_Gem']
     stuff_price = items_prices['Manos_Sailing_Life_Mastery_Clothes']
+    name_of_item = 'Sailing Life Mastery Clothes of Manos'
     memory_fragment_price = items_prices['Memory_Fragment']
 
     item_settings = load_data()['RED_CLOTH_Manos_LifeMastery']
@@ -44,8 +73,11 @@ def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000):
     con_black_gems = item_settings['con_black_gems']
     lost_durability = item_settings['lost_durability']
 
-    enhancement(begin_lev, end_lev, tests, base_persent,
-                lost_durability, black_gems, con_black_gems)
+    string = enhancement(begin_lev, end_lev, tests, base_persent,
+                         lost_durability, black_gems, con_black_gems,
+                         name_of_item, black_gem_price, con_black_gem_price,
+                         show_one_test)
+    return string
 
 
-Manos_Life_Mastery_Clothes(begin_lev=13)
+# Manos_Life_Mastery_Clothes(show_one_test=True)
