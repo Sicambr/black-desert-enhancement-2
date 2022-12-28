@@ -3,8 +3,7 @@ import life_mastery_cloth
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit
 
 
-my_list = [
-    item + '\n' for item in life_mastery_cloth.Manos_Life_Mastery_Clothes(show_one_test=True)]
+my_list = life_mastery_cloth.Manos_Life_Mastery_Clothes(begin_lev=13, end_lev=17, show_one_test = True)
 
 
 class MainWindow(QMainWindow):
@@ -12,7 +11,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("My App")
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(800, 600)
 
         button = QPushButton("Press Megit!")
         button.setCheckable(True)
@@ -20,6 +19,7 @@ class MainWindow(QMainWindow):
         button.clicked.connect(self.the_button_was_toggled)
 
         My_text = QTextEdit('')
+        My_text.setFontPointSize(16)
         for i in my_list:
             My_text.append(i)
 

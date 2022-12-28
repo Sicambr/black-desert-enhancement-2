@@ -27,11 +27,14 @@ def add_item():
     lost_durability = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 5, 7: 5, 8: 5, 9: 5,
                        10: 5, 11: 5, 12: 5, 13: 5, 14: 5, 15: 5, 16: 10, 17: 10,
                        18: 10, 19: 10, 20: 10}
+    item_grade = 'RED'
+    item_type = 'CLOTH_Life_Mastery'
     all_settings = {'base_persent': base_persent,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
                     'crons_amount': crons_amount, 'black_gems': black_gems,
-                    'con_black_gems': con_black_gems, 'lost_durability': lost_durability}
-    item['RED_CLOTH_Manos_LifeMastery'] = all_settings
+                    'con_black_gems': con_black_gems, 'lost_durability': lost_durability,
+                    'item_grade': item_grade, 'item_type': item_type}
+    item['Manos_Sailing_Life_Mastery_Clothes'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
