@@ -3,8 +3,8 @@ import life_mastery_cloth
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit
 
 
-my_list = life_mastery_cloth.Manos_Life_Mastery_Clothes(
-    begin_lev=13, end_lev=17, tests=1000, show_one_test=False)
+my_list = life_mastery_cloth.Life_Mastery_Clothes(item_name = 'Manos_Processing_Life_Mastery_Clothes',
+    begin_lev=6, end_lev=17, tests=1000, show_one_test=False)
 
 
 class MainWindow(QMainWindow):

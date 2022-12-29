@@ -74,13 +74,19 @@ def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_pri
 def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, name_of_item,
                 con_black_gem_price, total_durability, total_price, begin_lev, end_lev,
                 price_dur_restore, item_price, memory_fragment_price, item_grade,
-                auction_price):
+                auction_price, one_fail, crons_amount):
     memory_fr_restore = {'RED': 1, 'YELLOW': 1,
                          'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
     string = []
     string.append(f'<<< RESULT OF {tests} ENCHANTMENTS >>>')
     string.append(f'ITEM: {name_of_item}')
     string.append(f'From +{begin_lev} to +{end_lev}')
+    string.append('')
+    string.append('FEATURES:')
+    if type(one_fail) is str and one_fail == 'None':
+        string.append("This item can't use Failstacks")
+    if type(crons_amount) is str and crons_amount == 'None':
+        string.append("This item can't use cron stones to save level after +17")
     string.append('')
     string.append('EXPENSES:')
     string.append('We got next average values: ')
@@ -146,7 +152,8 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
 
 def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_gems, con_black_gems,
                 name_of_item, black_gem_price, con_black_gem_price, item_grade,
-                memory_fragment_price, stuff_price, auction_price, show_one_test=False):
+                memory_fragment_price, stuff_price, auction_price, one_fail, 
+                crons_amount, show_one_test=False):
     spent_durability = 0
     spent_black_gems = 0
     spent_con_black_gems = 0
@@ -241,19 +248,20 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         string = test_report(total_gem, total_con_gem, tests, black_gem_price, name_of_item,
                              con_black_gem_price, total_dur, total_price, begin_lev, end_lev,
                              price_dur_restore, stuff_price, memory_fragment_price, item_grade,
-                             auction_price)
+                             auction_price, one_fail, crons_amount)
         return string
 
 
-def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_test=False):
+def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name = 'Manos_Sailing_Life_Mastery_Clothes',
+                         show_one_test=False):
     items_prices = load_prices()
     black_gem_price = items_prices['Black_Gem']
     con_black_gem_price = items_prices['Concentrated_Black_Gem']
-    stuff_price = items_prices['Manos_Sailing_Life_Mastery_Clothes']
-    name_of_item = 'Sailing Life Mastery Clothes of Manos'
+    stuff_price = items_prices[item_name]
+    name_of_item = item_name.replace('_', ' ')
     memory_fragment_price = items_prices['Memory_Fragment']
 
-    item_settings = load_data()['Manos_Sailing_Life_Mastery_Clothes']
+    item_settings = load_data()[item_name]
     base_persent = item_settings['base_persent']
     one_fail = item_settings['one_fail']
     ceiling_persent = item_settings['ceiling_persent']
@@ -269,35 +277,7 @@ def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_tes
                          lost_durability, black_gems, con_black_gems,
                          name_of_item, black_gem_price, con_black_gem_price,
                          item_grade, memory_fragment_price, stuff_price,
-                         auction_price, show_one_test)
-    return report
-
-
-def Loggia_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_test=False):
-    items_prices = load_prices()
-    black_gem_price = items_prices['Black_Gem']
-    con_black_gem_price = items_prices['Concentrated_Black_Gem']
-    stuff_price = items_prices['Loggia_Processing_Life_Mastery_Clothes']
-    name_of_item = 'Processing Life Mastery Clothes of Loggia'
-    memory_fragment_price = items_prices['Memory_Fragment']
-
-    item_settings = load_data()['Loggia_Processing_Life_Mastery_Clothes']
-    base_persent = item_settings['base_persent']
-    one_fail = item_settings['one_fail']
-    ceiling_persent = item_settings['ceiling_persent']
-    crons_amount = item_settings['crons_amount']
-    black_gems = item_settings['black_gems']
-    con_black_gems = item_settings['con_black_gems']
-    lost_durability = item_settings['lost_durability']
-    item_grade = item_settings['item_grade']
-    item_type = item_settings['item_type']
-    auction_price = item_settings['auction_price']
-
-    report = enhancement(begin_lev, end_lev, tests, base_persent,
-                         lost_durability, black_gems, con_black_gems,
-                         name_of_item, black_gem_price, con_black_gem_price,
-                         item_grade, memory_fragment_price, stuff_price,
-                         auction_price, show_one_test)
+                         auction_price, one_fail, crons_amount, show_one_test)
     return report
 
 

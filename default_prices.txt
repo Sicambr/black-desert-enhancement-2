@@ -5,5 +5,9 @@
     "Memory_Fragment": 2800000,
     "Black_Stone_Weapon": 160000,
     "Black_Stone_Armor": 160000,
-    "Loggia_Processing_Life_Mastery_Clothes": 820000
+    "Loggia_Processing_Life_Mastery_Clothes": 820000,
+    "Manos_Cooking_Life_Mastery_Clothes": 167000000,
+    "Manos_Gathering_Life_Mastery_Clothes": 234000000,
+    "Manos_Processing_Life_Mastery_Clothes": 62500000,
+    "Manos_Fishing_Life_Mastery_Clothes": 210000000
 }
