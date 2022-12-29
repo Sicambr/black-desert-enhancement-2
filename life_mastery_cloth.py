@@ -74,7 +74,7 @@ def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_pri
 def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, name_of_item,
                 con_black_gem_price, total_durability, total_price, begin_lev, end_lev,
                 price_dur_restore, item_price, memory_fragment_price, item_grade,
-                auction_price, one_fail, crons_amount):
+                auction_price, one_fail, crons_amount, total_rolls, full_tests_result):
     memory_fr_restore = {'RED': 1, 'YELLOW': 1,
                          'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
     string = []
@@ -93,6 +93,7 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
     string.append('')
     string.append('EXPENSES:')
     string.append('We got next average values: ')
+    string.append(f'Rolls: {total_rolls}')
     temp_worth = total_black_gems * black_gem_price
     string.append(
         f'Spent {total_black_gems} black gems = {conv_nice_view(temp_worth)} silver')
@@ -149,7 +150,49 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
                   0.85 - total_price - item_price)
     string.append(
         f'Premium profit (85%) = {conv_nice_view(temp_worth)} silver')
-
+    string.append('')
+    string.append('ADDITIONAL INFORMATION:')
+    zero_price_no_premium = auction_price[str(end_lev)]
+    string.append(
+        f'On auction house item +{end_lev} costs: {conv_nice_view(zero_price_no_premium)} silver')
+    good_rolls = list(filter(lambda item: item <=
+                             zero_price_no_premium, full_tests_result))
+    string.append('Good rolls:')
+    string.append(
+        f'All cases when our expenses were LESS than auction house prices:')
+    string.append(f'We had: {len(good_rolls)} '
+                  f'cases from {tests}. This is {round((len(good_rolls) / (tests/100)), 3)} %')
+    good_rolls_2 = list(filter(lambda item: item <=
+                               zero_price_no_premium * 0.8, good_rolls))
+    string.append(f'20%) We spent less than {conv_nice_view(zero_price_no_premium * 0.8)} silver'
+                  f' = {len(good_rolls_2)} cases. This is {round((len(good_rolls_2) / (tests/100)), 3)} %')
+    good_rolls_3 = list(filter(lambda item: item <=
+                               zero_price_no_premium * 0.5, good_rolls))
+    string.append(f'50%) We spent less than {conv_nice_view(zero_price_no_premium * 0.5)} silver'
+                  f' = {len(good_rolls_3)} cases. This is {round((len(good_rolls_3) / (tests/100)), 3)} %')
+    string.append(
+        f'The minimum costs were {conv_nice_view(min(good_rolls))} silver')
+    string.append('Bad rolls:')
+    string.append(
+        f'All cases when our expenses were MORE than auction house prices:')
+    bad_rolls = list(filter(lambda item: item >
+                            zero_price_no_premium, full_tests_result))
+    string.append(f'We had: {len(bad_rolls)} '
+                  f'cases from {tests}. This is {round((len(bad_rolls) / (tests/100)), 3)} %')
+    bad_rolls_2 = list(filter(lambda item: item >=
+                              zero_price_no_premium * 1.5, bad_rolls))
+    string.append(f'1.5x) We spent more than {conv_nice_view(zero_price_no_premium * 1.5)} silver'
+                  f' = {len(bad_rolls_2)} cases. This is {round((len(bad_rolls_2) / (tests/100)), 3)} %')
+    bad_rolls_3 = list(filter(lambda item: item >=
+                              zero_price_no_premium * 2, bad_rolls))
+    string.append(f'2x) We spent more than {conv_nice_view(zero_price_no_premium * 2)} silver'
+                  f' = {len(bad_rolls_3)} cases. This is {round((len(bad_rolls_3) / (tests/100)), 3)} %')
+    bad_rolls_4 = list(filter(lambda item: item >=
+                              zero_price_no_premium * 3, bad_rolls))
+    string.append(f'3x) We spent more than {conv_nice_view(zero_price_no_premium * 3)} silver'
+                  f' = {len(bad_rolls_4)} cases. This is {round((len(bad_rolls_4) / (tests/100)), 3)} %')
+    string.append(
+        f'The maximum costs were {conv_nice_view(max(bad_rolls))} silver')
     return string
 
 
@@ -217,10 +260,12 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         total_con_gem = 0
         total_dur = 0
         total_price = 0
+        total_rolls = 0
         for i in range(tests):
             spent_durability = 0
             spent_black_gems = 0
             spent_con_black_gems = 0
+            rolls = 0
             sharp_price = 0
             temp_begin_lev = begin_lev
             price_dur_restore = durability_price(
@@ -228,6 +273,7 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
             while temp_begin_lev != end_lev:
                 spent_black_gems += black_gems[str(temp_begin_lev + 1)]
                 spent_con_black_gems += con_black_gems[str(temp_begin_lev + 1)]
+                rolls += 1
                 if 1 <= random.randint(1, 10000) <= (base_persent[str(temp_begin_lev + 1)]*100):
                     temp_begin_lev += 1
                 else:
@@ -242,16 +288,17 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
             total_con_gem += spent_con_black_gems
             total_dur += spent_durability
             total_price += sharp_price
-            full_tests_result.append(
-                [spent_black_gems, spent_con_black_gems, spent_durability, sharp_price])
+            total_rolls += rolls
+            full_tests_result.append(sharp_price)
         total_gem = math.ceil(total_gem / tests)
         total_con_gem = math.ceil(total_con_gem / tests)
         total_dur = math.ceil(total_dur / tests)
         total_price = math.ceil(total_price / tests)
+        total_rolls = math.ceil(total_rolls / tests)
         string = test_report(total_gem, total_con_gem, tests, black_gem_price, name_of_item,
                              con_black_gem_price, total_dur, total_price, begin_lev, end_lev,
                              price_dur_restore, stuff_price, memory_fragment_price, item_grade,
-                             auction_price, one_fail, crons_amount)
+                             auction_price, one_fail, crons_amount, total_rolls, full_tests_result)
         return string
 
 
@@ -282,6 +329,3 @@ def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_S
                          item_grade, memory_fragment_price, stuff_price,
                          auction_price, one_fail, crons_amount, show_one_test)
     return report
-
-
-# Manos_Life_Mastery_Clothes(show_one_test=True)
