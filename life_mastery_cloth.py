@@ -80,13 +80,16 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
     string = []
     string.append(f'<<< RESULT OF {tests} ENCHANTMENTS >>>')
     string.append(f'ITEM: {name_of_item}')
+    string.append(f'grade: {item_grade}')
+    string.append(f'item price: {conv_nice_view(item_price)} silver')
     string.append(f'From +{begin_lev} to +{end_lev}')
     string.append('')
     string.append('FEATURES:')
     if type(one_fail) is str and one_fail == 'None':
         string.append("This item can't use Failstacks")
     if type(crons_amount) is str and crons_amount == 'None':
-        string.append("This item can't use cron stones to save level after +17")
+        string.append(
+            "This item can't use cron stones to save level after +17")
     string.append('')
     string.append('EXPENSES:')
     string.append('We got next average values: ')
@@ -152,7 +155,7 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
 
 def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_gems, con_black_gems,
                 name_of_item, black_gem_price, con_black_gem_price, item_grade,
-                memory_fragment_price, stuff_price, auction_price, one_fail, 
+                memory_fragment_price, stuff_price, auction_price, one_fail,
                 crons_amount, show_one_test=False):
     spent_durability = 0
     spent_black_gems = 0
@@ -252,7 +255,7 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         return string
 
 
-def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name = 'Manos_Sailing_Life_Mastery_Clothes',
+def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_Sailing_Life_Mastery_Clothes',
                          show_one_test=False):
     items_prices = load_prices()
     black_gem_price = items_prices['Black_Gem']
