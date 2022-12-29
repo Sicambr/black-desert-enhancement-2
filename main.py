@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit
 
 
 my_list = life_mastery_cloth.Manos_Life_Mastery_Clothes(
-    begin_lev=0, end_lev=19, tests=1000, show_one_test=False)
+    begin_lev=13, end_lev=17, tests=1000, show_one_test=False)
 
 
 class MainWindow(QMainWindow):

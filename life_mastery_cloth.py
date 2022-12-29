@@ -273,4 +273,32 @@ def Manos_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_tes
     return report
 
 
+def Loggia_Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, show_one_test=False):
+    items_prices = load_prices()
+    black_gem_price = items_prices['Black_Gem']
+    con_black_gem_price = items_prices['Concentrated_Black_Gem']
+    stuff_price = items_prices['Loggia_Processing_Life_Mastery_Clothes']
+    name_of_item = 'Processing Life Mastery Clothes of Loggia'
+    memory_fragment_price = items_prices['Memory_Fragment']
+
+    item_settings = load_data()['Loggia_Processing_Life_Mastery_Clothes']
+    base_persent = item_settings['base_persent']
+    one_fail = item_settings['one_fail']
+    ceiling_persent = item_settings['ceiling_persent']
+    crons_amount = item_settings['crons_amount']
+    black_gems = item_settings['black_gems']
+    con_black_gems = item_settings['con_black_gems']
+    lost_durability = item_settings['lost_durability']
+    item_grade = item_settings['item_grade']
+    item_type = item_settings['item_type']
+    auction_price = item_settings['auction_price']
+
+    report = enhancement(begin_lev, end_lev, tests, base_persent,
+                         lost_durability, black_gems, con_black_gems,
+                         name_of_item, black_gem_price, con_black_gem_price,
+                         item_grade, memory_fragment_price, stuff_price,
+                         auction_price, show_one_test)
+    return report
+
+
 # Manos_Life_Mastery_Clothes(show_one_test=True)
