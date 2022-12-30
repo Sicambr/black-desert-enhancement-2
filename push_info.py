@@ -48,7 +48,11 @@ def add_item_manos():
                     'con_black_gems': con_black_gems, 'lost_durability': lost_durability,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
     item['Manos_Alchemy_Life_Mastery_Clothes'] = all_settings
-    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+    sort_keys = sorted(item.keys())
+    new_item = {}
+    for i in sort_keys:
+        new_item[i] = item[i]
+    json.dump(new_item, fp=open('data.txt', 'w'), indent=4)
 
 
 def add_item_loggia():
@@ -120,6 +124,6 @@ def add_item_geranoa():
 
 
 # add_default_price()
-# add_item_manos()
+#add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
