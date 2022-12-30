@@ -1,10 +1,10 @@
 import sys
 import life_mastery_cloth
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit
+from push_info import load_data
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QComboBox, QWidget
 
 
-my_list = life_mastery_cloth.Life_Mastery_Clothes(item_name='Geranoa_Hunting_Life_Mastery_Clothes',
-                                                  begin_lev=0, end_lev=6, tests=1000, show_one_test=False)
+all_items = load_data()
 
 
 class MainWindow(QMainWindow):
@@ -15,24 +15,38 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(800, 600)
 
         button = QPushButton("Press Megit!")
-        button.setCheckable(True)
         button.clicked.connect(self.the_button_was_clicked)
-        button.clicked.connect(self.the_button_was_toggled)
 
-        My_text = QTextEdit('')
-        My_text.setFontPointSize(16)
-        for i in my_list:
-            My_text.append(i)
+        self.box_with_items = QComboBox()
+        for i in all_items.keys():
+            self.box_with_items.addItem(i.replace('_', ' '))
 
-        # My_text.setText(my_list)
+        self.terminal = QTextEdit('')
+        self.terminal.setFontPointSize(16)
 
-        self.setCentralWidget(My_text)
+        self.box_with_items.activated.connect(self.get_full_report)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.box_with_items)
+        layout.addWidget(self.terminal)
+
+        container = QWidget()
+        container.setLayout(layout)
+
+        # Set the central widget of the Window.
+        self.setCentralWidget(container)
 
     def the_button_was_clicked(self):
         print("Clicked!")
 
-    def the_button_was_toggled(self, checked):
-        print("Checked?", checked)
+    def get_full_report(self):
+        current_name = self.box_with_items.currentText().replace(' ', '_')
+        print(current_name)
+        test_report = life_mastery_cloth.Life_Mastery_Clothes(item_name=current_name,
+                                                              begin_lev=0, end_lev=18, tests=1000, show_one_test=False)
+        self.terminal.clear()
+        for i in test_report:
+            self.terminal.append(i)
 
 
 app = QApplication(sys.argv)
