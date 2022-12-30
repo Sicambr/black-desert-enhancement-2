@@ -1,6 +1,16 @@
 import json
 
 
+def load_prices():
+    items_prices = json.load(open('default_prices.txt'))
+    return items_prices
+
+
+def load_data():
+    item_settings = json.load(open('data.txt'))
+    return item_settings
+
+
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
     all_items['Geranoa_Alchemy_Life_Mastery_Clothes'] = 8200000
@@ -109,7 +119,7 @@ def add_item_geranoa():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-add_default_price()
+# add_default_price()
 # add_item_manos()
 # add_item_loggia()
-add_item_geranoa()
+# add_item_geranoa()

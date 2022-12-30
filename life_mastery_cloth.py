@@ -1,16 +1,16 @@
-import json
+# import json
 import random
 import math
+from push_info import load_data, load_prices
+
+# def load_prices():
+#     items_prices = json.load(open('default_prices.txt'))
+#     return items_prices
 
 
-def load_prices():
-    items_prices = json.load(open('default_prices.txt'))
-    return items_prices
-
-
-def load_data():
-    item_settings = json.load(open('data.txt'))
-    return item_settings
+# def load_data():
+#     item_settings = json.load(open('data.txt'))
+#     return item_settings
 
 
 def conv_nice_view(number):
