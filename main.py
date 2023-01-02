@@ -1,7 +1,8 @@
 import sys
 import life_mastery_cloth
 from push_info import load_data
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QComboBox, QWidget, QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
+from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
 from PyQt5.QtGui import QFont
 
 
@@ -21,9 +22,12 @@ class MainWindow(QMainWindow):
         self.box_with_items = QComboBox()
         for i in all_items.keys():
             self.box_with_items.addItem(i.replace('_', ' '))
-        
+
+        self.switchers = QRadioButton()
+        self.switchers.setChecked(1)
+
         self.begin_with = QLineEdit('0')
-        self.end_with = QLineEdit('17')
+        self.end_with = QLineEdit('2')
 
         self.apply_button = QPushButton('Apply')
 
@@ -41,6 +45,7 @@ class MainWindow(QMainWindow):
 
         layout = QVBoxLayout()
         layout.addWidget(self.box_with_items)
+        layout.addWidget(self.switchers)
         layout.addWidget(self.begin_with)
         layout.addWidget(self.end_with)
         layout.addWidget(self.apply_button)
@@ -59,8 +64,16 @@ class MainWindow(QMainWindow):
         current_name = self.box_with_items.currentText().replace(' ', '_')
         begin_level = int(self.begin_with.text())
         end_level = int(self.end_with.text())
-        test_report = life_mastery_cloth.Life_Mastery_Clothes(item_name=current_name,
-                                                              begin_lev=begin_level, end_lev=end_level, tests=1000, show_one_test=False)
+        repeat_tests = 1000
+        check_for_one_test = self.switchers.isChecked()
+        if 'Life_Mastery_Clothes' in current_name:
+            test_report = life_mastery_cloth.Life_Mastery_Clothes(item_name=current_name,
+                                                                  begin_lev=begin_level, end_lev=end_level,
+                                                                  tests=repeat_tests, show_one_test=check_for_one_test)
+        elif 'Silver_Embroidered' in current_name:
+            test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
+                                                                        begin_lev=begin_level, end_lev=end_level,
+                                                                        tests=repeat_tests, show_one_test=check_for_one_test)
         self.terminal.clear()
         for i in test_report:
             self.terminal.append(i)

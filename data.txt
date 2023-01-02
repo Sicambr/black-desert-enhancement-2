@@ -2806,5 +2806,27 @@
         },
         "item_grade": "RED",
         "item_type": "CLOTH_Life_Mastery"
+    },
+    "Silver_Embroidered_Sailors_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4160000,
+            "2": 15200000,
+            "3": 146000000,
+            "4": 1280000000,
+            "5": 4890000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
     }
 }

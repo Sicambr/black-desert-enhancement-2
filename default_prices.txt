@@ -27,5 +27,6 @@
     "Geranoa_Hunting_Life_Mastery_Clothes": 8200000,
     "Geranoa_Sailing_Life_Mastery_Clothes": 8200000,
     "Geranoa_Training_Life_Mastery_Clothes": 8200000,
-    "Geranoa_Alchemy_Life_Mastery_Clothes": 8200000
+    "Geranoa_Alchemy_Life_Mastery_Clothes": 8200000,
+    "Silver_Embroidered_Sailors_Clothes": 1390000
 }

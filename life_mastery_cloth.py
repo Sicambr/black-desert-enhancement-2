@@ -3,15 +3,6 @@ import random
 import math
 from push_info import load_data, load_prices
 
-# def load_prices():
-#     items_prices = json.load(open('default_prices.txt'))
-#     return items_prices
-
-
-# def load_data():
-#     item_settings = json.load(open('data.txt'))
-#     return item_settings
-
 
 def conv_nice_view(number):
     if number // 1000000000 > 0:
@@ -302,6 +293,48 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         return string
 
 
+def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
+                                 name_of_item, item_grade, stuff_price, use_the_same_item,
+                                 auction_price, one_fail, crons_amount, show_one_test):
+    spent_items = 1
+    if show_one_test == True:
+        temp_begin_lev = begin_lev
+        rolls = 0
+        string = ['*** FULL TEST ***', f'ENHANCEMENT: {name_of_item}',
+                  f'from +{begin_lev} to +{end_lev}']
+        while begin_lev != end_lev:
+            string.append('')
+            rolls += 1
+            enhancement_chance = base_persent[str(begin_lev + 1)]
+            spent_items += 1
+            we_rolled = random.randint(1, 10000)
+            string.append(f'Rolled {we_rolled} from 10000')
+            if 1 <= we_rolled <= (base_persent[str(begin_lev + 1)]*100):
+                begin_lev += 1
+                string.append(f'rolls: {rolls}, success!')
+            else:
+                string.append(f'rolls: {rolls}, failed.')
+                string.append(f'We lost item +{begin_lev}')
+                spent_items += 1
+                begin_lev = temp_begin_lev
+            string.append(f"Current enhancement's level +{begin_lev}")
+            string.append(f"Chance was {enhancement_chance} %")
+            string.append('WE SPENT:')
+            string.append(
+                f'{spent_items} items = {conv_nice_view(spent_items * stuff_price)} silver')
+        string.append('')
+        string.append('<<<FULL REPORT>>>')
+        string.append(f'Item: {name_of_item}')
+        string.append(f'Sharpering from +{temp_begin_lev} to +{end_lev}')
+        string.append(f'ROLLS: {rolls}')
+        temp_full_price = spent_items * stuff_price
+        string.append(f'Spent {spent_items} items'
+                      f' = {conv_nice_view(temp_full_price)} silver')
+        return string
+    else:
+        return "done"
+
+
 def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_Sailing_Life_Mastery_Clothes',
                          show_one_test=False):
     items_prices = load_prices()
@@ -328,4 +361,24 @@ def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_S
                          name_of_item, black_gem_price, con_black_gem_price,
                          item_grade, memory_fragment_price, stuff_price,
                          auction_price, one_fail, crons_amount, show_one_test)
+    return report
+
+
+def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Silver_Embroidered_Sailors_Clothes',
+                               show_one_test=False):
+    items_prices = load_prices()
+    stuff_price = items_prices[item_name]
+    name_of_item = item_name.replace('_', ' ')
+
+    item_settings = load_data()[item_name]
+    base_persent = item_settings['base_persent']
+    one_fail = item_settings['one_fail']
+    crons_amount = item_settings['crons_amount']
+    item_grade = item_settings['item_grade']
+    auction_price = item_settings['auction_price']
+    use_the_same_item = item_settings['use_the_same_item']
+
+    report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
+                                          name_of_item, item_grade, stuff_price, use_the_same_item,
+                                          auction_price, one_fail, crons_amount, show_one_test)
     return report
