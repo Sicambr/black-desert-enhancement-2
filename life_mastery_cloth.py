@@ -300,37 +300,94 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
     if show_one_test == True:
         temp_begin_lev = begin_lev
         rolls = 0
+        all_enh_items = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
         string = ['*** FULL TEST ***', f'ENHANCEMENT: {name_of_item}',
                   f'from +{begin_lev} to +{end_lev}']
         while begin_lev != end_lev:
-            string.append('')
+            additional_item = 0
+            if rolls <= 1000:
+                string.append('')
             rolls += 1
             enhancement_chance = base_persent[str(begin_lev + 1)]
             spent_items += 1
             if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
                 begin_lev += 1
-                string.append(f'rolls: {rolls}, success!')
+                all_enh_items[begin_lev] += 1
+                if rolls <= 1000:
+                    string.append(f'rolls: {rolls}, success!')
             else:
-                string.append(f'rolls: {rolls}, failed.')
-                string.append(f'We lost item +{begin_lev}')
+                additional_item = -1
+                if rolls <= 1000:
+                    string.append(f'rolls: {rolls}, failed.')
+                    string.append(f'We lost item +{begin_lev}')
                 spent_items += 1
                 begin_lev = temp_begin_lev
-            string.append(f"Current enhancement's level +{begin_lev}")
-            string.append(f"Chance was {enhancement_chance} %")
-            string.append('WE SPENT:')
-            string.append(
-                f'{spent_items} items = {conv_nice_view(spent_items * stuff_price)} silver')
+            if rolls <= 1000:
+                string.append(f"Current enhancement's level +{begin_lev}")
+                string.append(f"Chance was {enhancement_chance} %")
+                string.append('WE SPENT:')
+                string.append(
+                    f'{spent_items + additional_item} items ='
+                    f' {conv_nice_view((spent_items + additional_item)* stuff_price)} silver')
+        if rolls > 1000:
+            string.append(f'And etc...We had {rolls} rolled total...')
         string.append('')
         string.append('<<<FULL REPORT>>>')
         string.append(f'Item: {name_of_item}')
+        string.append(f'Item costs: {conv_nice_view(stuff_price)} silver')
         string.append(f'Sharpering from +{temp_begin_lev} to +{end_lev}')
-        string.append(f'ROLLS: {rolls}')
+        string.append(
+            f'On auction house item +{end_lev} '
+            f'costs {conv_nice_view(auction_price[str(end_lev)])} silver')
+        string.append(f'ROLLED: {rolls}')
+        string.append(
+            'If you will spend 1 second for 1 click, you will do it:')
+        string.append(f'{rolls} seconds = {int(rolls / 60)} minutes '
+                      f'= {int(rolls / 3600)} hours = {int (rolls / 86400)} days.')
         temp_full_price = spent_items * stuff_price
         string.append(f'Spent {spent_items} items'
                       f' = {conv_nice_view(temp_full_price)} silver')
+        string.append('Or you could get instead:')
+        for key in all_enh_items:
+            if all_enh_items[key] != 0 and key != end_lev:
+                string.append(f'+{key} : {all_enh_items[key]} items')
         return string
     else:
-        return "done"
+        temp_begin_lev = begin_lev
+        attempt = 0
+        rolls = 0
+        all_enh_items = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+        while attempt < tests:
+            attempt += 1
+            begin_lev = temp_begin_lev
+            while begin_lev != end_lev:
+                rolls += 1
+                spent_items += 1
+                if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
+                    begin_lev += 1
+                    all_enh_items[begin_lev] += 1
+                else:
+                    spent_items += 1
+                    begin_lev = temp_begin_lev
+        string = []
+        string.append('')
+        string.append('<<<FULL REPORT>>>')
+        string.append(f'The Result of {tests} tests')
+        string.append(f'Item: {name_of_item}')
+        string.append(f'Sharpering from +{temp_begin_lev} to +{end_lev}')
+        string.append(f'ROLLED: {int(rolls / tests)}')
+        # string.append(
+        #     'If you will spend 1 second for 1 click, you will do it:')
+        # string.append(f'{rolls} seconds = {int(rolls / 60)} minutes '
+        #               f'= {int(rolls / 3600)} hours = {int (rolls / 86400)} days.')
+        temp_full_price = (spent_items / tests) * stuff_price
+        string.append(f'Spent {int(spent_items / tests)} items'
+                      f' = {conv_nice_view(temp_full_price)} silver')
+        # string.append('Or you could get instead:')
+        # for key in all_enh_items:
+        #     if all_enh_items[key] != 0 and key != end_lev:
+        #         string.append(f'+{key} : {all_enh_items[key]} items')
+        return string
 
 
 def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_Sailing_Life_Mastery_Clothes',

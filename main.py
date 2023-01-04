@@ -66,6 +66,7 @@ class MainWindow(QMainWindow):
         end_level = int(self.end_with.text())
         repeat_tests = 1000
         check_for_one_test = self.switchers.isChecked()
+        self.terminal.clear()
         if 'Life_Mastery_Clothes' in current_name:
             test_report = life_mastery_cloth.Life_Mastery_Clothes(item_name=current_name,
                                                                   begin_lev=begin_level, end_lev=end_level,
@@ -74,7 +75,6 @@ class MainWindow(QMainWindow):
             test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test)
-        self.terminal.clear()
         for i in test_report:
             self.terminal.append(i)
 
