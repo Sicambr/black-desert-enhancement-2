@@ -307,9 +307,7 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
             rolls += 1
             enhancement_chance = base_persent[str(begin_lev + 1)]
             spent_items += 1
-            we_rolled = random.randint(1, 10000)
-            string.append(f'Rolled {we_rolled} from 10000')
-            if 1 <= we_rolled <= (base_persent[str(begin_lev + 1)]*100):
+            if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
                 begin_lev += 1
                 string.append(f'rolls: {rolls}, success!')
             else:
