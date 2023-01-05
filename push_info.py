@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Silver_Embroidered_Trainers_Clothes'] = 1360000
+    all_items['Accessories_Life_Mastery_Loggia_Ring'] = 820000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -142,8 +142,30 @@ def add_item_Silver_Embroidered_Clothes():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
+def add_item_life_mastery_accessories():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 70, 2: 40, 3: 30, 4: 20, 5: 10}
+    one_fail = 'None'
+    ceiling_persent = 'None'
+    crons_amount = 'None'
+    use_the_same_item = None
+    black_gems = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+    con_black_gems = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    auction_price = {1: 3450000, 2: 13800000,
+                     3: 98500000, 4: 385000000, 5: 1310000000}
+    item_grade = 'GREEN'
+    item_type = 'ACCESSORIES_Life_Mastery'
+    all_settings = {'base_persent': base_persent, 'con_black_gems': con_black_gems,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'black_gems': black_gems,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
+    item['Accessories_Life_Mastery_Loggia_Ring'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
 add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
-add_item_Silver_Embroidered_Clothes()
+# add_item_Silver_Embroidered_Clothes()
+add_item_life_mastery_accessories()

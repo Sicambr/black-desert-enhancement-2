@@ -1,5 +1,6 @@
 import sys
 import life_mastery_cloth
+import life_mastery_accessories
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
 from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
@@ -24,7 +25,7 @@ class MainWindow(QMainWindow):
             self.box_with_items.addItem(i.replace('_', ' '))
 
         self.switchers = QRadioButton()
-        self.switchers.setChecked(0)
+        self.switchers.setChecked(1)
 
         self.begin_with = QLineEdit('0')
         self.end_with = QLineEdit('17')
@@ -81,6 +82,14 @@ class MainWindow(QMainWindow):
             test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test)
+        elif 'Accessories_Life_Mastery' in current_name:
+            if end_level > 5:
+                end_level = 2
+                self.end_with.setText('2')
+            test_report = life_mastery_accessories.life_mastery_accessories(item_name=current_name,
+                                                                            begin_lev=begin_level, end_lev=end_level,
+                                                                            tests=repeat_tests, show_one_test=check_for_one_test)
+
         for i in test_report:
             self.terminal.append(i)
 
