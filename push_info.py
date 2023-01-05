@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Geranoa_Alchemy_Life_Mastery_Clothes'] = 8200000
+    all_items['Silver_Embroidered_Trainers_Clothes'] = 1360000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -48,7 +48,11 @@ def add_item_manos():
                     'con_black_gems': con_black_gems, 'lost_durability': lost_durability,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
     item['Manos_Alchemy_Life_Mastery_Clothes'] = all_settings
-    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+    sort_keys = sorted(item.keys())
+    new_item = {}
+    for i in sort_keys:
+        new_item[i] = item[i]
+    json.dump(new_item, fp=open('data.txt', 'w'), indent=4)
 
 
 def add_item_loggia():
@@ -119,7 +123,27 @@ def add_item_geranoa():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-# add_default_price()
+def add_item_Silver_Embroidered_Clothes():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
+    one_fail = 'None'
+    ceiling_persent = 'None'
+    crons_amount = 'None'
+    use_the_same_item = True
+    auction_price = {1: 4080000, 2: 15000000,
+                     3: 143000000, 4: 1310000000, 5: 4800000000}
+    item_grade = 'BLUE'
+    item_type = 'CLOTH_Silver_Embroidered'
+    all_settings = {'base_persent': base_persent,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
+    item['Silver_Embroidered_Trainers_Clothes'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
+add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
+add_item_Silver_Embroidered_Clothes()
