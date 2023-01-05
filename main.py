@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Sharpering test for Black Desert")
-        self.setMinimumSize(800, 600)
+        self.setMinimumSize(800, 800)
 
         button = QPushButton("Press Megit!")
         button.clicked.connect(self.the_button_was_clicked)
@@ -24,10 +24,10 @@ class MainWindow(QMainWindow):
             self.box_with_items.addItem(i.replace('_', ' '))
 
         self.switchers = QRadioButton()
-        self.switchers.setChecked(1)
+        self.switchers.setChecked(0)
 
         self.begin_with = QLineEdit('0')
-        self.end_with = QLineEdit('2')
+        self.end_with = QLineEdit('17')
 
         self.apply_button = QPushButton('Apply')
 
@@ -68,10 +68,16 @@ class MainWindow(QMainWindow):
         check_for_one_test = self.switchers.isChecked()
         self.terminal.clear()
         if 'Life_Mastery_Clothes' in current_name:
+            if end_level <= 5:
+                end_level = 6
+                self.end_with.setText('6')
             test_report = life_mastery_cloth.Life_Mastery_Clothes(item_name=current_name,
                                                                   begin_lev=begin_level, end_lev=end_level,
                                                                   tests=repeat_tests, show_one_test=check_for_one_test)
         elif 'Silver_Embroidered' in current_name:
+            if end_level > 5:
+                end_level = 2
+                self.end_with.setText('2')
             test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test)

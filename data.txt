@@ -2828,5 +2828,181 @@
         },
         "item_grade": "BLUE",
         "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Farmers_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4080000,
+            "2": 21000000,
+            "3": 201000000,
+            "4": 1310000000,
+            "5": 4800000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Alchemists_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4190000,
+            "2": 15300000,
+            "3": 142000000,
+            "4": 1060000000,
+            "5": 4890000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Craftsmans_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4190000,
+            "2": 15300000,
+            "3": 138000000,
+            "4": 1120000000,
+            "5": 4890000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Cooks_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 3380000,
+            "2": 14300000,
+            "3": 156000000,
+            "4": 995000000,
+            "5": 4560000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Fishers_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4080000,
+            "2": 15000000,
+            "3": 109000000,
+            "4": 725000000,
+            "5": 4800000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Gatherers_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4080000,
+            "2": 22500000,
+            "3": 169000000,
+            "4": 1310000000,
+            "5": 4800000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Traders_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 3860000,
+            "2": 14200000,
+            "3": 136000000,
+            "4": 1240000000,
+            "5": 4540000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
+    },
+    "Silver_Embroidered_Trainers_Clothes": {
+        "base_persent": {
+            "1": 30,
+            "2": 10,
+            "3": 7.5,
+            "4": 2.5,
+            "5": 0.5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "crons_amount": "None",
+        "use_the_same_item": true,
+        "auction_price": {
+            "1": 4080000,
+            "2": 15000000,
+            "3": 143000000,
+            "4": 1310000000,
+            "5": 4800000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "CLOTH_Silver_Embroidered"
     }
 }

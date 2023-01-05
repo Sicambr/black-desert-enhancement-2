@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Silver_Embroidered_Sailors_Clothes'] = 1390000
+    all_items['Silver_Embroidered_Trainers_Clothes'] = 1360000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -130,15 +130,15 @@ def add_item_Silver_Embroidered_Clothes():
     ceiling_persent = 'None'
     crons_amount = 'None'
     use_the_same_item = True
-    auction_price = {1: 4160000, 2: 15200000,
-                     3: 146000000, 4: 1280000000, 5: 4890000000}
+    auction_price = {1: 4080000, 2: 15000000,
+                     3: 143000000, 4: 1310000000, 5: 4800000000}
     item_grade = 'BLUE'
     item_type = 'CLOTH_Silver_Embroidered'
     all_settings = {'base_persent': base_persent,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
-    item['Silver_Embroidered_Sailors_Clothes'] = all_settings
+    item['Silver_Embroidered_Trainers_Clothes'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 

@@ -28,5 +28,13 @@
     "Geranoa_Sailing_Life_Mastery_Clothes": 8200000,
     "Geranoa_Training_Life_Mastery_Clothes": 8200000,
     "Geranoa_Alchemy_Life_Mastery_Clothes": 8200000,
-    "Silver_Embroidered_Sailors_Clothes": 1390000
+    "Silver_Embroidered_Sailors_Clothes": 1390000,
+    "Silver_Embroidered_Farmers_Clothes": 1360000,
+    "Silver_Embroidered_Alchemists_Clothes": 1400000,
+    "Silver_Embroidered_Craftsmans_Clothes": 1400000,
+    "Silver_Embroidered_Cooks_Clothes": 1300000,
+    "Silver_Embroidered_Fishers_Clothes": 489000,
+    "Silver_Embroidered_Gatherers_Clothes": 1360000,
+    "Silver_Embroidered_Traders_Clothes": 1300000,
+    "Silver_Embroidered_Trainers_Clothes": 1360000
 }
