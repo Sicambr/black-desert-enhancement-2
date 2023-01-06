@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
             self.box_with_items.addItem(i.replace('_', ' '))
 
         self.switchers = QRadioButton()
-        self.switchers.setChecked(1)
+        self.switchers.setChecked(0)
 
         self.begin_with = QLineEdit('0')
         self.end_with = QLineEdit('17')

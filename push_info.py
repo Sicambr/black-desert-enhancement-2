@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Accessories_Life_Mastery_Loggia_Ring'] = 820000
+    all_items['Accessories_Life_Mastery_Loggia_Ring'] = 1000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 

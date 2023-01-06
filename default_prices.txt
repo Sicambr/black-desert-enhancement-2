@@ -37,5 +37,5 @@
     "Silver_Embroidered_Gatherers_Clothes": 1360000,
     "Silver_Embroidered_Traders_Clothes": 1300000,
     "Silver_Embroidered_Trainers_Clothes": 1360000,
-    "Accessories_Life_Mastery_Loggia_Ring": 820000
+    "Accessories_Life_Mastery_Loggia_Ring": 1000000
 }
