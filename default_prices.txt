@@ -37,5 +37,16 @@
     "Silver_Embroidered_Gatherers_Clothes": 1360000,
     "Silver_Embroidered_Traders_Clothes": 1300000,
     "Silver_Embroidered_Trainers_Clothes": 1360000,
-    "Accessories_Life_Mastery_Loggia_Ring": 1000000
+    "Accessories_Life_Mastery_Loggia_Ring": 1000000,
+    "Accessories_Life_Mastery_Loggia_Earring": 1000000,
+    "Accessories_Life_Mastery_Loggia_Belt": 1000000,
+    "Accessories_Life_Mastery_Loggia_Necklace": 1000000,
+    "Accessories_Life_Mastery_Geranoa_Necklace": 10000000,
+    "Accessories_Life_Mastery_Geranoa_Belt": 10000000,
+    "Accessories_Life_Mastery_Geranoa_Earrings": 10000000,
+    "Accessories_Life_Mastery_Geranoa_Ring": 10000000,
+    "Accessories_Life_Mastery_Manos_Ring": 126000000,
+    "Accessories_Life_Mastery_Manos_Necklace": 109000000,
+    "Accessories_Life_Mastery_Manos_Earring": 128000000,
+    "Accessories_Life_Mastery_Manos_Belt": 99000000
 }

@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Accessories_Life_Mastery_Loggia_Ring'] = 1000000
+    all_items['Accessories_Life_Mastery_Manos_Belt'] = 99000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -144,22 +144,22 @@ def add_item_Silver_Embroidered_Clothes():
 
 def add_item_life_mastery_accessories():
     item = json.load(open('data.txt'))
-    base_persent = {1: 70, 2: 40, 3: 30, 4: 20, 5: 10}
+    base_persent = {1: 70, 2: 45, 3: 30, 4: 15, 5: 5}
     one_fail = 'None'
     ceiling_persent = 'None'
     crons_amount = 'None'
     use_the_same_item = None
-    black_gems = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
-    con_black_gems = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-    auction_price = {1: 3450000, 2: 13800000,
-                     3: 98500000, 4: 385000000, 5: 1310000000}
-    item_grade = 'GREEN'
+    black_gems = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    con_black_gems = {1: 10, 2: 11, 3: 13, 4: 16, 5: 20}
+    auction_price = {1: 166000000, 2: 750000000,
+                     3: 2730000000, 4: 15700000000, 5: 140000000000}
+    item_grade = 'RED'
     item_type = 'ACCESSORIES_Life_Mastery'
     all_settings = {'base_persent': base_persent, 'con_black_gems': con_black_gems,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'black_gems': black_gems,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
-    item['Accessories_Life_Mastery_Loggia_Ring'] = all_settings
+    item['Accessories_Life_Mastery_Manos_Belt'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 

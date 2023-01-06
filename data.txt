@@ -3040,5 +3040,401 @@
         },
         "item_grade": "GREEN",
         "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Loggia_Earring": {
+        "base_persent": {
+            "1": 70,
+            "2": 40,
+            "3": 30,
+            "4": 20,
+            "5": 10
+        },
+        "con_black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 3450000,
+            "2": 13800000,
+            "3": 115000000,
+            "4": 369000000,
+            "5": 1310000000
+        },
+        "item_grade": "GREEN",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Loggia_Belt": {
+        "base_persent": {
+            "1": 70,
+            "2": 40,
+            "3": 30,
+            "4": 20,
+            "5": 10
+        },
+        "con_black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 3450000,
+            "2": 13800000,
+            "3": 97500000,
+            "4": 369000000,
+            "5": 1310000000
+        },
+        "item_grade": "GREEN",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Loggia_Necklace": {
+        "base_persent": {
+            "1": 70,
+            "2": 40,
+            "3": 30,
+            "4": 20,
+            "5": 10
+        },
+        "con_black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 3450000,
+            "2": 13800000,
+            "3": 85000000,
+            "4": 270000000,
+            "5": 1270000000
+        },
+        "item_grade": "GREEN",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Geranoa_Necklace": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 18,
+            "5": 8
+        },
+        "con_black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 24600000,
+            "2": 90500000,
+            "3": 500000000,
+            "4": 2230000000,
+            "5": 9600000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Geranoa_Belt": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 18,
+            "5": 8
+        },
+        "con_black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 24600000,
+            "2": 90500000,
+            "3": 468000000,
+            "4": 1710000000,
+            "5": 9600000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Geranoa_Earrings": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 18,
+            "5": 8
+        },
+        "con_black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 24600000,
+            "2": 90500000,
+            "3": 575000000,
+            "4": 2060000000,
+            "5": 9600000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Geranoa_Ring": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 18,
+            "5": 8
+        },
+        "con_black_gems": {
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 24600000,
+            "2": 90500000,
+            "3": 465000000,
+            "4": 1930000000,
+            "5": 9600000000
+        },
+        "item_grade": "BLUE",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Manos_Ring": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 15,
+            "5": 5
+        },
+        "con_black_gems": {
+            "1": 10,
+            "2": 11,
+            "3": 13,
+            "4": 16,
+            "5": 20
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 256000000,
+            "2": 810000000,
+            "3": 2730000000,
+            "4": 18500000000,
+            "5": 140000000000
+        },
+        "item_grade": "RED",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Manos_Necklace": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 15,
+            "5": 5
+        },
+        "con_black_gems": {
+            "1": 10,
+            "2": 11,
+            "3": 13,
+            "4": 16,
+            "5": 20
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 169000000,
+            "2": 740000000,
+            "3": 2680000000,
+            "4": 15600000000,
+            "5": 140000000000
+        },
+        "item_grade": "RED",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Manos_Earring": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 15,
+            "5": 5
+        },
+        "con_black_gems": {
+            "1": 10,
+            "2": 11,
+            "3": 13,
+            "4": 16,
+            "5": 20
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 241000000,
+            "2": 800000000,
+            "3": 2790000000,
+            "4": 17400000000,
+            "5": 140000000000
+        },
+        "item_grade": "RED",
+        "item_type": "ACCESSORIES_Life_Mastery"
+    },
+    "Accessories_Life_Mastery_Manos_Belt": {
+        "base_persent": {
+            "1": 70,
+            "2": 45,
+            "3": 30,
+            "4": 15,
+            "5": 5
+        },
+        "con_black_gems": {
+            "1": 10,
+            "2": 11,
+            "3": 13,
+            "4": 16,
+            "5": 20
+        },
+        "one_fail": "None",
+        "ceiling_persent": "None",
+        "black_gems": {
+            "1": 0,
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+        },
+        "crons_amount": "None",
+        "use_the_same_item": null,
+        "auction_price": {
+            "1": 166000000,
+            "2": 750000000,
+            "3": 2730000000,
+            "4": 15700000000,
+            "5": 140000000000
+        },
+        "item_grade": "RED",
+        "item_type": "ACCESSORIES_Life_Mastery"
     }
 }
