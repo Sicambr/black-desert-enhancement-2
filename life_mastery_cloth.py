@@ -4,6 +4,100 @@ import math
 from push_info import load_data, load_prices
 
 
+def find_best_fails(begin_lev, end_lev, tests, base_persent,
+                    name_of_item, stuff_price, use_the_same_item,
+                    auction_price, one_fail,
+                    show_one_test):
+    one_fail = unpack_one_fail(one_fail.copy(), base_persent)
+    stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84}
+    # print(list(permute2(list(stone_amount.keys()))))
+    size = 7
+    gen = permute(size)
+    while True:
+        try:
+            print(next(gen))
+        except StopIteration:
+            print('finished')
+            break
+    # print(list(permute(2)))
+    return one_fail
+
+
+def permute2(seq):
+    if not seq:
+        yield seq
+    else:
+        for i in range(len(seq)):
+            rest = seq[:i] + seq[i + 1:]
+            for x in permute2(rest):
+                yield seq[i:i+1] + x
+
+
+def permute(size):
+    failstacks = [0] * size
+    index = 0
+    while True:
+        failstacks[index] += 5
+        if failstacks[index] <= 30:
+            yield failstacks
+        else:
+            pos = 0
+            finish_all = False
+            while True:
+                if failstacks[pos] > 30 and pos == (size - 1):
+                    finish_all = True
+                    break
+                elif failstacks[pos] > 30:
+                    failstacks[pos] = 0
+                    pos += 1
+                    failstacks[pos] += 5
+                else:
+                    break
+            if finish_all:
+                break
+            yield failstacks
+
+    # print(permute1('abc'))
+    # print(list(permute2('abc')))
+
+
+def unpack_one_fail(pack_one_fail, base_persent):
+    one_fail = {}
+    for level in pack_one_fail:
+        temp = {}
+        begin = 0
+        begin_persent = base_persent[level]
+        if len(pack_one_fail[level]) > 2:
+            while True:
+                temp[begin] = round(begin_persent, 3)
+                begin += 1
+                begin_persent += pack_one_fail[level][1]
+                if begin_persent >= pack_one_fail[level][0]:
+                    break
+            begin_persent = pack_one_fail[level][0]
+            while True:
+                temp[begin] = round(begin_persent, 3)
+                begin += 1
+                begin_persent += pack_one_fail[level][3]
+                if begin_persent >= pack_one_fail[level][2]:
+                    temp[begin] = pack_one_fail[level][2]
+                    break
+        else:
+            while True:
+                temp[begin] = round(begin_persent, 3)
+                begin += 1
+                begin_persent += pack_one_fail[level][1]
+                if begin_persent >= pack_one_fail[level][0]:
+                    temp[begin] = pack_one_fail[level][0]
+                    break
+        make_keys = list(temp.keys())
+        make_keys.sort()
+        if abs(temp[make_keys[-1]] - temp[make_keys[-2]]) < 1*10e-15:
+            temp.pop(make_keys[-1])
+        one_fail[level] = temp
+    return one_fail
+
+
 def conv_nice_view(number):
     if number // 1000000000 > 0:
         number = str(round((number / 1000000000), 3))
@@ -295,8 +389,10 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
 
 def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                                  name_of_item, stuff_price, use_the_same_item,
-                                 auction_price, one_fail, show_one_test):
+                                 auction_price, one_fail, best_failstacks,
+                                 show_one_test):
     spent_items = 1
+    one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     if show_one_test == True:
         temp_begin_lev = begin_lev
         rolls = 0
@@ -460,7 +556,7 @@ def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_S
 
 
 def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Silver_Embroidered_Sailors_Clothes',
-                               show_one_test=False):
+                               show_one_test=False, find_fails=False):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
     name_of_item = item_name.replace('_', ' ')
@@ -470,10 +566,18 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     one_fail = item_settings['one_fail']
     crons_amount = item_settings['crons_amount']
     item_grade = item_settings['item_grade']
+    best_failstacks = item_settings['best_failstacks']
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
 
-    report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
-                                          name_of_item, stuff_price, use_the_same_item,
-                                          auction_price, one_fail, show_one_test)
+    if not find_fails:
+        report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
+                                              name_of_item, stuff_price, use_the_same_item,
+                                              auction_price, one_fail, best_failstacks,
+                                              show_one_test)
+    else:
+        report = find_best_fails(begin_lev, end_lev, tests, base_persent,
+                                 name_of_item, stuff_price, use_the_same_item,
+                                 auction_price, one_fail,
+                                 show_one_test)
     return report

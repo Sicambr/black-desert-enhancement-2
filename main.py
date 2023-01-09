@@ -31,13 +31,16 @@ class MainWindow(QMainWindow):
         self.end_with = QLineEdit('17')
 
         self.apply_button = QPushButton('Apply')
+        self.find_failstacks = QPushButton('Find the best failstacks')
 
         font = QFont("JetBrains Mono", 16)
         self.box_with_items.setFont(font)
         self.begin_with.setFont(font)
         self.end_with.setFont(font)
         self.apply_button.setFont(font)
+        self.find_failstacks.setFont(font)
         self.apply_button.clicked.connect(self.get_full_report)
+        self.find_failstacks.clicked.connect(self.find_best_fails)
 
         self.terminal = QTextEdit('')
         self.terminal.setFontPointSize(16)
@@ -50,6 +53,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.begin_with)
         layout.addWidget(self.end_with)
         layout.addWidget(self.apply_button)
+        layout.addWidget(self.find_failstacks)
         layout.addWidget(self.terminal)
 
         container = QWidget()
@@ -89,6 +93,25 @@ class MainWindow(QMainWindow):
             test_report = life_mastery_accessories.life_mastery_accessories(item_name=current_name,
                                                                             begin_lev=begin_level, end_lev=end_level,
                                                                             tests=repeat_tests, show_one_test=check_for_one_test)
+
+        for i in test_report:
+            self.terminal.append(i)
+
+    def find_best_fails(self):
+        current_name = self.box_with_items.currentText().replace(' ', '_')
+        begin_level = int(self.begin_with.text())
+        end_level = int(self.end_with.text())
+        repeat_tests = 1000
+        check_for_one_test = self.switchers.isChecked()
+        self.terminal.clear()
+        if 'Silver_Embroidered' in current_name:
+            if end_level > 5:
+                end_level = 2
+                self.end_with.setText('2')
+            test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
+                                                                        begin_lev=begin_level, end_lev=end_level,
+                                                                        tests=repeat_tests, show_one_test=check_for_one_test,
+                                                                        find_fails=True)
 
         for i in test_report:
             self.terminal.append(i)

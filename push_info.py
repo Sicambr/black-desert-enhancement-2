@@ -126,7 +126,9 @@ def add_item_geranoa():
 def add_item_Silver_Embroidered_Clothes():
     item = json.load(open('data.txt'))
     base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
-    one_fail = 'None'
+    one_fail = {1: [72, 3, 90, 0.6], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
+                4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
+    best_failstacks = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
     ceiling_persent = 'None'
     crons_amount = 'None'
     use_the_same_item = True
@@ -134,7 +136,7 @@ def add_item_Silver_Embroidered_Clothes():
                      3: 143000000, 4: 1310000000, 5: 4800000000}
     item_grade = 'BLUE'
     item_type = 'CLOTH_Silver_Embroidered'
-    all_settings = {'base_persent': base_persent,
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
@@ -163,9 +165,9 @@ def add_item_life_mastery_accessories():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-add_default_price()
+# add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
-# add_item_Silver_Embroidered_Clothes()
-add_item_life_mastery_accessories()
+add_item_Silver_Embroidered_Clothes()
+# add_item_life_mastery_accessories()
