@@ -6,21 +6,27 @@ from push_info import load_data, load_prices
 
 def find_best_fails(begin_lev, end_lev, tests, base_persent,
                     name_of_item, stuff_price, use_the_same_item,
-                    auction_price, one_fail,
-                    show_one_test):
+                    auction_price, one_fail, black_stone_price):
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84}
     # print(list(permute2(list(stone_amount.keys()))))
-    size = 7
+    size = 2
+
+    def count_expenses(valkas_list):
+        print(valkas_list*2)
+
     gen = permute(size)
     while True:
         try:
-            print(next(gen))
+            count_expenses(next(gen))
         except StopIteration:
             print('finished')
             break
     # print(list(permute(2)))
     return one_fail
+
+
+
 
 
 def permute2(seq):
@@ -559,6 +565,7 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
                                show_one_test=False, find_fails=False):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
+    black_stone_price = items_prices['Black_Stone_Weapon']
     name_of_item = item_name.replace('_', ' ')
 
     item_settings = load_data()[item_name]
@@ -570,6 +577,7 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
 
+
     if not find_fails:
         report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                                               name_of_item, stuff_price, use_the_same_item,
@@ -578,6 +586,5 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     else:
         report = find_best_fails(begin_lev, end_lev, tests, base_persent,
                                  name_of_item, stuff_price, use_the_same_item,
-                                 auction_price, one_fail,
-                                 show_one_test)
+                                 auction_price, one_fail, black_stone_price)
     return report
