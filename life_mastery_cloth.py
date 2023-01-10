@@ -5,38 +5,66 @@ from push_info import load_data, load_prices
 
 
 def find_best_fails(begin_lev, end_lev, tests, base_persent,
-                    name_of_item, stuff_price, use_the_same_item,
-                    auction_price, one_fail, black_stone_price):
+                    name_of_item, stuff_price,
+                    one_fail, black_stone_price):
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84}
-    # print(list(permute2(list(stone_amount.keys()))))
-    size = 2
+    size = end_lev
 
     def count_expenses(valkas_list):
-        print(valkas_list*2)
+        tests = 1000
+        attempt = 0
+        spent_items = 0
+        spent_black_stones = 0
+        while attempt < tests:
+            attempt += 1
+            temp_level = begin_lev
+            collected_fails = 0
+            increased_lev = True
+            while temp_level != end_lev:
+                spent_items += 1
+                if temp_level == begin_lev:
+                    spent_items += 1
+                if increased_lev:
+                    fails = valkas_list[temp_level]
+                    spent_black_stones += stone_amount[valkas_list[temp_level]]
+                else:
+                    fails = collected_fails
+                chance = ((one_fail[str(temp_level + 1)][fails])*100)
+                if 1 <= random.randint(1, 10000) <= chance:
+                    increased_lev = True
+                    temp_level += 1
+                else:
+                    increased_lev = False
+                    temp_level = begin_lev
+                    collected_fails = fails + 1
+        spent_items = int(spent_items / tests)
+        spent_black_stones = int(spent_black_stones / tests)
+        full_price = spent_items * stuff_price + spent_black_stones * black_stone_price
+        print(f'{valkas_list} = {conv_nice_view(full_price)} silver. '
+              f'{spent_items} items / {spent_black_stones} BS')
+        return full_price, valkas_list.copy(), spent_items, spent_black_stones
 
+    all_tests_result = {}
     gen = permute(size)
     while True:
         try:
-            count_expenses(next(gen))
+            one_valks_test = count_expenses(next(gen))
         except StopIteration:
             print('finished')
             break
-    # print(list(permute(2)))
-    return one_fail
+        else:
+            all_tests_result[one_valks_test[0]] = one_valks_test[1:]
 
+    report = []
+    sort_test_result = list(all_tests_result.keys())
+    sort_test_result.sort()
+    for key in sort_test_result:
+        string = f'{all_tests_result[key][0]} = {conv_nice_view(key)} silver. '
+        string += f'{all_tests_result[key][1]} Items / {all_tests_result[key][2]} Black Stones'
+        report.append(string)
 
-
-
-
-def permute2(seq):
-    if not seq:
-        yield seq
-    else:
-        for i in range(len(seq)):
-            rest = seq[:i] + seq[i + 1:]
-            for x in permute2(rest):
-                yield seq[i:i+1] + x
+    return report
 
 
 def permute(size):
@@ -62,9 +90,6 @@ def permute(size):
             if finish_all:
                 break
             yield failstacks
-
-    # print(permute1('abc'))
-    # print(list(permute2('abc')))
 
 
 def unpack_one_fail(pack_one_fail, base_persent):
@@ -577,7 +602,6 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
 
-
     if not find_fails:
         report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                                               name_of_item, stuff_price, use_the_same_item,
@@ -585,6 +609,6 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
                                               show_one_test)
     else:
         report = find_best_fails(begin_lev, end_lev, tests, base_persent,
-                                 name_of_item, stuff_price, use_the_same_item,
-                                 auction_price, one_fail, black_stone_price)
+                                 name_of_item, stuff_price,
+                                 one_fail, black_stone_price)
     return report
