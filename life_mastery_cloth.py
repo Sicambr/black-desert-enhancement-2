@@ -16,28 +16,60 @@ def find_best_fails(begin_lev, end_lev, tests, base_persent,
         attempt = 0
         spent_items = 0
         spent_black_stones = 0
+        nadera_level_1 = 2
+        nadera_level_2 = 3
         while attempt < tests:
             attempt += 1
             temp_level = begin_lev
             collected_fails = 0
             increased_lev = True
+            save_on_nedara_1 = 0
+            save_on_nedara_2 = 0
             while temp_level != end_lev:
+                #print(f'start {valkas_list}')
                 spent_items += 1
                 if temp_level == begin_lev:
                     spent_items += 1
-                if increased_lev:
+                if (temp_level + 1 == nadera_level_1) and save_on_nedara_1 != 0:
+                    fails = save_on_nedara_1
+                    save_on_nedara_1 = 0
+                    #print(f'use saved {fails} nadera')
+                elif (temp_level + 1 == nadera_level_2) and save_on_nedara_2 != 0:
+                    fails = save_on_nedara_2
+                    save_on_nedara_2 = 0                
+                elif increased_lev:
                     fails = valkas_list[temp_level]
                     spent_black_stones += stone_amount[valkas_list[temp_level]]
+                    #print(f'fails = {fails}')
+                    #print(f'bought {stone_amount[valkas_list[temp_level]]} stones')
                 else:
+                    #print(f'alredy have {collected_fails} fails from past.')
                     fails = collected_fails
                 chance = ((one_fail[str(temp_level + 1)][fails])*100)
+                #print(f'we try to get {temp_level + 1}')
+                #print(f'chance = {chance / 100} %')
                 if 1 <= random.randint(1, 10000) <= chance:
                     increased_lev = True
                     temp_level += 1
+                    #print('success!')
                 else:
+                    #print('failed :(')
                     increased_lev = False
-                    temp_level = begin_lev
                     collected_fails = fails + 1
+                    if temp_level + 1 == nadera_level_1:
+                        save_on_nedara_1 = collected_fails
+                        #print(f'We SAVED {save_on_nedara_1} fails')
+                        increased_lev = True
+                        collected_fails = 0
+                    elif temp_level + 1 == nadera_level_2:
+                        save_on_nedara_2 = collected_fails
+                        #print(f'We SAVED {save_on_nedara_1} fails')
+                        increased_lev = True
+                        collected_fails = 0                    
+                    temp_level = begin_lev
+                #print(f'total spent {spent_items} items\n')
+                    
+                    
         spent_items = int(spent_items / tests)
         spent_black_stones = int(spent_black_stones / tests)
         full_price = spent_items * stuff_price + spent_black_stones * black_stone_price
