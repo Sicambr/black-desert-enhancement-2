@@ -2992,11 +2992,11 @@
             "5": 0.5
         },
         "best_failstacks": {
-            "1": 0,
-            "2": 0,
-            "3": 0,
-            "4": 0,
-            "5": 0
+            "1": 10,
+            "2": 20,
+            "3": 30,
+            "4": 30,
+            "5": 30
         },
         "one_fail": {
             "1": [
@@ -3029,6 +3029,13 @@
             ]
         },
         "ceiling_persent": "None",
+        "soft_cap_fails": {
+            "1": 14,
+            "2": 40,
+            "3": 44,
+            "4": 110,
+            "5": 120
+        },
         "crons_amount": "None",
         "use_the_same_item": true,
         "auction_price": {

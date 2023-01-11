@@ -128,7 +128,8 @@ def add_item_Silver_Embroidered_Clothes():
     base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
     one_fail = {1: [72, 3, 90, 0.6], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
                 4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
-    best_failstacks = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    best_failstacks = {1: 10, 2: 20, 3: 30, 4: 30, 5: 30}
+    soft_cap_fails = {1: 14, 2: 40, 3: 44, 4: 110, 5: 120}
     ceiling_persent = 'None'
     crons_amount = 'None'
     use_the_same_item = True
@@ -137,7 +138,7 @@ def add_item_Silver_Embroidered_Clothes():
     item_grade = 'BLUE'
     item_type = 'CLOTH_Silver_Embroidered'
     all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
-                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
     item['Silver_Embroidered_Trainers_Clothes'] = all_settings
