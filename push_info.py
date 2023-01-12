@@ -128,20 +128,20 @@ def add_item_Silver_Embroidered_Clothes():
     base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
     one_fail = {1: [72, 3, 90, 0.6], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
                 4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
-    best_failstacks = {1: 10, 2: 20, 3: 30, 4: 30, 5: 30}
+    best_failstacks = [10, 20, 30, 30, 30]
     soft_cap_fails = {1: 14, 2: 40, 3: 44, 4: 110, 5: 120}
     ceiling_persent = 'None'
     crons_amount = 'None'
     use_the_same_item = True
-    auction_price = {1: 4080000, 2: 15000000,
-                     3: 143000000, 4: 1310000000, 5: 4800000000}
+    auction_price = {1: 4160000, 2: 15200000,
+                     3: 146000000, 4: 1300000000, 5: 4890000000}
     item_grade = 'BLUE'
     item_type = 'CLOTH_Silver_Embroidered'
     all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
-    item['Silver_Embroidered_Trainers_Clothes'] = all_settings
+    item['Silver_Embroidered_Sailors_Clothes'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 

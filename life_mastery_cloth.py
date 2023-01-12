@@ -435,8 +435,9 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
                                zero_price_no_premium * 0.5, good_rolls))
     string.append(f'50%) We spent less than {conv_nice_view(zero_price_no_premium * 0.5)} silver'
                   f' = {len(good_rolls_3)} cases. This is {round((len(good_rolls_3) / (tests/100)), 3)} %')
-    string.append(
-        f'The minimum costs were {conv_nice_view(min(good_rolls))} silver')
+    if good_rolls:
+        string.append(
+            f'The minimum costs were {conv_nice_view(min(good_rolls))} silver')
     string.append('Bad rolls:')
     string.append(
         f'All cases when our expenses were MORE than auction house prices:')
@@ -456,8 +457,9 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
                               zero_price_no_premium * 3, bad_rolls))
     string.append(f'3x) We spent more than {conv_nice_view(zero_price_no_premium * 3)} silver'
                   f' = {len(bad_rolls_4)} cases. This is {round((len(bad_rolls_4) / (tests/100)), 3)} %')
-    string.append(
-        f'The maximum costs were {conv_nice_view(max(bad_rolls))} silver')
+    if bad_rolls:
+        string.append(
+            f'The maximum costs were {conv_nice_view(max(bad_rolls))} silver')
     return string
 
 
@@ -570,7 +572,7 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
 def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                                  name_of_item, stuff_price, use_the_same_item,
                                  auction_price, one_fail, best_failstacks,
-                                 show_one_test):
+                                 soft_cap_fails, black_stone_price, show_one_test):
     spent_items = 1
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     if show_one_test == True:
@@ -629,38 +631,108 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                 string.append(f'+{key} : {all_enh_items[key]} items')
         return string
     else:
-        temp_begin_lev = begin_lev
-        attempt = 0
+        string = []
         rolls = 0
+        # valkas_list = best_failstacks
+        # valkas_list = [15, 40, 44, 80, 100]
+        valkas_list = [10, 20, 30, 80, 100]
         all_enh_items = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-        temp_time = time.time()
         all_rolls = []
         all_expenses = []
+        one_case = {}
+
+        celiing_fail = get_failstack_ceiling(one_fail)
+        stone_amount = {0: 0, 5: 5, 10: 12, 15: 21,
+                        20: 33, 25: 53, 30: 84, 40: 0, 44: 0,
+                        50: 0, 80: 0, 100: 0, 110: 0, 120: 0}
+        advice_of_valks = {}
+        attempt = 0
+        spent_items = 0
+        spent_black_stones = 0
+        nadera_level_1, nadera_level_2, nadera_level_3, nadera_level_4 = 2, 3, 4, 5
         while attempt < tests:
             one_attempt_roll = 0
             one_attempt_item = 0
+            one_attempt_black_stones = 0
             attempt += 1
-            begin_lev = temp_begin_lev
-            while begin_lev != end_lev:
+            temp_level = begin_lev
+            collected_fails = 0
+            increased_lev = True
+            save_on_nedara_1, save_on_nedara_2, save_on_nedara_3, save_on_nedara_4 = 0, 0, 0, 0
+            while temp_level != end_lev:
                 one_attempt_roll += 1
-                rolls += 1
-                spent_items += 1
                 one_attempt_item += 1
-                if 1 <= random.randint(1, 10000) <= (base_persent[str(begin_lev + 1)]*100):
-                    begin_lev += 1
-                    all_enh_items[begin_lev] += 1
-                else:
-                    spent_items += 1
+                if temp_level == begin_lev:
                     one_attempt_item += 1
-                    begin_lev = temp_begin_lev
-            all_expenses.append(one_attempt_item * stuff_price)
-            if end_lev >= 4:
-                temp_time = time.time() - temp_time
-                print(
-                    f'test: {attempt} / {tests}, counting time {round(temp_time, 2)} seconds')
-                temp_time = time.time()
+                if (temp_level + 1 == nadera_level_1) and save_on_nedara_1 != 0:
+                    fails = save_on_nedara_1
+                    save_on_nedara_1 = 0
+                elif (temp_level + 1 == nadera_level_2) and save_on_nedara_2 != 0:
+                    fails = save_on_nedara_2
+                    save_on_nedara_2 = 0
+                elif (temp_level + 1 == nadera_level_3) and save_on_nedara_3 != 0:
+                    fails = save_on_nedara_3
+                    save_on_nedara_3 = 0
+                elif (temp_level + 1 == nadera_level_4) and save_on_nedara_4 != 0:
+                    fails = save_on_nedara_4
+                    save_on_nedara_4 = 0
+                elif increased_lev:
+                    fails = valkas_list[temp_level]
+                    one_attempt_black_stones += stone_amount[valkas_list[temp_level]]
+                    if stone_amount[valkas_list[temp_level]] == 0 and temp_level != 0:
+                        if valkas_list[temp_level] not in advice_of_valks.keys():
+                            advice_of_valks[valkas_list[temp_level]] = 1
+                        else:
+                            advice_of_valks[valkas_list[temp_level]] += 1
+                else:
+                    fails = collected_fails
+                chance = ((one_fail[str(temp_level + 1)][fails])*100)
+                if 1 <= random.randint(1, 10000) <= chance:
+                    increased_lev = True
+                    temp_level += 1
+                    collected_fails = 0
+                else:
+                    increased_lev = False
+                    collected_fails = fails + 1
+                    if temp_level != 0:
+                        all_enh_items[temp_level] += 1
+                    if collected_fails > celiing_fail[temp_level]:
+                        collected_fails = celiing_fail[temp_level]
+                    if temp_level + 1 == nadera_level_1:
+                        save_on_nedara_1 = collected_fails
+                        increased_lev = True
+                        collected_fails = 0
+                    elif temp_level + 1 == nadera_level_2:
+                        save_on_nedara_2 = collected_fails
+                        increased_lev = True
+                        collected_fails = 0
+                    elif temp_level + 1 == nadera_level_3:
+                        save_on_nedara_3 = collected_fails
+                        increased_lev = True
+                        collected_fails = 0
+                    elif temp_level + 1 == nadera_level_4:
+                        save_on_nedara_4 = collected_fails
+                        increased_lev = True
+                        collected_fails = 0
+                    temp_level = begin_lev
             all_rolls.append(one_attempt_roll)
-        string = []
+            rolls += one_attempt_roll
+            temp_worth = one_attempt_item * stuff_price + \
+                one_attempt_black_stones * black_stone_price
+            all_expenses.append(temp_worth)
+            spent_items += one_attempt_item
+            spent_black_stones += one_attempt_black_stones
+            one_case[temp_worth] = [one_attempt_roll,
+                                    one_attempt_item, one_attempt_black_stones]
+            if (end_lev - begin_lev == 5) and (attempt % 100) == 0:
+                print(f'{attempt} from {tests} tests finished...')
+        spent_items = int(spent_items / tests)
+        spent_black_stones = int(spent_black_stones / tests)
+        full_price = spent_items * stuff_price + spent_black_stones * black_stone_price
+        for key in sorted(list(one_case.keys())):
+            string.append(
+                f'{conv_nice_view(key)} silver, {one_case[key][0]} rolls'
+                f', {one_case[key][1]} items, {one_case[key][2]} black stones.')
         string.append('')
         string.append('<<<FULL REPORT>>>')
         string.append(f'THE RESULT OF {tests} TESTS')
@@ -668,18 +740,17 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
         string.append(f'Item: {name_of_item}')
         string.append(
             f'The price for base item {conv_nice_view(stuff_price)} silver')
-        string.append(
-            f'The price from auction house for +{end_lev} '
-            f': {conv_nice_view(auction_price[str(end_lev)])} silver')
-        string.append(f'Sharpering from +{temp_begin_lev} to +{end_lev}')
+        string.append(f'Sharpering from +{begin_lev} to +{end_lev}')
         string.append('')
         string.append('FEATURES:')
         if type(one_fail) is str and one_fail == 'None':
-            string.append("This item can't use Failstacks")
+            string.append("This item can't uses failstacks")
+        else:
+            string.append("This item has fail stacks. You may use"
+                          " any way to increase them before you will sharp item.")
         if use_the_same_item:
             string.append(
                 "This item uses the same kind of item for sharpening.")
-            string.append("Doesn't use Black stones or Black gems.")
             string.append(
                 "Doesn't use crone stones to save level. The maximum level can be +5")
         string.append('')
@@ -691,18 +762,93 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
             'If you will spend 1 second for 1 click, you will do it:')
         string.append(f'{temp} seconds = {int(temp / 60)} minutes '
                       f'= {int(temp / 3600)} hours = {int (temp / 86400)} days.')
-        temp_full_price = (spent_items / tests) * stuff_price
-        string.append(f'Spent {int(spent_items / tests)} items'
-                      f' = {conv_nice_view(temp_full_price)} silver')
+        temp_string = ''
+        for i in range(begin_lev, end_lev):
+            temp_string += ('(+' + str(i + 1) + ':' +
+                            str(valkas_list[i]) + '), ')
+        string.append(f'We used next faistacks pattern: {temp_string}')
+        temp_price = spent_items * stuff_price
+        string.append(f'Spent {spent_items} items'
+                      f' = {conv_nice_view(temp_price)} silver')
+        temp_price = spent_black_stones * black_stone_price
+        string.append(
+            f'Spent {spent_black_stones} black stones = {conv_nice_view(temp_price)}')
+        if advice_of_valks:
+            for key in list(advice_of_valks.keys()):
+                string.append(
+                    f'Spent {math.ceil(advice_of_valks[key] / tests)} advices of valks +{key}')
+        string.append(f'TOTAL EXPENSES = {conv_nice_view(full_price)} silver')
+        string.append(
+            f'You can buy item +{end_lev} on auction house '
+            f': {conv_nice_view(auction_price[str(end_lev)])} silver')
+        string.append('')
         string.append('Or you could get instead:')
         for key in all_enh_items:
             if all_enh_items[key] != 0 and key != end_lev:
                 string.append(
                     f'+{key} : {int(all_enh_items[key] / tests)} items')
+        string.append('')
+        string.append('SELL:')
         string.append(
-            f'The minimum was {min(all_rolls)} rolled = {conv_nice_view(min(all_expenses))} silver')
+            f'On auction house item +{end_lev} costs {conv_nice_view(auction_price[str(end_lev)])} silver')
         string.append(
-            f'The maximum was {max(all_rolls)} rolled = {conv_nice_view(max(all_expenses))} silver')
+            f'If you will spent for enhancement {conv_nice_view(full_price)} silver')
+        string.append(
+            f'and put on auction hous for {conv_nice_view(auction_price[str(end_lev)])} silver')
+        string.append('You will get:')
+        temp_worth = (auction_price[str(end_lev)] *
+                      0.65 - full_price)
+        string.append(
+            f'Standart profit (65%)= {conv_nice_view(temp_worth)} silver')
+        temp_worth = (auction_price[str(end_lev)] *
+                      0.85 - full_price)
+        string.append(
+            f'Premium profit (85%) = {conv_nice_view(temp_worth)} silver')
+        string.append('')
+        string.append('ADDITIONAL INFORMATION:')
+        zero_price_no_premium = auction_price[str(end_lev)]
+        string.append(
+            f'On auction house item +{end_lev} costs: {conv_nice_view(zero_price_no_premium)} silver')
+        good_rolls = list(filter(lambda item: item <=
+                                 zero_price_no_premium, all_expenses))
+        string.append('Good rolls:')
+        string.append(
+            f'All cases when our expenses were LESS than auction house prices:')
+        string.append(f'We had: {len(good_rolls)} '
+                      f'cases from {tests}. This is {round((len(good_rolls) / (tests/100)), 3)} %')
+        good_rolls_2 = list(filter(lambda item: item <=
+                                   zero_price_no_premium * 0.8, good_rolls))
+        string.append(f'20%) We spent less than {conv_nice_view(zero_price_no_premium * 0.8)} silver'
+                      f' = {len(good_rolls_2)} cases. This is {round((len(good_rolls_2) / (tests/100)), 3)} %')
+        good_rolls_3 = list(filter(lambda item: item <=
+                                   zero_price_no_premium * 0.5, good_rolls))
+        string.append(f'50%) We spent less than {conv_nice_view(zero_price_no_premium * 0.5)} silver'
+                      f' = {len(good_rolls_3)} cases. This is {round((len(good_rolls_3) / (tests/100)), 3)} %')
+        if good_rolls:
+            string.append(
+                f'The minimum costs were {conv_nice_view(min(good_rolls))} silver')
+        string.append('Bad rolls:')
+        string.append(
+            f'All cases when our expenses were MORE than auction house prices:')
+        bad_rolls = list(filter(lambda item: item >
+                                zero_price_no_premium, all_expenses))
+        string.append(f'We had: {len(bad_rolls)} '
+                      f'cases from {tests}. This is {round((len(bad_rolls) / (tests/100)), 3)} %')
+        bad_rolls_2 = list(filter(lambda item: item >=
+                                  zero_price_no_premium * 1.5, bad_rolls))
+        string.append(f'1.5x) We spent more than {conv_nice_view(zero_price_no_premium * 1.5)} silver'
+                      f' = {len(bad_rolls_2)} cases. This is {round((len(bad_rolls_2) / (tests/100)), 3)} %')
+        bad_rolls_3 = list(filter(lambda item: item >=
+                                  zero_price_no_premium * 2, bad_rolls))
+        string.append(f'2x) We spent more than {conv_nice_view(zero_price_no_premium * 2)} silver'
+                      f' = {len(bad_rolls_3)} cases. This is {round((len(bad_rolls_3) / (tests/100)), 3)} %')
+        bad_rolls_4 = list(filter(lambda item: item >=
+                                  zero_price_no_premium * 3, bad_rolls))
+        string.append(f'3x) We spent more than {conv_nice_view(zero_price_no_premium * 3)} silver'
+                      f' = {len(bad_rolls_4)} cases. This is {round((len(bad_rolls_4) / (tests/100)), 3)} %')
+        if bad_rolls:
+            string.append(
+                f'The maximum costs were {conv_nice_view(max(bad_rolls))} silver')
         return string
 
 
@@ -747,6 +893,7 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     one_fail = item_settings['one_fail']
     crons_amount = item_settings['crons_amount']
     item_grade = item_settings['item_grade']
+    soft_cap_fails = item_settings['soft_cap_fails']
     best_failstacks = item_settings['best_failstacks']
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
@@ -755,7 +902,7 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
         report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
                                               name_of_item, stuff_price, use_the_same_item,
                                               auction_price, one_fail, best_failstacks,
-                                              show_one_test)
+                                              soft_cap_fails, black_stone_price, show_one_test)
     else:
         if end_lev == 5:
             report = find_silver_pen_fails(begin_lev, end_lev, tests, base_persent,
