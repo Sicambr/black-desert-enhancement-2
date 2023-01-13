@@ -633,9 +633,7 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
     else:
         string = []
         rolls = 0
-        # valkas_list = best_failstacks
-        # valkas_list = [15, 40, 44, 80, 100]
-        valkas_list = [10, 20, 30, 80, 100]
+        valkas_list = best_failstacks
         all_enh_items = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
         all_rolls = []
         all_expenses = []
@@ -881,7 +879,7 @@ def Life_Mastery_Clothes(begin_lev=0, end_lev=17, tests=1000, item_name='Manos_S
     return report
 
 
-def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Silver_Embroidered_Sailors_Clothes',
+def Silver_Embroidered_Clothes(adv_valks, begin_lev=0, end_lev=5, tests=1000, item_name='Silver_Embroidered_Sailors_Clothes',
                                show_one_test=False, find_fails=False):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
@@ -894,7 +892,7 @@ def Silver_Embroidered_Clothes(begin_lev=0, end_lev=5, tests=1000, item_name='Si
     crons_amount = item_settings['crons_amount']
     item_grade = item_settings['item_grade']
     soft_cap_fails = item_settings['soft_cap_fails']
-    best_failstacks = item_settings['best_failstacks']
+    best_failstacks = adv_valks
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
 

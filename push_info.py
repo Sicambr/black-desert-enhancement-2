@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Accessories_Life_Mastery_Manos_Belt'] = 99000000
+    all_items['Collect_fails_stacks_with_reblath_helmet'] = 17400
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -166,9 +166,64 @@ def add_item_life_mastery_accessories():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
+def add_item_militia_longsword():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
+    one_fail = {1: [72, 3, 90, 0.6], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
+                4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
+    best_failstacks = [10, 20, 30, 30, 30]
+    soft_cap_fails = {1: 14, 2: 40, 3: 44, 4: 110, 5: 120}
+    ceiling_persent = 'None'
+    crons_amount = 'None'
+    use_the_same_item = True
+    auction_price = {1: 4160000, 2: 15200000,
+                     3: 146000000, 4: 1300000000, 5: 4890000000}
+    item_grade = 'WHITE'
+    item_type = 'WEAPON_White_Armor'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
+    item['Collect_fails_stacks_with_reblath_helmet'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
+def convert_to_normal_database(file_way):
+    first_conv = [line.strip()
+                  for line in open(file_way)]
+    normal_data_view = {}
+    for i in range(1, 6):
+        normal_data_view[str(i)] = {0: 100}
+    current_level = ''
+    number = 0
+    for item in first_conv:
+        if item.startswith('+'):
+            normal_data_view[item[1:]] = {}
+            current_level = item[1:]
+            number = 0
+        else:
+            normal_data_view[current_level][number] = round(
+                float(item[:-1]), 2)
+            number += 1
+    return normal_data_view
+
+
+def add_item_to_big_data_tables():
+    file_way = 'C:/Users/cnc/Desktop/111.txt'
+    stuff = 'Armor_(White_Blue_Yellow_Grade)'
+    table_fails_stacks = convert_to_normal_database(file_way)
+    item = json.load(open('big_data_tables.json'))
+    item[stuff] = table_fails_stacks
+    json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
+
+
 # add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
-add_item_Silver_Embroidered_Clothes()
+# add_item_Silver_Embroidered_Clothes()
 # add_item_life_mastery_accessories()
+
+# add_item_militia_longsword()
+# convert_to_normal_database()
+add_item_to_big_data_tables()

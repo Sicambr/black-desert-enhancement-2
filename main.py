@@ -33,12 +33,15 @@ class MainWindow(QMainWindow):
         self.apply_button = QPushButton('Apply')
         self.find_failstacks = QPushButton('Find the best failstacks')
 
+        self.advices_valks = QLineEdit('Advice of Valks')
+
         font = QFont("JetBrains Mono", 16)
         self.box_with_items.setFont(font)
         self.begin_with.setFont(font)
         self.end_with.setFont(font)
         self.apply_button.setFont(font)
         self.find_failstacks.setFont(font)
+        self.advices_valks.setFont(font)
         self.apply_button.clicked.connect(self.get_full_report)
         self.find_failstacks.clicked.connect(self.find_best_fails)
 
@@ -54,6 +57,7 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.end_with)
         layout.addWidget(self.apply_button)
         layout.addWidget(self.find_failstacks)
+        layout.addWidget(self.advices_valks)
         layout.addWidget(self.terminal)
 
         container = QWidget()
@@ -83,7 +87,8 @@ class MainWindow(QMainWindow):
             if end_level > 5:
                 end_level = 2
                 self.end_with.setText('2')
-            test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name,
+            advices_of_valks = self.check_valks(current_name)
+            test_report = life_mastery_cloth.Silver_Embroidered_Clothes(item_name=current_name, adv_valks=advices_of_valks,
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test)
         elif 'Accessories_Life_Mastery' in current_name:
@@ -115,6 +120,21 @@ class MainWindow(QMainWindow):
 
         for i in test_report:
             self.terminal.append(i)
+
+    def check_valks(self, current_name):
+        text = self.advices_valks.text()
+        if not text.startswith('['):
+            self.advices_valks.setText(
+                str(all_items[current_name]['best_failstacks']))
+        text = self.advices_valks.text()
+        list_of_valks = []
+        for advice in text.split():
+            number = ''
+            for digit in advice:
+                if digit in '0123456789':
+                    number += digit
+            list_of_valks.append(int(number))
+        return list_of_valks
 
 
 app = QApplication(sys.argv)
