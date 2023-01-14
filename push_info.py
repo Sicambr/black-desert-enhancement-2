@@ -226,4 +226,4 @@ def add_item_to_big_data_tables():
 
 # add_item_militia_longsword()
 # convert_to_normal_database()
-add_item_to_big_data_tables()
+#add_item_to_big_data_tables()
