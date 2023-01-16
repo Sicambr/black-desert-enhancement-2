@@ -1,4 +1,3 @@
-import time
 import random
 import math
 from push_info import load_data, load_prices

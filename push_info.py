@@ -168,18 +168,21 @@ def add_item_life_mastery_accessories():
 
 def add_item_militia_longsword():
     item = json.load(open('data.txt'))
-    base_persent = {1: 30, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
-    one_fail = {1: [72, 3, 90, 0.6], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
-                4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
-    best_failstacks = [10, 20, 30, 30, 30]
-    soft_cap_fails = {1: 14, 2: 40, 3: 44, 4: 110, 5: 120}
-    ceiling_persent = 'None'
+    base_persent = {1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 70, 7: 25.64, 8: 17.24, 9: 11.76, 10: 7.69,
+                    11: 6.25, 12: 5, 13: 4, 14: 2.86, 15: 2, 16: 11.76, 17: 7.69, 18: 6.25, 19: 2, 20: 0.3}
+    one_fail = 'into_big_data_table.json'
+    best_failstacks = [0] * 20
+    soft_cap_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 15, 7: 54, 8: 88, 9: 120,
+                      10: 120, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
+                      16: 50, 17: 82, 18: 102, 19: 120, 20: 120}
+    ceiling_persent = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 90, 7: 90, 8: 90, 9: 87.02,
+                       10: 76.59, 11: 72.25, 12: 65, 13: 52, 14: 37.18, 15: 26,
+                       16: 87.02, 17: 76.59, 18: 72.25, 19: 26, 20: 3.9}
     crons_amount = 'None'
-    use_the_same_item = True
-    auction_price = {1: 4160000, 2: 15200000,
-                     3: 146000000, 4: 1300000000, 5: 4890000000}
+    use_the_same_item = False
+    auction_price = 'None'
     item_grade = 'WHITE'
-    item_type = 'WEAPON_White_Armor'
+    item_type = 'ARMOR_White_Armor'
     all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
@@ -217,7 +220,7 @@ def add_item_to_big_data_tables():
     json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
 
 
-# add_default_price()
+add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
@@ -226,4 +229,6 @@ def add_item_to_big_data_tables():
 
 # add_item_militia_longsword()
 # convert_to_normal_database()
-add_item_to_big_data_tables()
+# add_item_to_big_data_tables()
+
+add_item_militia_longsword()

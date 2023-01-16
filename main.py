@@ -1,6 +1,7 @@
 import sys
 import life_mastery_cloth
 import life_mastery_accessories
+import how_collect_fails
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
 from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
@@ -99,6 +100,12 @@ class MainWindow(QMainWindow):
                                                                             begin_lev=begin_level, end_lev=end_level,
                                                                             tests=repeat_tests, show_one_test=check_for_one_test)
 
+        elif 'Collect_fails_stacks' in current_name:
+            if end_level <= 5:
+                end_level = 6
+                self.end_with.setText('6')
+            test_report = how_collect_fails.find_the_best_fails_collect(item_name=current_name, check_lev=15,
+                                                                        tests=1000)
         for i in test_report:
             self.terminal.append(i)
 
