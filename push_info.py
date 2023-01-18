@@ -195,7 +195,7 @@ def convert_to_normal_database(file_way):
     first_conv = [line.strip()
                   for line in open(file_way)]
     normal_data_view = {}
-    for i in range(1, 6):
+    for i in range(1, 8):
         normal_data_view[str(i)] = {0: 100}
     current_level = ''
     number = 0
@@ -213,14 +213,14 @@ def convert_to_normal_database(file_way):
 
 def add_item_to_big_data_tables():
     file_way = 'C:/Users/cnc/Desktop/111.txt'
-    stuff = 'Armor_(White_Blue_Yellow_Grade)'
+    stuff = 'WEAPON_(Green_Grade)'
     table_fails_stacks = convert_to_normal_database(file_way)
     item = json.load(open('big_data_tables.json'))
     item[stuff] = table_fails_stacks
     json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
 
 
-add_default_price()
+# add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
@@ -231,4 +231,4 @@ add_default_price()
 # convert_to_normal_database()
 # add_item_to_big_data_tables()
 
-add_item_militia_longsword()
+# add_item_militia_longsword()
