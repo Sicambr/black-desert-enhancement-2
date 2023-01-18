@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Collect_fails_stacks_with_reblath_helmet'] = 17400
+    all_items['Green_Grade_Main_Weapon'] = 500000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -191,6 +191,38 @@ def add_item_militia_longsword():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
+def add_green_weapon():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 70, 9: 40.82, 10: 14.29,
+                    11: 10, 12: 6.67, 13: 4, 14: 3.75, 15: 2, 16: 11.76, 17: 7.69, 18: 6.25, 19: 2, 20: 0.3}
+    one_fail = 'into_big_data_table.json'
+    best_failstacks = [0] * 20
+    soft_cap_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15, 9: 29,
+                      10: 109, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
+                      16: 50, 17: 82, 18: 103, 19: 120, 20: 120}
+    ceiling_persent = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 90, 9: 90,
+                       10: 90, 11: 82, 12: 73.37, 13: 52, 14: 48.75, 15: 26,
+                       16: 87.02, 17: 76.59, 18: 72.75, 19: 26, 20: 3.9}
+    crons_amount = {18: 19, 19: 37, 20: 69}
+    lost_durability = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 5, 7: 5, 8: 5, 9: 5,
+                       10: 5, 11: 5, 12: 5, 13: 5, 14: 5, 15: 5, 16: 10, 17: 10,
+                       18: 10, 19: 10, 20: 10}
+    auction_price = {1: 50500, 2: 50500, 3: 50500, 4: 50500, 5: 50500,
+                     6: 50500, 7: 50500, 8: 3290000, 9: 3290000, 10: 3290000,
+                     11: 6550000, 12: 6550000, 13: 9050000, 14: 9050000, 15: 9050000,
+                     16: 74000000, 17: 127000000, 18: 162000000, 19: 342000000, 20: 855000000}
+    use_the_same_item = False
+    item_grade = 'GREEN'
+    item_type = 'WEAPON_Green_Weapon'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
+                    'lost_durability': lost_durability}
+    item['Green_Grade_Main_Weapon'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
 def convert_to_normal_database(file_way):
     first_conv = [line.strip()
                   for line in open(file_way)]
@@ -220,15 +252,15 @@ def add_item_to_big_data_tables():
     json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
 
 
-# add_default_price()
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
 # add_item_Silver_Embroidered_Clothes()
 # add_item_life_mastery_accessories()
-
 # add_item_militia_longsword()
 # convert_to_normal_database()
 # add_item_to_big_data_tables()
-
 # add_item_militia_longsword()
+
+add_default_price()
+add_green_weapon()

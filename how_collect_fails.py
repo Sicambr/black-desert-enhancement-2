@@ -20,20 +20,13 @@ def find_the_best_fails_collect(item_name, check_lev, tests=10000):
     black_stone_price = items_prices['Black_Stone_Armor']
 
     item_settings = load_data()[item_name]
-    base_persent = item_settings['base_persent']
     one_fail = item_settings['one_fail']
-    crons_amount = item_settings['crons_amount']
-    item_grade = item_settings['item_grade']
-    soft_cap_fails = item_settings['soft_cap_fails']
-    auction_price = item_settings['auction_price']
-    use_the_same_item = item_settings['use_the_same_item']
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
         one_fail = item['Armor_(White_Blue_Yellow_Grade)'][str(check_lev)]
 
     report = []
-    all_fails_we_got = {}
     dis_price = 100000
     stone_amount = {20: 33, 30: 84}
     searsh_valks = {20: 0, 30: 0, 40: 0}

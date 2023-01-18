@@ -49,5 +49,6 @@
     "Accessories_Life_Mastery_Manos_Necklace": 109000000,
     "Accessories_Life_Mastery_Manos_Earring": 128000000,
     "Accessories_Life_Mastery_Manos_Belt": 99000000,
-    "Collect_fails_stacks_with_reblath_helmet": 17400
+    "Collect_fails_stacks_with_reblath_helmet": 17400,
+    "Green_Grade_Main_Weapon": 500000
 }
