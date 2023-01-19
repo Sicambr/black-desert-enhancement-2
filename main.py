@@ -2,6 +2,7 @@ import sys
 import life_mastery_cloth
 import life_mastery_accessories
 import how_collect_fails
+import green_weapon
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
 from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
@@ -124,6 +125,15 @@ class MainWindow(QMainWindow):
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test,
                                                                         find_fails=True)
+
+        if 'Green_Grade_Main_Weapon' in current_name:
+            if end_level < 7:
+                end_level = 10
+                self.end_with.setText('10')
+            test_report = green_weapon.Green_Grade_Main_Weapon(item_name=current_name,
+                                                               begin_lev=begin_level, end_lev=end_level,
+                                                               tests=repeat_tests, show_one_test=check_for_one_test,
+                                                               find_fails=True)
 
         for i in test_report:
             self.terminal.append(i)
