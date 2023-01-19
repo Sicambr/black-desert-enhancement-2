@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Green_Grade_Main_Weapon'] = 500000
+    all_items['Concentrated_Magical_Black_Stone'] = 2380000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -197,6 +197,17 @@ def add_green_weapon():
                     11: 10, 12: 6.67, 13: 4, 14: 3.75, 15: 2, 16: 11.76, 17: 7.69, 18: 6.25, 19: 2, 20: 0.3}
     one_fail = 'into_big_data_table.json'
     best_failstacks = [0] * 20
+    max_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15,
+                 9: 29, 10: 109, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
+                 16: 120, 17: 120, 18: 120, 19: 120, 20: 120}
+    black_stone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
+                   7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1,
+                   13: 1, 14: 1, 15: 1, 16: 0, 17: 0,
+                   18: 0, 19: 0, 20: 0}
+    con_black_stone = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
+                       7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0,
+                       13: 0, 14: 0, 15: 0, 16: 1, 17: 1,
+                       18: 1, 19: 1, 20: 1}
     soft_cap_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15, 9: 29,
                       10: 109, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
                       16: 50, 17: 82, 18: 103, 19: 120, 20: 120}
@@ -218,7 +229,8 @@ def add_green_weapon():
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
-                    'lost_durability': lost_durability}
+                    'lost_durability': lost_durability, 'black_stone': black_stone,
+                    'con_black_stone': con_black_stone, 'max_fails': max_fails}
     item['Green_Grade_Main_Weapon'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
@@ -262,6 +274,5 @@ def add_item_to_big_data_tables():
 # add_item_to_big_data_tables()
 # add_item_militia_longsword()
 
-add_default_price()
-add_green_weapon()
-
+# add_default_price()
+# add_green_weapon()

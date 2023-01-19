@@ -107,6 +107,11 @@ class MainWindow(QMainWindow):
                 self.end_with.setText('6')
             test_report = how_collect_fails.find_the_best_fails_collect(item_name=current_name, check_lev=15,
                                                                         tests=1000)
+        elif 'Green_Grade_Main_Weapon' in current_name:
+            if end_level <= 7:
+                end_level = 8
+                self.end_with.setText('8')
+            test_report = "Isn't ready still"
         for i in test_report:
             self.terminal.append(i)
 
@@ -127,9 +132,9 @@ class MainWindow(QMainWindow):
                                                                         find_fails=True)
 
         if 'Green_Grade_Main_Weapon' in current_name:
-            if end_level < 7:
-                end_level = 10
-                self.end_with.setText('10')
+            if end_level <= 7:
+                end_level = 8
+                self.end_with.setText('8')
             test_report = green_weapon.Green_Grade_Main_Weapon(item_name=current_name,
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
