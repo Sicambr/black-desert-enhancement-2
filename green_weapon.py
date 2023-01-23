@@ -21,22 +21,31 @@ def find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
     if begin_lev > 7:
         start_pos = begin_lev - 1
     report = []
-    tests = 1
+    tests = 1000
+    first_case = True
+    best_result = 0
+    data_best_result = []
+    best_check_fail = 0
+    best_attempt_price = 0
     while True:
         for test_fails in range(0, 31, 5):
             fails[start_pos] = test_fails
             attempt = 0
+            spent_black_stones = 0
+            spent_con_black_stones = 0
+            lost_durability = 0
+            total_expenses = 0
             while attempt < tests:
                 attempt += 1
-
                 collected_fails = 0
                 temp_level = begin_lev
                 changed_grade = True
                 current_fails = 0
-                while temp_level < end_lev - 1:
-
+                while temp_level < end_lev:
                     if changed_grade:
                         current_fails = fails[temp_level]
+                        if temp_level >= 7:
+                            spent_black_stones += stone_amount[current_fails]
                     else:
                         current_fails = fails[temp_level] + collected_fails
                     if current_fails > max_fails[str(temp_level + 1)]:
@@ -46,16 +55,69 @@ def find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
                     if 1 <= random.randint(1, 10000) <= chance:
                         changed_grade = True
                         collected_fails = 0
+                        if temp_level <= 14:
+                            spent_black_stones += 1
+                        else:
+                            spent_con_black_stones += 1
                         temp_level += 1
                     else:
                         changed_grade = False
-                        collected_fails += 1
-
-        start_pos += 1
+                        if temp_level == 15:
+                            collected_fails += 2
+                            spent_con_black_stones += 1
+                            lost_durability += 10
+                        elif temp_level == 16:
+                            collected_fails += 3
+                            spent_con_black_stones += 1
+                            lost_durability += 10
+                        else:
+                            lost_durability += 5
+                            spent_black_stones += 1
+                            collected_fails += 1
+            spent_black_stones /= tests
+            spent_con_black_stones /= tests
+            spent_items = int((int(lost_durability / 10)) / tests)
+            report.append(f'For case: {fails}')
+            temp_expenses = int(spent_black_stones) * black_stone_price
+            total_expenses += temp_expenses
+            report.append(
+                f'Spent {int(spent_black_stones)} black stones = {conv_nice_view(temp_expenses)} silver')
+            temp_expenses = spent_con_black_stones * con_black_stone_price
+            total_expenses += temp_expenses
+            report.append(
+                f'Spent {spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
+            temp_expenses = spent_items * stuff_price
+            total_expenses += temp_expenses
+            report.append(
+                f'Spent {spent_items} items = {conv_nice_view(temp_expenses)} silver')
+            report.append(
+                f'Total EXPENSES= {conv_nice_view(total_expenses)} silver')
+            report.append('')
+            if first_case == True:
+                best_result = total_expenses
+                first_case = False
+            if total_expenses <= best_result:
+                best_result = total_expenses
+                data_best_result.clear()
+                data_best_result.append(int(spent_black_stones))
+                data_best_result.append(spent_con_black_stones)
+                data_best_result.append(spent_items)
+                data_best_result.append(total_expenses)
+                data_best_result.append(fails.copy())
+            if test_fails == 0:
+                best_attempt_price = total_expenses
+            if total_expenses <= best_attempt_price:
+                best_attempt_price = total_expenses
+                best_check_fail = test_fails
+            print(f'ready {start_pos}, {test_fails}')
         if (start_pos == finish_pos) and (fails[start_pos] == 30):
+            report.append('')
+            report.append('The best case:')
+            report.append(str(data_best_result))
             break
-
-    report = 'done'
+        fails[start_pos] = best_check_fail
+        start_pos += 1
+    # report = 'done'
     return report
 
 
