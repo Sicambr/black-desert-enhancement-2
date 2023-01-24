@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Sharpering test for Black Desert")
-        self.setMinimumSize(800, 800)
+        self.setMinimumSize(900, 800)
 
         button = QPushButton("Press Megit!")
         button.clicked.connect(self.the_button_was_clicked)

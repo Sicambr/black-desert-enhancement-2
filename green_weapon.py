@@ -7,7 +7,7 @@ from push_info import load_data, load_prices
 def find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
                                name_of_item, stuff_price,
                                one_fail, black_stone_price, con_black_stone_price,
-                               max_fails):
+                               max_fails, best_failstacks):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
@@ -21,7 +21,7 @@ def find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
     if begin_lev > 7:
         start_pos = begin_lev - 1
     report = []
-    tests = 1000
+    tests = 100
     first_case = True
     best_result = 0
     data_best_result = []
@@ -109,16 +109,20 @@ def find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
             if total_expenses <= best_attempt_price:
                 best_attempt_price = total_expenses
                 best_check_fail = test_fails
-            print(f'ready {start_pos}, {test_fails}')
+            print(f'Count position {start_pos}, with {test_fails} fails...')
         if (start_pos == finish_pos) and (fails[start_pos] == 30):
             report.append('')
             report.append('The best case:')
-            report.append(str(data_best_result))
+            string = ''
+            for number in range(1, 21, 1):
+                string = '+' + str(number) + ' = ' + \
+                    str(data_best_result[4][number - 1]) + ' fails'
+                report.append(string)
             break
         fails[start_pos] = best_check_fail
         start_pos += 1
     # report = 'done'
-    return report
+    return report, data_best_result[4].copy()
 
 
 def find_fails_with_naderr(begin_lev, end_lev, tests, base_persent,
@@ -251,7 +255,7 @@ def Green_Grade_Main_Weapon(begin_lev=0, end_lev=10, tests=1000, item_name='Gree
     crons_amount = item_settings['crons_amount']
     item_grade = item_settings['item_grade']
     soft_cap_fails = item_settings['soft_cap_fails']
-    best_failstacks = [0] * 20
+    best_failstacks = ['best_failstacks']
     auction_price = item_settings['auction_price']
     use_the_same_item = item_settings['use_the_same_item']
     black_stone = item_settings['black_stone']
@@ -266,8 +270,11 @@ def Green_Grade_Main_Weapon(begin_lev=0, end_lev=10, tests=1000, item_name='Gree
                                             name_of_item, stuff_price,
                                             one_fail, black_stone_price)
         else:
-            report = find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
-                                                name_of_item, stuff_price,
-                                                one_fail, black_stone_price, con_black_stone_price,
-                                                max_fails)
+            report, new_best_fails = find_fails_whithout_naderr(begin_lev, end_lev, tests, base_persent,
+                                                                name_of_item, stuff_price,
+                                                                one_fail, black_stone_price, con_black_stone_price,
+                                                                max_fails, best_failstacks)
+            print(new_best_fails)
+            # item_settings['Green_Grade_Main_Weapon'] = all_settings
+            # json.dump(item, fp=open('data.txt', 'w'), indent=4)
     return report
