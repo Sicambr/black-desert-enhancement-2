@@ -111,7 +111,11 @@ class MainWindow(QMainWindow):
             if end_level <= 7:
                 end_level = 8
                 self.end_with.setText('8')
-            test_report = "Isn't ready still"
+            advices_of_valks = self.check_valks(current_name)
+            test_report = green_weapon.Green_Grade_Main_Weapon(item_name=current_name, valks=advices_of_valks,
+                                                               begin_lev=begin_level, end_lev=end_level,
+                                                               tests=repeat_tests, show_one_test=check_for_one_test,
+                                                               find_fails=False)
         for i in test_report:
             self.terminal.append(i)
 
@@ -135,7 +139,7 @@ class MainWindow(QMainWindow):
             if end_level <= 7:
                 end_level = 8
                 self.end_with.setText('8')
-            test_report = green_weapon.Green_Grade_Main_Weapon(item_name=current_name,
+            test_report = green_weapon.Green_Grade_Main_Weapon(valks=None, item_name=current_name,
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
                                                                find_fails=True)
