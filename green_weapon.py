@@ -11,7 +11,10 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        one_fail = item['WEAPON_(Green_Grade)']
+        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
+            one_fail = item['WEAPON_(Green_Grade)']
+        else:
+            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
 
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84}
     fails = [0, 0, 0, 0, 0, 0, 0, 10, 10, 15,
@@ -141,7 +144,10 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        one_fail = item['WEAPON_(Green_Grade)']
+        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
+            one_fail = item['WEAPON_(Green_Grade)']
+        else:
+            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
     crone_stone_price = 2000000
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84, 48: 0}
     fails = best_fails_less_16.copy()
@@ -176,20 +182,15 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                 save_nadera_1 = 0
                 save_nadera_2 = 0
                 save_nadera_3 = 0
-                # print(f'\nNEW CASE FOR {start_pos} pos, {test_fails} fails')
                 while temp_level < end_lev:
-                    # print(f'Current level = {temp_level}')
                     if changed_grade:
                         if temp_level == 17 and save_nadera_1 != 0:
-                            # print(f'use {save_nadera_1} saved fails')
                             current_fails = save_nadera_1
                             save_nadera_1 = 0
                         elif temp_level == 18 and save_nadera_2 != 0:
-                            # print(f'use {save_nadera_2} saved fails')
                             current_fails = save_nadera_2
                             save_nadera_2 = 0
                         elif temp_level == 19 and save_nadera_3 != 0:
-                            # print(f'use {save_nadera_3} saved fails')
                             current_fails = save_nadera_3
                             save_nadera_3 = 0
                         else:
@@ -202,7 +203,6 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                         current_fails = max_fails[str(temp_level + 1)]
                     chance = (
                         (one_fail[str(temp_level + 1)][str(current_fails)])*100)
-                    # print(f'fails = {current_fails}')
                     if 1 <= random.randint(1, 10000) <= chance:
                         changed_grade = True
                         collected_fails = 0
@@ -211,41 +211,39 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                         else:
                             spent_con_black_stones += 1
                         temp_level += 1
-                        # print('success!')
                     else:
-                        # print('FAILED!')
                         changed_grade = False
                         if temp_level == 15:
                             collected_fails += 2
                             spent_con_black_stones += 1
                             lost_durability += 10
-                        elif temp_level > 15 and temp_level < 17:
+                        elif temp_level == 16:
                             collected_fails += 3
                             spent_con_black_stones += 1
                             lost_durability += 10
                         elif temp_level >= 17:
                             changed_grade = True
-                            # print('level decreased.')
                             spent_con_black_stones += 1
                             if temp_level == 17:
-                                save_nadera_1 = current_fails + 3
-                                # print(f'will save {save_nadera_1} fails')
+                                save_nadera_1 = current_fails + 4
                             elif temp_level == 18:
                                 if safety_up:
                                     spent_cron_stones += crons_amount[str(
                                         temp_level + 1)]
                                     temp_level += 1
+                                    collected_fails += 5
+                                    changed_grade = False
                                 else:
-                                    save_nadera_2 = current_fails + 3
-                                # print(f'will save {save_nadera_2} fails')
+                                    save_nadera_2 = current_fails + 5
                             elif temp_level == 19:
                                 if safety_up:
                                     spent_cron_stones += crons_amount[str(
                                         temp_level + 1)]
                                     temp_level += 1
+                                    collected_fails += 6
+                                    changed_grade = False
                                 else:
-                                    save_nadera_3 = current_fails + 3
-                                # print(f'will save {save_nadera_3} fails')
+                                    save_nadera_3 = current_fails + 6
                             lost_durability += 10
                             temp_level -= 1
                         else:
@@ -311,9 +309,13 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                                       name_of_item, stuff_price, auction_price,
                                       one_fail, black_stone_price, con_black_stone_price,
                                       max_fails, best_failstacks, crons_amount, begin_lev):
+
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        one_fail = item['WEAPON_(Green_Grade)']
+        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
+            one_fail = item['WEAPON_(Green_Grade)']
+        else:
+            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
     crone_stone_price = 2000000
     stone_amount = {}
     for i in range(121):
@@ -322,10 +324,9 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     stone_amount[25], stone_amount[30] = 53, 84
     fails = best_failstacks
     string = []
-    tests = 1000
-    safety_up = False
+    tests = 10000
+    safety_up = True
 
-    all_rolls = []
     all_expenses = []
     all_enh_items = {17: 0, 18: 0, 19: 0, 20: 0}
     attempt = 0
@@ -350,18 +351,14 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
         save_nadera_3 = 0
         while temp_level < end_lev:
             rolls += 1
-            # print(f'Current level = {temp_level}')
             if changed_grade:
                 if temp_level == 17 and save_nadera_1 != 0:
-                    # print(f'use {save_nadera_1} saved fails')
                     current_fails = save_nadera_1
                     save_nadera_1 = 0
                 elif temp_level == 18 and save_nadera_2 != 0:
-                    # print(f'use {save_nadera_2} saved fails')
                     current_fails = save_nadera_2
                     save_nadera_2 = 0
                 elif temp_level == 19 and save_nadera_3 != 0:
-                    # print(f'use {save_nadera_3} saved fails')
                     current_fails = save_nadera_3
                     save_nadera_3 = 0
                 else:
@@ -375,7 +372,6 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                 current_fails = max_fails[str(temp_level + 1)]
             chance = (
                 (one_fail[str(temp_level + 1)][str(current_fails)])*100)
-            # print(f'fails = {current_fails}')
             if 1 <= random.randint(1, 10000) <= chance:
                 changed_grade = True
                 collected_fails = 0
@@ -388,9 +384,7 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                 temp_level += 1
                 if temp_level in all_enh_items.keys():
                     all_enh_items[temp_level] += 1
-                # print('success!')
             else:
-                # print('FAILED!')
                 changed_grade = False
                 if temp_level == 15:
                     collected_fails += 2
@@ -398,7 +392,7 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                     one_case_con_black_stones += 1
                     lost_durability += 10
                     one_case_durability += 10
-                elif temp_level > 15 and temp_level < 17:
+                elif temp_level == 16:
                     collected_fails += 3
                     spent_con_black_stones += 1
                     one_case_con_black_stones += 1
@@ -406,12 +400,10 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                     one_case_durability += 10
                 elif temp_level >= 17:
                     changed_grade = True
-                    # print('level decreased.')
                     spent_con_black_stones += 1
                     one_case_con_black_stones += 1
                     if temp_level == 17:
-                        save_nadera_1 = current_fails + 3
-                        # print(f'will save {save_nadera_1} fails')
+                        save_nadera_1 = current_fails + 4
                     elif temp_level == 18:
                         if safety_up:
                             spent_cron_stones += crons_amount[str(
@@ -419,9 +411,10 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                             one_case_cron_stones += crons_amount[str(
                                 temp_level + 1)]
                             temp_level += 1
+                            collected_fails += 5
+                            changed_grade = False
                         else:
-                            save_nadera_2 = current_fails + 3
-                        # print(f'will save {save_nadera_2} fails')
+                            save_nadera_2 = current_fails + 5
                     elif temp_level == 19:
                         if safety_up:
                             spent_cron_stones += crons_amount[str(
@@ -429,9 +422,10 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                             one_case_cron_stones += crons_amount[str(
                                 temp_level + 1)]
                             temp_level += 1
+                            collected_fails += 6
+                            changed_grade = False
                         else:
-                            save_nadera_3 = current_fails + 3
-                        # print(f'will save {save_nadera_3} fails')
+                            save_nadera_3 = current_fails + 6
                     lost_durability += 10
                     one_case_durability += 10
                     temp_level -= 1
@@ -486,10 +480,6 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
         'If you will spend 1 second for 1 click, you will do it:')
     string.append(f'{temp} seconds = {int(temp / 60)} minutes '
                   f'= {int(temp / 3600)} hours = {int (temp / 86400)} days.')
-    temp_string = ''
-    # for i in range(begin_lev, end_lev):
-    #     temp_string += ('(+' + str(i + 1) + ':' +
-    #                     str(valkas_list[i]) + '), ')
     string.append(f'We used next faistacks pattern: {fails}')
     temp_expenses = int(spent_black_stones) * black_stone_price
     total_expenses += temp_expenses
@@ -510,11 +500,6 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     string.append(
         f'Total EXPENSES= {conv_nice_view(total_expenses)} silver')
     string.append('')
-
-    # if advice_of_valks:
-    #     for key in list(advice_of_valks.keys()):
-    #         string.append(
-    #             f'Spent {math.ceil(advice_of_valks[key] / tests)} advices of valks +{key}')
     string.append('We were on next levels, while did enhancement:')
     for key in all_enh_items:
         if all_enh_items[key] != 0 and key != end_lev:
