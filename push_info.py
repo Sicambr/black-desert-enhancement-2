@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['RU_Green_Grade_Azwell_Longsword_Weapon'] = 385000
+    all_items['Yellow_Grade_Kzarka_Longsword_Weapon'] = 241000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -235,6 +235,50 @@ def add_green_weapon():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
+def add_yellow_weapon():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 70, 9: 20.41, 10: 14.29,
+                    11: 10, 12: 6.67, 13: 4, 14: 2.5, 15: 2, 16: 11.76, 17: 7.69, 18: 6.25, 19: 2, 20: 0.3}
+    one_fail = 'into_big_data_table.json'
+    best_failstacks = [0] * 20
+    max_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15,
+                 9: 71, 10: 109, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
+                 16: 120, 17: 120, 18: 120, 19: 120, 20: 120}
+    black_stone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
+                   7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1,
+                   13: 1, 14: 1, 15: 1, 16: 0, 17: 0,
+                   18: 0, 19: 0, 20: 0}
+    con_black_stone = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
+                       7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0,
+                       13: 0, 14: 0, 15: 0, 16: 1, 17: 1,
+                       18: 1, 19: 1, 20: 1}
+    soft_cap_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15, 9: 71,
+                      10: 109, 11: 120, 12: 120, 13: 120, 14: 120, 15: 120,
+                      16: 50, 17: 82, 18: 102, 19: 120, 20: 120}
+    ceiling_persent = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 90, 9: 90,
+                       10: 90, 11: 82, 12: 73.37, 13: 52, 14: 32.5, 15: 26,
+                       16: 87.02, 17: 76.59, 18: 72.25, 19: 26, 20: 3.9}
+    crons_amount = {18: 34, 19: 127, 20: 531}
+    lost_durability = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 5, 7: 5, 8: 5, 9: 5,
+                       10: 5, 11: 5, 12: 5, 13: 5, 14: 5, 15: 5, 16: 10, 17: 10,
+                       18: 10, 19: 10, 20: 10}
+    auction_price = {1: 241000000, 2: 241000000, 3: 241000000, 4: 241000000, 5: 241000000,
+                     6: 241000000, 7: 241000000, 8: 249000000, 9: 249000000, 10: 249000000,
+                     11: 291000000, 12: 291000000, 13: 383000000, 14: 464000000, 15: 580000000,
+                     16: 675000000, 17: 785000000, 18: 1100000000, 19: 1810000000, 20: 6200000000}
+    use_the_same_item = False
+    item_grade = 'YELLOW'
+    item_type = 'WEAPON_Yellow_Weapon'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
+                    'lost_durability': lost_durability, 'black_stone': black_stone,
+                    'con_black_stone': con_black_stone, 'max_fails': max_fails}
+    item['Yellow_Grade_Kzarka_Longsword_Weapon'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
 def convert_to_normal_database(file_way):
     first_conv = [line.strip()
                   for line in open(file_way)]
@@ -257,7 +301,7 @@ def convert_to_normal_database(file_way):
 
 def add_item_to_big_data_tables():
     file_way = 'C:/Users/cnc/Desktop/111.txt'
-    stuff = 'RU_SERVER_WEAPON_(Green_Grade)'
+    stuff = 'Weapons_(White_Blue_Yellow Grade)'
     table_fails_stacks = convert_to_normal_database(file_way)
     item = json.load(open('big_data_tables.json'))
     item[stuff] = table_fails_stacks
@@ -274,5 +318,6 @@ def add_item_to_big_data_tables():
 # add_item_militia_longsword()
 
 # add_item_to_big_data_tables()
-# add_default_price()
+add_default_price()
 # add_green_weapon()
+add_yellow_weapon()
