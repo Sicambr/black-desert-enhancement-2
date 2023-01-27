@@ -3,6 +3,7 @@ import life_mastery_cloth
 import life_mastery_accessories
 import how_collect_fails
 import green_weapon
+import yellow_weapon
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
 from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
@@ -116,6 +117,15 @@ class MainWindow(QMainWindow):
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
                                                                find_fails=False)
+        elif 'Yellow_Grade_Kzarka' in current_name:
+            if end_level <= 7:
+                end_level = 8
+                self.end_with.setText('8')
+            advices_of_valks = self.check_valks(current_name)
+            test_report = yellow_weapon.Yellow_Grade_Main_Weapon(item_name=current_name, valks=advices_of_valks,
+                                                                 begin_lev=begin_level, end_lev=end_level,
+                                                                 tests=repeat_tests, show_one_test=check_for_one_test,
+                                                                 find_fails=False)
         else:
             test_report = 'NOT READY'
         for i in test_report:
@@ -136,8 +146,7 @@ class MainWindow(QMainWindow):
                                                                         begin_lev=begin_level, end_lev=end_level,
                                                                         tests=repeat_tests, show_one_test=check_for_one_test,
                                                                         find_fails=True)
-
-        if ('Green_Grade_Main_Weapon' in current_name) or ('RU_Green_Grade' in current_name):
+        elif ('Green_Grade_Main_Weapon' in current_name) or ('RU_Green_Grade' in current_name):
             if end_level <= 7:
                 end_level = 8
                 self.end_with.setText('8')
@@ -145,6 +154,16 @@ class MainWindow(QMainWindow):
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
                                                                find_fails=True)
+        elif 'Yellow_Grade_Kzarka' in current_name:
+            if end_level <= 7:
+                end_level = 8
+                self.end_with.setText('8')
+            test_report = yellow_weapon.Yellow_Grade_Main_Weapon(valks=None, item_name=current_name,
+                                                                 begin_lev=begin_level, end_lev=end_level,
+                                                                 tests=repeat_tests, show_one_test=check_for_one_test,
+                                                                 find_fails=True)
+        else:
+            test_report = "NOT READY"
 
         for i in test_report:
             self.terminal.append(i)
