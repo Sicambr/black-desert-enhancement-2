@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
                                                                find_fails=False)
-        elif 'Yellow_Grade_Kzarka' in current_name:
+        elif ('Yellow_Grade_Kzarka' in current_name) or ('Tools_Manos' in current_name):
             if end_level <= 7:
                 end_level = 8
                 self.end_with.setText('8')
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
                                                                find_fails=True)
-        elif 'Yellow_Grade_Kzarka' in current_name:
+        elif ('Yellow_Grade_Kzarka' in current_name) or ('Tools_Manos' in current_name):
             if end_level <= 7:
                 end_level = 8
                 self.end_with.setText('8')

@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Yellow_Grade_Kzarka_Longsword_Weapon'] = 241000000
+    all_items['Tools_Manos_Butcher_Knife'] = 110000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -258,24 +258,24 @@ def add_yellow_weapon():
     ceiling_persent = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 90, 9: 90,
                        10: 90, 11: 82, 12: 73.37, 13: 52, 14: 32.5, 15: 26,
                        16: 87.02, 17: 76.59, 18: 72.25, 19: 26, 20: 3.9}
-    crons_amount = {18: 34, 19: 127, 20: 531}
+    crons_amount = {18: 34, 19: 127, 20: 549}
     lost_durability = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 5, 7: 5, 8: 5, 9: 5,
                        10: 5, 11: 5, 12: 5, 13: 5, 14: 5, 15: 5, 16: 10, 17: 10,
                        18: 10, 19: 10, 20: 10}
-    auction_price = {1: 241000000, 2: 241000000, 3: 241000000, 4: 241000000, 5: 241000000,
-                     6: 241000000, 7: 241000000, 8: 249000000, 9: 249000000, 10: 249000000,
-                     11: 291000000, 12: 291000000, 13: 383000000, 14: 464000000, 15: 580000000,
-                     16: 675000000, 17: 785000000, 18: 1100000000, 19: 1810000000, 20: 6200000000}
+    auction_price = {1: 110000000, 2: 110000000, 3: 110000000, 4: 110000000, 5: 110000000,
+                     6: 110000000, 7: 110000000, 8: 249000000, 9: 249000000, 10: 249000000,
+                     11: 291000000, 12: 291000000, 13: 383000000, 14: 403000000, 15: 580000000,
+                     16: 675000000, 17: 785000000, 18: 1100000000, 19: 2420000000, 20: 12400000000}
     use_the_same_item = False
-    item_grade = 'YELLOW'
-    item_type = 'WEAPON_Yellow_Weapon'
+    item_grade = 'RED'
+    item_type = 'TOOLS_Life_Mastery_Manos'
     all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
                     'lost_durability': lost_durability, 'black_stone': black_stone,
                     'con_black_stone': con_black_stone, 'max_fails': max_fails}
-    item['Yellow_Grade_Kzarka_Longsword_Weapon'] = all_settings
+    item['Tools_Manos_Butcher_Knife'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 

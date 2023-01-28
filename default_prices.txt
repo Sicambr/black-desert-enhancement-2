@@ -54,5 +54,6 @@
     "Concentrated_Magical_Black_Stone": 2380000,
     "RU_Green_Grade_Kalis_Longsword_Weapon": 569800,
     "RU_Green_Grade_Azwell_Longsword_Weapon": 385000,
-    "Yellow_Grade_Kzarka_Longsword_Weapon": 241000000
+    "Yellow_Grade_Kzarka_Longsword_Weapon": 241000000,
+    "Tools_Manos_Butcher_Knife": 110000000
 }
