@@ -209,7 +209,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                            one_fail, black_stone_price, con_black_stone_price,
                            max_fails, best_failstacks, crons_amount,
                            worth_one_point_dur, durability_way, memory_amount,
-                           begin_lev):
+                           use_crone, begin_lev):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
@@ -229,7 +229,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
     data_best_result = []
     best_check_fail = 0
     best_attempt_price = 0
-    safety_up = True
+    safety_up = use_crone
     while True:
         for test_fails in range(0, 31, 5):
             fails[start_pos] = test_fails
@@ -388,7 +388,7 @@ def standart_enhancement_yellow_weapon(end_lev, tests, base_persent, item_grade,
                                        one_fail, black_stone_price, con_black_stone_price,
                                        max_fails, best_failstacks, crons_amount, begin_lev,
                                        worth_one_point_dur, durability_way, memory_amount,
-                                       memory_fragment_price):
+                                       memory_fragment_price, use_crone):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
@@ -402,7 +402,7 @@ def standart_enhancement_yellow_weapon(end_lev, tests, base_persent, item_grade,
     fails = best_failstacks
     string = []
     tests = 10000
-    safety_up = False
+    safety_up = use_crone
 
     all_expenses = []
     all_enh_items = {17: 0, 18: 0, 19: 0, 20: 0}
@@ -680,7 +680,7 @@ def conv_nice_view(number):
 
 
 def Yellow_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_name='Yellow_Grade_Main_Weapon',
-                             show_one_test=False, find_fails=False):
+                             show_one_test=False, find_fails=False, use_crone=1):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
     black_stone_price = items_prices['Black_Stone_Weapon']
@@ -710,7 +710,7 @@ def Yellow_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, it
                                                     one_fail, black_stone_price, con_black_stone_price,
                                                     max_fails, valks, crons_amount, begin_lev,
                                                     worth_one_point_dur, durability_way, memory_amount,
-                                                    memory_fragment_price)
+                                                    memory_fragment_price, use_crone)
     else:
         if end_lev >= 18:
             empty_report, best_fails_less_16, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
@@ -723,7 +723,7 @@ def Yellow_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, it
                                                             one_fail, black_stone_price, con_black_stone_price,
                                                             max_fails, best_failstacks, crons_amount,
                                                             worth_one_point_dur, durability_way, memory_amount,
-                                                            begin_lev=16)
+                                                            use_crone, begin_lev=16)
             # all_data = load_data()
             # all_data[item_name]['best_failstacks'] = new_best_fails
             # json.dump(all_data, fp=open('data.txt', 'w'), indent=4)

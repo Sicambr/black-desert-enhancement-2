@@ -5,8 +5,8 @@ import how_collect_fails
 import green_weapon
 import yellow_weapon
 from push_info import load_data
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout
-from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton, QLabel
 from PyQt5.QtGui import QFont
 
 
@@ -30,6 +30,10 @@ class MainWindow(QMainWindow):
         self.switchers = QRadioButton()
         self.switchers.setChecked(0)
 
+        self.label_1 = QLabel('Use Cron Stone:')
+        self.switcher_cron = QRadioButton()
+        self.switcher_cron.setChecked(1)
+
         self.begin_with = QLineEdit('0')
         self.end_with = QLineEdit('17')
 
@@ -40,6 +44,7 @@ class MainWindow(QMainWindow):
 
         font = QFont("JetBrains Mono", 16)
         self.box_with_items.setFont(font)
+        self.label_1.setFont(font)
         self.begin_with.setFont(font)
         self.end_with.setFont(font)
         self.apply_button.setFont(font)
@@ -53,12 +58,17 @@ class MainWindow(QMainWindow):
 
         self.box_with_items.activated.connect(self.get_full_report)
 
+        layout_with_cron = QHBoxLayout()
+        layout_with_cron.addWidget(self.label_1)
+        layout_with_cron.addWidget(self.switcher_cron)
+
         layout = QVBoxLayout()
         layout.addWidget(self.box_with_items)
         layout.addWidget(self.switchers)
         layout.addWidget(self.begin_with)
         layout.addWidget(self.end_with)
         layout.addWidget(self.apply_button)
+        layout.addLayout(layout_with_cron)
         layout.addWidget(self.find_failstacks)
         layout.addWidget(self.advices_valks)
         layout.addWidget(self.terminal)
@@ -78,6 +88,7 @@ class MainWindow(QMainWindow):
         end_level = int(self.end_with.text())
         repeat_tests = 1000
         check_for_one_test = self.switchers.isChecked()
+        check_for_crone = self.switcher_cron.isChecked()
         self.terminal.clear()
         if 'Life_Mastery_Clothes' in current_name:
             if end_level <= 5:
@@ -125,7 +136,7 @@ class MainWindow(QMainWindow):
             test_report = yellow_weapon.Yellow_Grade_Main_Weapon(item_name=current_name, valks=advices_of_valks,
                                                                  begin_lev=begin_level, end_lev=end_level,
                                                                  tests=repeat_tests, show_one_test=check_for_one_test,
-                                                                 find_fails=False)
+                                                                 find_fails=False, use_crone=check_for_crone)
         else:
             test_report = 'NOT READY'
         for i in test_report:
@@ -137,6 +148,7 @@ class MainWindow(QMainWindow):
         end_level = int(self.end_with.text())
         repeat_tests = 1000
         check_for_one_test = self.switchers.isChecked()
+        check_for_crone = self.switcher_cron.isChecked()
         self.terminal.clear()
         if 'Silver_Embroidered' in current_name:
             if end_level > 5:
@@ -161,7 +173,7 @@ class MainWindow(QMainWindow):
             test_report = yellow_weapon.Yellow_Grade_Main_Weapon(valks=None, item_name=current_name,
                                                                  begin_lev=begin_level, end_lev=end_level,
                                                                  tests=repeat_tests, show_one_test=check_for_one_test,
-                                                                 find_fails=True)
+                                                                 find_fails=True, use_crone=check_for_crone)
         else:
             test_report = "NOT READY"
 
