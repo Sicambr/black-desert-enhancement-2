@@ -395,7 +395,7 @@ def standart_enhancement_yellow_weapon(end_lev, tests, base_persent, item_grade,
         one_fail = item['Weapons_(White_Blue_Yellow_Grade)']
     crone_stone_price = 2000000
     stone_amount = {}
-    for i in range(121):
+    for i in range(251):
         stone_amount[i] = 0
     stone_amount[5], stone_amount[10], stone_amount[15], stone_amount[20] = 5, 12, 21, 33
     stone_amount[25], stone_amount[30] = 53, 84
@@ -448,6 +448,8 @@ def standart_enhancement_yellow_weapon(end_lev, tests, base_persent, item_grade,
                 current_fails = fails[temp_level] + collected_fails
             if current_fails > max_fails[str(temp_level + 1)]:
                 current_fails = max_fails[str(temp_level + 1)]
+            if temp_level == 19 and fails[temp_level] > 120:
+                current_fails = fails[temp_level]
             chance = (
                 (one_fail[str(temp_level + 1)][str(current_fails)])*100)
             if 1 <= random.randint(1, 10000) <= chance:
@@ -499,11 +501,21 @@ def standart_enhancement_yellow_weapon(end_lev, tests, base_persent, item_grade,
                                 temp_level + 1)]
                             one_case_cron_stones += crons_amount[str(
                                 temp_level + 1)]
+                            if current_fails < 120:
+                                if fails[temp_level] + collected_fails + 6 > 120:
+                                    collected_fails = 114 - fails[temp_level]
+                                else:
+                                    collected_fails += 6
                             temp_level += 1
-                            collected_fails += 6
                             changed_grade = False
                         else:
-                            save_nadera_3 = current_fails + 6
+                            if current_fails < 120:
+                                if fails[temp_level] + collected_fails + 6 > 120:
+                                    save_nadera_3 = 120
+                                else:
+                                    save_nadera_3 = current_fails + 6
+                            else:
+                                save_nadera_3 = current_fails
                     lost_durability += 10
                     one_case_durability += 10
                     temp_level -= 1
