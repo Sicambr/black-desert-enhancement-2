@@ -327,6 +327,7 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     safety_up = True
 
     all_expenses = []
+    all_collected_fails = {60: 0}
     all_enh_items = {17: 0, 18: 0, 19: 0, 20: 0}
     attempt = 0
     spent_black_stones = 0
@@ -397,6 +398,16 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                     one_case_con_black_stones += 1
                     lost_durability += 10
                     one_case_durability += 10
+                    if collected_fails == 39:
+                        all_collected_fails[60] += 1
+                    # if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
+                    #     temp_fails = collected_fails
+                    #     collected_fails = save_nadera_1
+                    #     save_nadera_1 = temp_fails + 21
+                    if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
+                        temp_fails = collected_fails
+                        collected_fails = save_nadera_1
+                        save_nadera_1 = temp_fails + 21
                 elif temp_level >= 17:
                     changed_grade = True
                     spent_con_black_stones += 1
@@ -499,11 +510,14 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     string.append(
         f'Total EXPENSES= {conv_nice_view(total_expenses)} silver')
     string.append('')
+    string.append('USEFUL STATISTIC:')
     string.append('We were on next levels, while did enhancement:')
     for key in all_enh_items:
         if all_enh_items[key] != 0 and key != end_lev:
             string.append(
                 f'+{key} : {int(all_enh_items[key] / tests)} times')
+    string.append(
+        f'We had 60 fails on level 16: {all_collected_fails[60]} times.')
     string.append('')
     string.append('SELL:')
     string.append(
