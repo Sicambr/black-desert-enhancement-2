@@ -6,8 +6,9 @@ import green_weapon
 import yellow_weapon
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
-from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton, QLabel
+from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton, QLabel, QGroupBox
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 
 all_items = load_data()
@@ -27,12 +28,26 @@ class MainWindow(QMainWindow):
         for i in all_items.keys():
             self.box_with_items.addItem(i.replace('_', ' '))
 
-        self.switchers = QRadioButton()
-        self.switchers.setChecked(0)
+        self.check_method = QGroupBox('Check style:')
+        self.check_click = QRadioButton('Click test:')
+        self.check_click.setChecked(0)
+        self.check_one_tests = QRadioButton('One test:')
+        self.check_one_tests.setChecked(0)
+        self.check_many_tests = QRadioButton('A lot of tests:')
+        self.check_many_tests.setChecked(1)
 
-        self.label_1 = QLabel('Use Cron Stone:')
-        self.switcher_cron = QRadioButton()
-        self.switcher_cron.setChecked(1)
+        layout_with_method = QHBoxLayout()
+        layout_with_method.addWidget(self.check_many_tests)
+        layout_with_method.addWidget(self.check_one_tests)
+        layout_with_method.addWidget(self.check_click)
+        self.check_method.setLayout(layout_with_method)
+
+        self.cron_stone_box = QGroupBox(
+            'Use cron stone for levels: 18-19, 19-20:')
+        self.switcher_cron_no = QRadioButton('No')
+        self.space_label_2 = QLabel(' '*85)
+        self.switcher_cron_yes = QRadioButton('Yes')
+        self.switcher_cron_yes.setChecked(1)
 
         self.begin_with = QLineEdit('0')
         self.end_with = QLineEdit('17')
@@ -40,12 +55,20 @@ class MainWindow(QMainWindow):
         self.apply_button = QPushButton('Apply')
         self.find_failstacks = QPushButton('Find the best failstacks')
 
+        # int_string = list(range(0, 21, 1))
+        # str_string = [('+ ' + str[number]) for number in int_string]
+
+        # self.label_3 = QLabel(''.join(str_string))
+
         self.advices_valks = QLineEdit('Advice of Valks')
 
         font = QFont("JetBrains Mono", 16)
         self.box_with_items.setFont(font)
-        self.label_1.setFont(font)
+        self.space_label_2.setFont(font)
+        self.check_method.setFont(font)
+        # self.label_3.setFont(font)
         self.begin_with.setFont(font)
+        self.cron_stone_box.setFont(font)
         self.end_with.setFont(font)
         self.apply_button.setFont(font)
         self.find_failstacks.setFont(font)
@@ -59,18 +82,21 @@ class MainWindow(QMainWindow):
         self.box_with_items.activated.connect(self.get_full_report)
 
         layout_with_cron = QHBoxLayout()
-        layout_with_cron.addWidget(self.label_1)
-        layout_with_cron.addWidget(self.switcher_cron)
+        layout_with_cron.addWidget(self.switcher_cron_yes)
+        layout_with_cron.addWidget(self.switcher_cron_no)
+        layout_with_cron.addWidget(self.space_label_2)
+        self.cron_stone_box.setLayout(layout_with_cron)
 
         layout = QVBoxLayout()
         layout.addWidget(self.box_with_items)
-        layout.addWidget(self.switchers)
+        layout.addWidget(self.check_method)
         layout.addWidget(self.begin_with)
         layout.addWidget(self.end_with)
+        layout.addWidget(self.cron_stone_box)
         layout.addWidget(self.apply_button)
-        layout.addLayout(layout_with_cron)
         layout.addWidget(self.find_failstacks)
         layout.addWidget(self.advices_valks)
+        # layout.addWidget(self.label_3)
         layout.addWidget(self.terminal)
 
         container = QWidget()
@@ -87,8 +113,8 @@ class MainWindow(QMainWindow):
         begin_level = int(self.begin_with.text())
         end_level = int(self.end_with.text())
         repeat_tests = 1000
-        check_for_one_test = self.switchers.isChecked()
-        check_for_crone = self.switcher_cron.isChecked()
+        check_for_one_test = self.check_one_tests.isChecked()
+        check_for_crone = self.switcher_cron_yes.isChecked()
         self.terminal.clear()
         if 'Life_Mastery_Clothes' in current_name:
             if end_level <= 5:
@@ -147,8 +173,8 @@ class MainWindow(QMainWindow):
         begin_level = int(self.begin_with.text())
         end_level = int(self.end_with.text())
         repeat_tests = 1000
-        check_for_one_test = self.switchers.isChecked()
-        check_for_crone = self.switcher_cron.isChecked()
+        check_for_one_test = self.check_one_tests.isChecked()
+        check_for_crone = self.switcher_cron_yes.isChecked()
         self.terminal.clear()
         if 'Silver_Embroidered' in current_name:
             if end_level > 5:
