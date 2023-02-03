@@ -55,10 +55,10 @@ class MainWindow(QMainWindow):
         self.apply_button = QPushButton('Apply')
         self.find_failstacks = QPushButton('Find the best failstacks')
 
-        # int_string = list(range(0, 21, 1))
-        # str_string = [('+ ' + str[number]) for number in int_string]
-
-        # self.label_3 = QLabel(''.join(str_string))
+        int_string = list(range(0, 21, 1))
+        str_string = [(str(number) + ',') for number in int_string]
+        text_message = '[' + ' '.join(str_string) + ']'
+        self.label_3 = QLabel(text_message)
 
         self.advices_valks = QLineEdit('Advice of Valks')
 
@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         self.box_with_items.setFont(font)
         self.space_label_2.setFont(font)
         self.check_method.setFont(font)
-        # self.label_3.setFont(font)
+        self.label_3.setFont(font)
         self.begin_with.setFont(font)
         self.cron_stone_box.setFont(font)
         self.end_with.setFont(font)
@@ -95,8 +95,8 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.cron_stone_box)
         layout.addWidget(self.apply_button)
         layout.addWidget(self.find_failstacks)
+        layout.addWidget(self.label_3)
         layout.addWidget(self.advices_valks)
-        # layout.addWidget(self.label_3)
         layout.addWidget(self.terminal)
 
         container = QWidget()

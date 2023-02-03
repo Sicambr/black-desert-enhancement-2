@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Tools_Manos_Butcher_Knife'] = 110000000
+    all_items['RU_Green_Grade_Krea_Longsword_Weapon'] = 765000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -218,10 +218,10 @@ def add_green_weapon():
     lost_durability = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 5, 7: 5, 8: 5, 9: 5,
                        10: 5, 11: 5, 12: 5, 13: 5, 14: 5, 15: 5, 16: 10, 17: 10,
                        18: 10, 19: 10, 20: 10}
-    auction_price = {1: 163000, 2: 163000, 3: 163000, 4: 163000, 5: 163000,
-                     6: 163000, 7: 163000, 8: 2080000, 9: 2080000, 10: 2080000,
-                     11: 2470000, 12: 2470000, 13: 2600000, 14: 2600000, 15: 2600000,
-                     16: 22500000, 17: 93500000, 18: 259000000, 19: 369000000, 20: 730000000}
+    auction_price = {1: 51500, 2: 51500, 3: 51500, 4: 51500, 5: 51500,
+                     6: 51500, 7: 51500, 8: 2680000, 9: 2680000, 10: 2680000,
+                     11: 4160000, 12: 4160000, 13: 12600000, 14: 12600000, 15: 12600000,
+                     16: 53000000, 17: 127000000, 18: 204000000, 19: 360000000, 20: 775000000}
     use_the_same_item = False
     item_grade = 'GREEN'
     item_type = 'WEAPON_Green_Weapon'
@@ -231,7 +231,7 @@ def add_green_weapon():
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
                     'lost_durability': lost_durability, 'black_stone': black_stone,
                     'con_black_stone': con_black_stone, 'max_fails': max_fails}
-    item['RU_Green_Grade_Azwell_Longsword_Weapon'] = all_settings
+    item['RU_Green_Grade_Krea_Longsword_Weapon'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
