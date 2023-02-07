@@ -1,19 +1,73 @@
 import random
+import math
 import json
 from push_info import load_data, load_prices
 
 
-def find_fails_whithout_naderr(begin_lev, tests, base_persent,
-                               name_of_item, stuff_price,
+def durability_price(item_price, item_grade, memory_fragment_price):
+    memory_fr_restore = {'RED': 1, 'YELLOW': 1,
+                         'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
+    memory_amount = 1
+    durability_way = 'Item'
+    if (item_price / 10) >= (memory_fragment_price / (memory_fr_restore[item_grade])):
+        worth_one_point_dur = (memory_fragment_price /
+                               (memory_fr_restore[item_grade]))
+        durability_way = 'Memory_Fragment'
+        memory_amount /= memory_fr_restore[item_grade]
+    else:
+        worth_one_point_dur = item_price / 10
+    return worth_one_point_dur, durability_way, memory_amount
+
+
+def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_price):
+    memory_fr_restore = {'RED': 1, 'YELLOW': 1,
+                         'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
+    dur_message = []
+    dur_message.append(
+        f'Price for one ITEM : {conv_nice_view(item_price)} silver')
+    dur_message.append(
+        f'One memory fragment will restore {memory_fr_restore[item_grade]} points')
+    temp_expenses = round((item_price / 10), 3)
+    dur_message.append(
+        f'Worth for 1 durability point with item uses = {conv_nice_view(temp_expenses)} silver')
+    temp_expenses = round(memory_fragment_price /
+                          (memory_fr_restore[item_grade]), 3)
+    dur_message.append(f'Worth for 1 durability point with memore fragment uses '
+                       f'= {conv_nice_view(temp_expenses)} silver')
+    temp_message = []
+    artisans_memory = 0
+    if (item_price / 10) >= (memory_fragment_price / (memory_fr_restore[item_grade])):
+        dur_message.append(
+            f'Use {durability} MEMORY FRAGMENTS to restore durability!')
+        worth = (memory_fragment_price /
+                 memory_fr_restore[item_grade]) * durability
+        artisans_memory = math.ceil(durability / 5)
+        temp_message.append(f'And then use {math.ceil(durability / 5)} memory'
+                            f' fragments = {conv_nice_view(worth / 5)} silver')
+        temp_message.append(
+            f'You will SAVE = {conv_nice_view(worth - worth / 5)} silver')
+    else:
+        dur_message.append(
+            f'Use {math.ceil(durability / 10)} ITEMs to restore durability!')
+        worth = (item_price / 10) * durability
+        artisans_memory = math.ceil((durability / 10)/5)
+        temp_message.append(f'And then use {math.ceil((durability / 10)/5)} items'
+                            f' = {conv_nice_view(worth / 5)} silver')
+    dur_message.append(
+        f'LOST {durability} points of DURABILITY = {conv_nice_view(worth)} silver')
+    dur_message.append(f"Or you can use {artisans_memory} Artisan's Memory")
+    dur_message.extend(temp_message)
+    return (artisans_memory, worth, dur_message)
+
+
+def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
+                               name_of_item, stuff_price, durability_way, memory_amount,
                                one_fail, black_stone_price, con_black_stone_price,
                                max_fails, best_failstacks, end_lev):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
-            one_fail = item['WEAPON_(Green_Grade)']
-        else:
-            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
+        one_fail = item['Weapons_(Black_Star)']
 
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84}
     fails = [0, 0, 0, 0, 0, 0, 0, 10, 10, 15,
@@ -36,6 +90,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
             attempt = 0
             spent_black_stones = 0
             spent_con_black_stones = 0
+            spent_memory_fragments = 0
             lost_durability = 0
             total_expenses = 0
             while attempt < tests:
@@ -80,6 +135,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
             spent_black_stones /= tests
             spent_con_black_stones /= tests
             spent_items = int((int(lost_durability / 10)) / tests)
+            spent_durability = int(lost_durability / tests)
             report.append(f'For case: {fails}')
             temp_expenses = int(spent_black_stones) * black_stone_price
             total_expenses += temp_expenses
@@ -89,10 +145,20 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
             total_expenses += temp_expenses
             report.append(
                 f'Spent {spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
-            temp_expenses = spent_items * stuff_price
-            total_expenses += temp_expenses
-            report.append(
-                f'Spent {spent_items} items = {conv_nice_view(temp_expenses)} silver')
+            if durability_way == 'Item':
+                temp_expenses = (spent_items + 1) * stuff_price
+                total_expenses += temp_expenses
+                report.append(
+                    f'Spent {spent_items + 1} items = {conv_nice_view(temp_expenses)} silver')
+            else:
+                report.append(
+                    f'Bought 1 item = {conv_nice_view(stuff_price)} silver')
+                total_expenses += stuff_price
+                temp_expenses = spent_durability * worth_one_point_dur
+                total_expenses += temp_expenses
+                spent_memory_fragments = spent_durability * memory_amount
+                report.append(f'Used {spent_memory_fragments} memory'
+                              f' fragments = {conv_nice_view(temp_expenses)} silver')
             report.append(
                 f'Total EXPENSES= {conv_nice_view(total_expenses)} silver')
             report.append('')
@@ -107,6 +173,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
                 data_best_result.append(spent_items)
                 data_best_result.append(total_expenses)
                 data_best_result.append(fails.copy())
+                data_best_result.append(spent_memory_fragments)
             if test_fails == 0:
                 best_attempt_price = total_expenses
             if total_expenses <= best_attempt_price:
@@ -120,6 +187,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
             report.append(
                 f'Spent {data_best_result[1]} concentrated black stones')
             report.append(f'Bought {data_best_result[2]} items')
+            report.append(f'Used {data_best_result[5]} memory fragments')
             report.append(
                 f'TOTAL EXPENSES = {conv_nice_view(data_best_result[3])} silver')
             report.append(
@@ -139,14 +207,13 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
 def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                            name_of_item, stuff_price, saved_data,
                            one_fail, black_stone_price, con_black_stone_price,
-                           max_fails, best_failstacks, crons_amount, begin_lev):
+                           max_fails, best_failstacks, crons_amount,
+                           worth_one_point_dur, durability_way, memory_amount,
+                           use_crone, begin_lev):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
-            one_fail = item['WEAPON_(Green_Grade)']
-        else:
-            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
+        one_fail = item['Weapons_(Black_Star)']
     crone_stone_price = 2000000
     stone_amount = {0: 0, 5: 5, 10: 12, 15: 21, 20: 33, 25: 53, 30: 84, 48: 0}
     fails = best_fails_less_16.copy()
@@ -162,13 +229,14 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
     data_best_result = []
     best_check_fail = 0
     best_attempt_price = 0
-    safety_up = True
+    safety_up = use_crone
     while True:
         for test_fails in range(0, 31, 5):
             fails[start_pos] = test_fails
             attempt = 0
             spent_black_stones = 0
             spent_con_black_stones = 0
+            spent_memory_fragments = 0
             lost_durability = 0
             total_expenses = 0
             spent_cron_stones = 0
@@ -253,12 +321,18 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
             spent_black_stones /= tests
             spent_con_black_stones /= tests
             spent_items = int((int(lost_durability / 10)) / tests)
+            spent_durability = int(lost_durability / tests)
             temp_expenses = int(spent_black_stones) * black_stone_price
             total_expenses += temp_expenses
             temp_expenses = spent_con_black_stones * con_black_stone_price
             total_expenses += temp_expenses
-            temp_expenses = spent_items * stuff_price
-            total_expenses += temp_expenses
+            if durability_way == 'Item':
+                temp_expenses = spent_items * stuff_price
+                total_expenses += temp_expenses
+            else:
+                temp_expenses = spent_durability * worth_one_point_dur
+                total_expenses += temp_expenses
+                spent_memory_fragments = spent_durability * memory_amount
             temp_expenses = spent_cron_stones * crone_stone_price
             total_expenses += temp_expenses
             if first_case == True:
@@ -274,6 +348,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                 data_best_result.append(spent_cron_stones)
                 data_best_result.append(total_expenses + saved_data[3])
                 data_best_result.append(fails.copy())
+                data_best_result.append(spent_memory_fragments + saved_data[5])
             if test_fails == 0:
                 best_attempt_price = total_expenses
             if total_expenses <= best_attempt_price:
@@ -286,8 +361,12 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
             report.append(f'Spent {data_best_result[0]} black stones')
             report.append(
                 f'Spent {data_best_result[1]} concentrated black stones')
-            report.append(f'Bought {data_best_result[2]} items')
+            if durability_way == 'Item':
+                report.append(f'Bought {data_best_result[2]} items')
+            else:
+                report.append(f'Bought 1 item')
             report.append(f'Bought {data_best_result[3]} crone stones')
+            report.append(f'Used {data_best_result[6]} memory fragments')
             report.append(
                 f'TOTAL EXPENSES = {conv_nice_view(data_best_result[4])} silver')
             report.append(
@@ -304,30 +383,28 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
     return report, data_best_result[5].copy()
 
 
-def standart_enhancement_green_weapon(end_lev, tests, base_persent,
-                                      name_of_item, stuff_price, auction_price,
-                                      one_fail, black_stone_price, con_black_stone_price,
-                                      max_fails, best_failstacks, crons_amount, begin_lev):
+def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_grade,
+                                          name_of_item, stuff_price, auction_price,
+                                          one_fail, black_stone_price, con_black_stone_price,
+                                          max_fails, best_failstacks, crons_amount, begin_lev,
+                                          worth_one_point_dur, durability_way, memory_amount,
+                                          memory_fragment_price, use_crone):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
-        if name_of_item.replace(' ', '_') == 'Green_Grade_Main_Weapon':
-            one_fail = item['WEAPON_(Green_Grade)']
-        else:
-            one_fail = item['RU_SERVER_WEAPON_(Green_Grade)']
+        one_fail = item['Weapons_(Black_Star)']
     crone_stone_price = 2000000
     stone_amount = {}
-    for i in range(121):
+    for i in range(251):
         stone_amount[i] = 0
     stone_amount[5], stone_amount[10], stone_amount[15], stone_amount[20] = 5, 12, 21, 33
     stone_amount[25], stone_amount[30] = 53, 84
     fails = best_failstacks
     string = []
     tests = 10000
-    safety_up = True
+    safety_up = use_crone
 
     all_expenses = []
-    all_collected_fails = {50: 0}
     all_enh_items = {17: 0, 18: 0, 19: 0, 20: 0}
     attempt = 0
     spent_black_stones = 0
@@ -335,6 +412,7 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     lost_durability = 0
     total_expenses = 0
     spent_cron_stones = 0
+    spent_memory_fragments = 0
     rolls = 0
     while attempt < tests:
         attempt += 1
@@ -370,6 +448,8 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                 current_fails = fails[temp_level] + collected_fails
             if current_fails > max_fails[str(temp_level + 1)]:
                 current_fails = max_fails[str(temp_level + 1)]
+            if temp_level == 19 and fails[temp_level] > 120:
+                current_fails = fails[temp_level]
             chance = (
                 (one_fail[str(temp_level + 1)][str(current_fails)])*100)
             if 1 <= random.randint(1, 10000) <= chance:
@@ -398,16 +478,6 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                     one_case_con_black_stones += 1
                     lost_durability += 10
                     one_case_durability += 10
-                    if collected_fails == 30:
-                        all_collected_fails[50] += 1
-                    # if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
-                    #     temp_fails = collected_fails
-                    #     collected_fails = save_nadera_1
-                    #     save_nadera_1 = temp_fails + 21
-                    if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
-                        temp_fails = collected_fails
-                        collected_fails = save_nadera_1
-                        save_nadera_1 = temp_fails + 21
                 elif temp_level >= 17:
                     changed_grade = True
                     spent_con_black_stones += 1
@@ -431,11 +501,21 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                                 temp_level + 1)]
                             one_case_cron_stones += crons_amount[str(
                                 temp_level + 1)]
+                            if current_fails < 120:
+                                if fails[temp_level] + collected_fails + 6 > 120:
+                                    collected_fails = 114 - fails[temp_level]
+                                else:
+                                    collected_fails += 6
                             temp_level += 1
-                            collected_fails += 6
                             changed_grade = False
                         else:
-                            save_nadera_3 = current_fails + 6
+                            if current_fails < 120:
+                                if fails[temp_level] + collected_fails + 6 > 120:
+                                    save_nadera_3 = 120
+                                else:
+                                    save_nadera_3 = current_fails + 6
+                            else:
+                                save_nadera_3 = current_fails
                     lost_durability += 10
                     one_case_durability += 10
                     temp_level -= 1
@@ -448,15 +528,19 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
         one_case_worth = 0
         one_case_worth += one_case_black_stones * black_stone_price
         one_case_worth += one_case_con_black_stones * con_black_stone_price
-        one_case_worth += int(one_case_durability / 10) * stuff_price
+        if durability_way == 'Item':
+            one_case_worth += int(one_case_durability / 10) * stuff_price
+        else:
+            one_case_worth += one_case_durability * worth_one_point_dur
+            spent_memory_fragments += one_case_durability * memory_amount
         one_case_worth += one_case_cron_stones * crone_stone_price
-
         all_expenses.append(one_case_worth)
 
     spent_cron_stones = int(spent_cron_stones / tests)
     spent_black_stones /= tests
     spent_con_black_stones /= tests
     spent_items = int((int(lost_durability / 10)) / tests)
+    spent_memory_fragments = int(spent_memory_fragments / tests)
 
     string.append('')
     string.append('<<<FULL REPORT>>>')
@@ -499,10 +583,19 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     total_expenses += temp_expenses
     string.append(
         f'Spent {spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
-    temp_expenses = spent_items * stuff_price
-    total_expenses += temp_expenses
-    string.append(
-        f'Spent {spent_items} items = {conv_nice_view(temp_expenses)} silver')
+
+    if durability_way == 'Item':
+        temp_expenses = (spent_items + 1) * stuff_price
+        total_expenses += temp_expenses
+        string.append(
+            f'Spent {spent_items + 1} items = {conv_nice_view(temp_expenses)} silver')
+    else:
+        total_expenses += stuff_price
+        string.append(f'Bought 1 item = {conv_nice_view(stuff_price)} silver')
+        temp_expenses = int(lost_durability / tests) * worth_one_point_dur
+        total_expenses += temp_expenses
+        string.append(
+            f'Used {(int(lost_durability / tests) * memory_amount)} memory fragments = {conv_nice_view(temp_expenses)} silver')
     temp_expenses = spent_cron_stones * crone_stone_price
     string.append(
         f'Bought {spent_cron_stones} crone stones = {conv_nice_view(temp_expenses)} silver')
@@ -510,14 +603,17 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     string.append(
         f'Total EXPENSES= {conv_nice_view(total_expenses)} silver')
     string.append('')
-    string.append('USEFUL STATISTIC:')
     string.append('We were on next levels, while did enhancement:')
     for key in all_enh_items:
         if all_enh_items[key] != 0 and key != end_lev:
             string.append(
                 f'+{key} : {int(all_enh_items[key] / tests)} times')
-    string.append(
-        f'We had 50 fails on level 16: {all_collected_fails[50]} times.')
+    string.append('')
+    string.append('SAVE YOUR MONEY:')
+    temp_message = best_way_restore_dur(
+        stuff_price, (int(lost_durability / tests)), item_grade, memory_fragment_price)
+    string.extend(temp_message[2])
+
     string.append('')
     string.append('SELL:')
     string.append(
@@ -595,12 +691,13 @@ def conv_nice_view(number):
         return str(number)
 
 
-def Green_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_name='Green_Grade_Main_Weapon',
-                            show_one_test=False, find_fails=False):
+def BlackStar_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_name='Blackstar_Weapon_Longsword',
+                          show_one_test=False, find_fails=False, use_crone=1):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
     black_stone_price = items_prices['Black_Stone_Weapon']
     con_black_stone_price = items_prices['Concentrated_Magical_Black_Stone']
+    memory_fragment_price = items_prices['Memory_Fragment']
     name_of_item = item_name.replace('_', ' ')
 
     item_settings = load_data()[item_name]
@@ -616,28 +713,35 @@ def Green_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, ite
     con_black_stone = item_settings['con_black_stone']
     max_fails = item_settings['max_fails']
 
+    worth_one_point_dur, durability_way, memory_amount = durability_price(
+        stuff_price, item_grade, memory_fragment_price)
+
     if not find_fails:
-        report = standart_enhancement_green_weapon(end_lev, tests, base_persent,
-                                                   name_of_item, stuff_price, auction_price,
-                                                   one_fail, black_stone_price, con_black_stone_price,
-                                                   max_fails, valks, crons_amount, begin_lev)
+        report = standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_grade,
+                                                       name_of_item, stuff_price, auction_price,
+                                                       one_fail, black_stone_price, con_black_stone_price,
+                                                       max_fails, valks, crons_amount, begin_lev,
+                                                       worth_one_point_dur, durability_way, memory_amount,
+                                                       memory_fragment_price, use_crone)
     else:
         if end_lev >= 18:
-            empty_report, best_fails_less_16, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent,
-                                                                                      name_of_item, stuff_price,
+            empty_report, best_fails_less_16, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
+                                                                                      name_of_item, stuff_price, durability_way, memory_amount,
                                                                                       one_fail, black_stone_price, con_black_stone_price,
                                                                                       max_fails, best_failstacks, end_lev=16)
 
             report, new_best_fails = find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                                                             name_of_item, stuff_price, saved_data,
                                                             one_fail, black_stone_price, con_black_stone_price,
-                                                            max_fails, best_failstacks, crons_amount, begin_lev=16)
-        else:
-            report, new_best_fails, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent,
-                                                                            name_of_item, stuff_price,
-                                                                            one_fail, black_stone_price, con_black_stone_price,
-                                                                            max_fails, best_failstacks, end_lev)
+                                                            max_fails, best_failstacks, crons_amount,
+                                                            worth_one_point_dur, durability_way, memory_amount,
+                                                            use_crone, begin_lev=16)
             # all_data = load_data()
             # all_data[item_name]['best_failstacks'] = new_best_fails
             # json.dump(all_data, fp=open('data.txt', 'w'), indent=4)
+        else:
+            report, new_best_fails, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
+                                                                            name_of_item, stuff_price, durability_way, memory_amount,
+                                                                            one_fail, black_stone_price, con_black_stone_price,
+                                                                            max_fails, best_failstacks, end_lev)
     return report
