@@ -57,5 +57,6 @@
     "Yellow_Grade_Kzarka_Longsword_Weapon": 241000000,
     "Tools_Manos_Butcher_Knife": 110000000,
     "RU_Green_Grade_Krea_Longsword_Weapon": 765000,
-    "Blackstar_Weapon_Longsword": 725000000
+    "Blackstar_Weapon_Longsword": 725000000,
+    "Flawless_Magical_Black_Stone": 3190000
 }

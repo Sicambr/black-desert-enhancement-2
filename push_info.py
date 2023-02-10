@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Blackstar_Weapon_Longsword'] = 725000000
+    all_items['Flawless_Magical_Black_Stone'] = 3190000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -308,14 +308,18 @@ def add_blackstar_weapon():
     max_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 12,
                  9: 71, 10: 105, 11: 160, 12: 241, 13: 350, 14: 350, 15: 350,
                  16: 118, 17: 150, 18: 350, 19: 350, 20: 350}
-    black_stone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
-                   7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1,
-                   13: 1, 14: 1, 15: 1, 16: 0, 17: 0,
+    black_stone = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
+                   7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0,
+                   13: 0, 14: 0, 15: 0, 16: 0, 17: 0,
                    18: 0, 19: 0, 20: 0}
     con_black_stone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
                        7: 1, 8: 1, 9: 1, 10: 1, 11: 1, 12: 1,
-                       13: 1, 14: 1, 15: 1, 16: 1, 17: 1,
-                       18: 1, 19: 1, 20: 1}
+                       13: 1, 14: 1, 15: 1, 16: 0, 17: 0,
+                       18: 0, 19: 0, 20: 0}
+    flawless_black_stone = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0,
+                            7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0,
+                            13: 0, 14: 0, 15: 0, 16: 1, 17: 1,
+                            18: 1, 19: 1, 20: 1}
     soft_cap_fails = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 15, 9: 25,
                       10: 40, 11: 60, 12: 96, 13: 120, 14: 270, 15: 340,
                       16: 44, 17: 56, 18: 196, 19: 350, 20: 350}
@@ -337,8 +341,8 @@ def add_blackstar_weapon():
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
-                    'lost_durability': lost_durability, 'black_stone': black_stone,
-                    'con_black_stone': con_black_stone, 'max_fails': max_fails}
+                    'lost_durability': lost_durability, 'flawless_black_stone': flawless_black_stone,
+                    'con_black_stone': con_black_stone, 'max_fails': max_fails, 'black_stone': black_stone}
     item['Blackstar_Weapon_Longsword'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 

@@ -62,7 +62,7 @@ def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_pri
 
 def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
                                name_of_item, stuff_price, durability_way, memory_amount,
-                               one_fail, black_stone_price, con_black_stone_price,
+                               one_fail, black_stone_price, con_black_stone_price, flawless_black_stone_price,
                                max_fails, best_failstacks, end_lev):
 
     if one_fail == 'into_big_data_table.json':
@@ -90,6 +90,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
             attempt = 0
             spent_black_stones = 0
             spent_con_black_stones = 0
+            spent_flawless_black_stones = 0
             spent_memory_fragments = 0
             lost_durability = 0
             total_expenses = 0
@@ -114,26 +115,27 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
                         changed_grade = True
                         collected_fails = 0
                         if temp_level <= 14:
-                            spent_black_stones += 1
-                        else:
                             spent_con_black_stones += 1
+                        else:
+                            spent_flawless_black_stones += 1
                         temp_level += 1
                     else:
                         changed_grade = False
                         if temp_level == 15:
                             collected_fails += 2
-                            spent_con_black_stones += 1
-                            lost_durability += 10
+                            spent_flawless_black_stones += 1
+                            lost_durability += 20
                         elif temp_level == 16:
                             collected_fails += 3
-                            spent_con_black_stones += 1
-                            lost_durability += 10
+                            spent_flawless_black_stones += 1
+                            lost_durability += 20
                         else:
-                            lost_durability += 5
-                            spent_black_stones += 1
+                            lost_durability += 10
+                            spent_con_black_stones += 1
                             collected_fails += 1
-            spent_black_stones /= tests
             spent_con_black_stones /= tests
+            spent_black_stones /= tests
+            spent_flawless_black_stones /= tests
             spent_items = int((int(lost_durability / 10)) / tests)
             spent_durability = int(lost_durability / tests)
             report.append(f'For case: {fails}')
@@ -141,10 +143,14 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
             total_expenses += temp_expenses
             report.append(
                 f'Spent {int(spent_black_stones)} black stones = {conv_nice_view(temp_expenses)} silver')
-            temp_expenses = spent_con_black_stones * con_black_stone_price
+            temp_expenses = int(spent_con_black_stones) * con_black_stone_price
             total_expenses += temp_expenses
             report.append(
-                f'Spent {spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
+                f'Spent {int(spent_con_black_stones)} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
+            temp_expenses = spent_flawless_black_stones * flawless_black_stone_price
+            total_expenses += temp_expenses
+            report.append(
+                f'Spent {spent_flawless_black_stones} flawless magical black stones = {conv_nice_view(temp_expenses)} silver')
             if durability_way == 'Item':
                 temp_expenses = (spent_items + 1) * stuff_price
                 total_expenses += temp_expenses
@@ -168,12 +174,13 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
             if total_expenses <= best_result:
                 best_result = total_expenses
                 data_best_result.clear()
-                data_best_result.append(int(spent_black_stones))
-                data_best_result.append(spent_con_black_stones)
+                data_best_result.append(int(spent_con_black_stones))
+                data_best_result.append(spent_flawless_black_stones)
                 data_best_result.append(spent_items)
                 data_best_result.append(total_expenses)
                 data_best_result.append(fails.copy())
                 data_best_result.append(spent_memory_fragments)
+                data_best_result.append(spent_black_stones)
             if test_fails == 0:
                 best_attempt_price = total_expenses
             if total_expenses <= best_attempt_price:
@@ -183,9 +190,11 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
         if (start_pos == finish_pos) and (fails[start_pos] == 30):
             report.append('')
             report.append('The best case:')
-            report.append(f'Spent {data_best_result[0]} black stones')
+            report.append(f'Spent {data_best_result[6]} black stones')
             report.append(
-                f'Spent {data_best_result[1]} concentrated black stones')
+                f'Spent {data_best_result[0]} concentrated black stones')
+            report.append(
+                f'Spent {data_best_result[1]} flawless magical black stones')
             report.append(f'Bought {data_best_result[2]} items')
             report.append(f'Used {data_best_result[5]} memory fragments')
             report.append(
@@ -206,7 +215,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_d
 
 def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                            name_of_item, stuff_price, saved_data,
-                           one_fail, black_stone_price, con_black_stone_price,
+                           one_fail, black_stone_price, con_black_stone_price, flawless_black_stone_price,
                            max_fails, best_failstacks, crons_amount,
                            worth_one_point_dur, durability_way, memory_amount,
                            use_crone, begin_lev):
@@ -236,6 +245,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
             attempt = 0
             spent_black_stones = 0
             spent_con_black_stones = 0
+            spent_flawless_black_stones = 0
             spent_memory_fragments = 0
             lost_durability = 0
             total_expenses = 0
@@ -274,23 +284,23 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                         changed_grade = True
                         collected_fails = 0
                         if temp_level <= 14:
-                            spent_black_stones += 1
-                        else:
                             spent_con_black_stones += 1
+                        else:
+                            spent_flawless_black_stones += 1
                         temp_level += 1
                     else:
                         changed_grade = False
                         if temp_level == 15:
                             collected_fails += 2
-                            spent_con_black_stones += 1
-                            lost_durability += 10
+                            spent_flawless_black_stones += 1
+                            lost_durability += 20
                         elif temp_level == 16:
                             collected_fails += 3
-                            spent_con_black_stones += 1
-                            lost_durability += 10
+                            spent_flawless_black_stones += 1
+                            lost_durability += 20
                         elif temp_level >= 17:
                             changed_grade = True
-                            spent_con_black_stones += 1
+                            spent_flawless_black_stones += 1
                             if temp_level == 17:
                                 save_nadera_1 = current_fails + 4
                             elif temp_level == 18:
@@ -311,20 +321,23 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                                     changed_grade = False
                                 else:
                                     save_nadera_3 = current_fails + 6
-                            lost_durability += 10
+                            lost_durability += 20
                             temp_level -= 1
                         else:
-                            lost_durability += 5
-                            spent_black_stones += 1
+                            lost_durability += 10
+                            spent_con_black_stones += 1
                             collected_fails += 1
             spent_cron_stones = int(spent_cron_stones / tests)
             spent_black_stones /= tests
             spent_con_black_stones /= tests
+            spent_flawless_black_stones /= tests
             spent_items = int((int(lost_durability / 10)) / tests)
             spent_durability = int(lost_durability / tests)
             temp_expenses = int(spent_black_stones) * black_stone_price
             total_expenses += temp_expenses
-            temp_expenses = spent_con_black_stones * con_black_stone_price
+            temp_expenses = int(spent_con_black_stones) * con_black_stone_price
+            total_expenses += temp_expenses
+            temp_expenses = spent_flawless_black_stones * flawless_black_stone_price
             total_expenses += temp_expenses
             if durability_way == 'Item':
                 temp_expenses = spent_items * stuff_price
@@ -342,13 +355,15 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                 best_result = total_expenses
                 data_best_result.clear()
                 data_best_result.append(
-                    int(spent_black_stones) + saved_data[0])
-                data_best_result.append(spent_con_black_stones + saved_data[1])
+                    int(spent_con_black_stones) + saved_data[0])
+                data_best_result.append(
+                    spent_flawless_black_stones + saved_data[1])
                 data_best_result.append(spent_items + saved_data[2])
                 data_best_result.append(spent_cron_stones)
                 data_best_result.append(total_expenses + saved_data[3])
                 data_best_result.append(fails.copy())
                 data_best_result.append(spent_memory_fragments + saved_data[5])
+                data_best_result.append(spent_black_stones + saved_data[6])
             if test_fails == 0:
                 best_attempt_price = total_expenses
             if total_expenses <= best_attempt_price:
@@ -358,9 +373,11 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
         if (start_pos == finish_pos) and (fails[start_pos] == 30):
             report.append('')
             report.append('The best case:')
-            report.append(f'Spent {data_best_result[0]} black stones')
+            report.append(f'Spent {data_best_result[7]} black stones')
             report.append(
-                f'Spent {data_best_result[1]} concentrated black stones')
+                f'Spent {data_best_result[0]} concentrated black stones')
+            report.append(
+                f'Spent {data_best_result[1]} spent flawless magical black stones')
             if durability_way == 'Item':
                 report.append(f'Bought {data_best_result[2]} items')
             else:
@@ -386,6 +403,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
 def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_grade,
                                           name_of_item, stuff_price, auction_price,
                                           one_fail, black_stone_price, con_black_stone_price,
+                                          flawless_black_stone_price,
                                           max_fails, best_failstacks, crons_amount, begin_lev,
                                           worth_one_point_dur, durability_way, memory_amount,
                                           memory_fragment_price, use_crone):
@@ -395,7 +413,7 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
         one_fail = item['Weapons_(Black_Star)']
     crone_stone_price = 2000000
     stone_amount = {}
-    for i in range(251):
+    for i in range(351):
         stone_amount[i] = 0
     stone_amount[5], stone_amount[10], stone_amount[15], stone_amount[20] = 5, 12, 21, 33
     stone_amount[25], stone_amount[30] = 53, 84
@@ -409,6 +427,7 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
     attempt = 0
     spent_black_stones = 0
     spent_con_black_stones = 0
+    spent_flawless_black_stones = 0
     lost_durability = 0
     total_expenses = 0
     spent_cron_stones = 0
@@ -418,6 +437,7 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
         attempt += 1
         one_case_black_stones = 0
         one_case_con_black_stones = 0
+        one_case_flawless_black_stones = 0
         one_case_durability = 0
         one_case_cron_stones = 0
         collected_fails = 0
@@ -456,11 +476,11 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
                 changed_grade = True
                 collected_fails = 0
                 if temp_level <= 14:
-                    spent_black_stones += 1
-                    one_case_black_stones += 1
-                else:
                     spent_con_black_stones += 1
                     one_case_con_black_stones += 1
+                else:
+                    spent_flawless_black_stones += 1
+                    one_case_flawless_black_stones += 1
                 temp_level += 1
                 if temp_level in all_enh_items.keys():
                     all_enh_items[temp_level] += 1
@@ -468,20 +488,20 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
                 changed_grade = False
                 if temp_level == 15:
                     collected_fails += 2
-                    spent_con_black_stones += 1
-                    one_case_con_black_stones += 1
-                    lost_durability += 10
-                    one_case_durability += 10
+                    spent_flawless_black_stones += 1
+                    one_case_flawless_black_stones += 1
+                    lost_durability += 20
+                    one_case_durability += 20
                 elif temp_level == 16:
                     collected_fails += 3
-                    spent_con_black_stones += 1
-                    one_case_con_black_stones += 1
-                    lost_durability += 10
-                    one_case_durability += 10
+                    spent_flawless_black_stones += 1
+                    one_case_flawless_black_stones += 1
+                    lost_durability += 20
+                    one_case_durability += 20
                 elif temp_level >= 17:
                     changed_grade = True
-                    spent_con_black_stones += 1
-                    one_case_con_black_stones += 1
+                    spent_flawless_black_stones += 1
+                    one_case_flawless_black_stones += 1
                     if temp_level == 17:
                         save_nadera_1 = current_fails + 4
                     elif temp_level == 18:
@@ -516,18 +536,19 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
                                     save_nadera_3 = current_fails + 6
                             else:
                                 save_nadera_3 = current_fails
-                    lost_durability += 10
-                    one_case_durability += 10
+                    lost_durability += 20
+                    one_case_durability += 20
                     temp_level -= 1
                 else:
-                    lost_durability += 5
-                    one_case_durability += 5
-                    spent_black_stones += 1
-                    one_case_black_stones += 1
+                    lost_durability += 10
+                    one_case_durability += 10
+                    spent_con_black_stones += 1
+                    one_case_con_black_stones += 1
                     collected_fails += 1
         one_case_worth = 0
         one_case_worth += one_case_black_stones * black_stone_price
         one_case_worth += one_case_con_black_stones * con_black_stone_price
+        one_case_worth += one_case_flawless_black_stones * flawless_black_stone_price
         if durability_way == 'Item':
             one_case_worth += int(one_case_durability / 10) * stuff_price
         else:
@@ -539,6 +560,7 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
     spent_cron_stones = int(spent_cron_stones / tests)
     spent_black_stones /= tests
     spent_con_black_stones /= tests
+    spent_flawless_black_stones /= tests
     spent_items = int((int(lost_durability / 10)) / tests)
     spent_memory_fragments = int(spent_memory_fragments / tests)
 
@@ -579,10 +601,14 @@ def standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_gra
     total_expenses += temp_expenses
     string.append(
         f'Spent {int(spent_black_stones)} black stones = {conv_nice_view(temp_expenses)} silver')
-    temp_expenses = spent_con_black_stones * con_black_stone_price
+    temp_expenses = int(spent_con_black_stones) * con_black_stone_price
     total_expenses += temp_expenses
     string.append(
-        f'Spent {spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
+        f'Spent {int(spent_con_black_stones)} concentrated black stones = {conv_nice_view(temp_expenses)} silver')
+    temp_expenses = spent_flawless_black_stones * flawless_black_stone_price
+    total_expenses += temp_expenses
+    string.append(
+        f'Spent {spent_flawless_black_stones} flawless magical black stones = {conv_nice_view(temp_expenses)} silver')
 
     if durability_way == 'Item':
         temp_expenses = (spent_items + 1) * stuff_price
@@ -698,6 +724,7 @@ def BlackStar_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_
     black_stone_price = items_prices['Black_Stone_Weapon']
     con_black_stone_price = items_prices['Concentrated_Magical_Black_Stone']
     memory_fragment_price = items_prices['Memory_Fragment']
+    flawless_black_stone_price = items_prices['Flawless_Magical_Black_Stone']
     name_of_item = item_name.replace('_', ' ')
 
     item_settings = load_data()[item_name]
@@ -720,6 +747,7 @@ def BlackStar_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_
         report = standart_enhancement_blackstar_weapon(end_lev, tests, base_persent, item_grade,
                                                        name_of_item, stuff_price, auction_price,
                                                        one_fail, black_stone_price, con_black_stone_price,
+                                                       flawless_black_stone_price,
                                                        max_fails, valks, crons_amount, begin_lev,
                                                        worth_one_point_dur, durability_way, memory_amount,
                                                        memory_fragment_price, use_crone)
@@ -727,12 +755,12 @@ def BlackStar_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_
         if end_lev >= 18:
             empty_report, best_fails_less_16, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
                                                                                       name_of_item, stuff_price, durability_way, memory_amount,
-                                                                                      one_fail, black_stone_price, con_black_stone_price,
+                                                                                      one_fail, black_stone_price, con_black_stone_price, flawless_black_stone_price,
                                                                                       max_fails, best_failstacks, end_lev=16)
 
             report, new_best_fails = find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                                                             name_of_item, stuff_price, saved_data,
-                                                            one_fail, black_stone_price, con_black_stone_price,
+                                                            one_fail, black_stone_price, con_black_stone_price, flawless_black_stone_price,
                                                             max_fails, best_failstacks, crons_amount,
                                                             worth_one_point_dur, durability_way, memory_amount,
                                                             use_crone, begin_lev=16)
@@ -742,6 +770,6 @@ def BlackStar_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_
         else:
             report, new_best_fails, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent, worth_one_point_dur,
                                                                             name_of_item, stuff_price, durability_way, memory_amount,
-                                                                            one_fail, black_stone_price, con_black_stone_price,
+                                                                            one_fail, black_stone_price, con_black_stone_price, flawless_black_stone_price,
                                                                             max_fails, best_failstacks, end_lev)
     return report
