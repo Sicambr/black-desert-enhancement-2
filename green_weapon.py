@@ -139,7 +139,7 @@ def find_fails_whithout_naderr(begin_lev, tests, base_persent,
 def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                            name_of_item, stuff_price, saved_data,
                            one_fail, black_stone_price, con_black_stone_price,
-                           max_fails, best_failstacks, crons_amount, begin_lev):
+                           max_fails, best_failstacks, crons_amount, use_crone, begin_lev):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
@@ -162,7 +162,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
     data_best_result = []
     best_check_fail = 0
     best_attempt_price = 0
-    safety_up = True
+    safety_up = use_crone
     while True:
         for test_fails in range(0, 31, 5):
             fails[start_pos] = test_fails
@@ -307,7 +307,7 @@ def find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
 def standart_enhancement_green_weapon(end_lev, tests, base_persent,
                                       name_of_item, stuff_price, auction_price,
                                       one_fail, black_stone_price, con_black_stone_price,
-                                      max_fails, best_failstacks, crons_amount, begin_lev):
+                                      max_fails, best_failstacks, crons_amount, begin_lev, use_crone):
 
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
@@ -324,7 +324,7 @@ def standart_enhancement_green_weapon(end_lev, tests, base_persent,
     fails = best_failstacks
     string = []
     tests = 10000
-    safety_up = True
+    safety_up = use_crone
 
     all_expenses = []
     all_collected_fails = {50: 0}
@@ -596,7 +596,7 @@ def conv_nice_view(number):
 
 
 def Green_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, item_name='Green_Grade_Main_Weapon',
-                            show_one_test=False, find_fails=False):
+                            show_one_test=False, find_fails=False, use_crone=1):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
     black_stone_price = items_prices['Black_Stone_Weapon']
@@ -620,7 +620,7 @@ def Green_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, ite
         report = standart_enhancement_green_weapon(end_lev, tests, base_persent,
                                                    name_of_item, stuff_price, auction_price,
                                                    one_fail, black_stone_price, con_black_stone_price,
-                                                   max_fails, valks, crons_amount, begin_lev)
+                                                   max_fails, valks, crons_amount, begin_lev, use_crone)
     else:
         if end_lev >= 18:
             empty_report, best_fails_less_16, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent,
@@ -631,7 +631,7 @@ def Green_Grade_Main_Weapon(valks=None, begin_lev=0, end_lev=10, tests=1000, ite
             report, new_best_fails = find_fails_with_naderr(end_lev, tests, base_persent, best_fails_less_16,
                                                             name_of_item, stuff_price, saved_data,
                                                             one_fail, black_stone_price, con_black_stone_price,
-                                                            max_fails, best_failstacks, crons_amount, begin_lev=16)
+                                                            max_fails, best_failstacks, crons_amount, use_crone, begin_lev=16)
         else:
             report, new_best_fails, saved_data = find_fails_whithout_naderr(begin_lev, tests, base_persent,
                                                                             name_of_item, stuff_price,

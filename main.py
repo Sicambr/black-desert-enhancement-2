@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
             test_report = green_weapon.Green_Grade_Main_Weapon(item_name=current_name, valks=advices_of_valks,
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
-                                                               find_fails=False)
+                                                               find_fails=False, use_crone=check_for_crone)
         elif ('Yellow_Grade_Kzarka' in current_name) or ('Tools_Manos' in current_name):
             if end_level <= 7:
                 end_level = 8
@@ -201,7 +201,7 @@ class MainWindow(QMainWindow):
             test_report = green_weapon.Green_Grade_Main_Weapon(valks=None, item_name=current_name,
                                                                begin_lev=begin_level, end_lev=end_level,
                                                                tests=repeat_tests, show_one_test=check_for_one_test,
-                                                               find_fails=True)
+                                                               find_fails=True, use_crone=check_for_crone)
         elif ('Yellow_Grade_Kzarka' in current_name) or ('Tools_Manos' in current_name):
             if end_level <= 7:
                 end_level = 8
