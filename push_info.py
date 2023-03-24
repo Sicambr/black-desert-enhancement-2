@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Flawless_Magical_Black_Stone'] = 3190000
+    all_items['Accessories_Yellow_Ring_of_Crescent_Guardian'] = 69000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -356,6 +356,27 @@ def add_item_to_big_data_tables():
     json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
 
 
+def add_item_yellow_accessories():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 25, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
+    one_fail = {1: [70, 2.5, 90, 0.5], 2: [50, 1, 66, 0.2], 3: [40.5, 0.75, 51.9, 0.15],
+                4: [30, 0.25, 30.5, 0.05], 5: [6.5, 0.05]}
+    best_failstacks = [10, 20, 30, 30, 30]
+    soft_cap_fails = {1: 18, 2: 40, 3: 44, 4: 110, 5: 120}
+    ceiling_persent = {1: 90, 2: 66, 3: 51.9, 4: 30.5, 5: 6.5}
+    crons_amount = 'None'
+    use_the_same_item = True
+    auction_price = {1: 139000000, 2: 498000000,
+                     3: 1370000000, 4: 4950000000, 5: 59000000000}
+    item_grade = 'YELLOW'
+    item_type = 'ACCESSORIES_Yellow_Ring'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type}
+    item['Accessories_Yellow_Ring_of_Crescent_Guardian'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
@@ -366,7 +387,10 @@ def add_item_to_big_data_tables():
 # add_item_militia_longsword()
 
 # add_item_to_big_data_tables()
-# add_default_price()
 # add_green_weapon()
 # add_yellow_weapon()
 # add_blackstar_weapon()
+
+
+add_default_price()
+add_item_yellow_accessories()
