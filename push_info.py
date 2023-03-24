@@ -392,5 +392,5 @@ def add_item_yellow_accessories():
 # add_blackstar_weapon()
 
 
-add_default_price()
-add_item_yellow_accessories()
+# add_default_price()
+# add_item_yellow_accessories()

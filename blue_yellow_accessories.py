@@ -462,10 +462,10 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
     return string
 
 
-def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
-                                 name_of_item, stuff_price, use_the_same_item,
-                                 auction_price, one_fail, best_failstacks,
-                                 soft_cap_fails, black_stone_price, show_one_test):
+def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
+                                   name_of_item, stuff_price, use_the_same_item,
+                                   auction_price, one_fail, best_failstacks,
+                                   soft_cap_fails, black_stone_price, show_one_test):
     spent_items = 1
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     if show_one_test == True:
@@ -745,8 +745,8 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
         return string
 
 
-def Silver_Embroidered_Clothes(adv_valks, begin_lev=0, end_lev=5, tests=1000, item_name='Silver_Embroidered_Sailors_Clothes',
-                               show_one_test=False, find_fails=False):
+def Yellow_Ring_of_Crescent_Guardian(adv_valks, begin_lev=0, end_lev=5, tests=1000, item_name='Accessories_Yellow_Ring_of_Crescent_Guardian',
+                                     show_one_test=False, find_fails=False):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
     black_stone_price = items_prices['Black_Stone_Weapon']
@@ -763,10 +763,10 @@ def Silver_Embroidered_Clothes(adv_valks, begin_lev=0, end_lev=5, tests=1000, it
     use_the_same_item = item_settings['use_the_same_item']
 
     if not find_fails:
-        report = enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
-                                              name_of_item, stuff_price, use_the_same_item,
-                                              auction_price, one_fail, best_failstacks,
-                                              soft_cap_fails, black_stone_price, show_one_test)
+        report = enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
+                                                name_of_item, stuff_price, use_the_same_item,
+                                                auction_price, one_fail, best_failstacks,
+                                                soft_cap_fails, black_stone_price, show_one_test)
     else:
         if end_lev == 5:
             report = find_silver_pen_fails(begin_lev, end_lev, tests, base_persent,
