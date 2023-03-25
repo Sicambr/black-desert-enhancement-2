@@ -140,7 +140,8 @@ class MainWindow(QMainWindow):
             advices_of_valks = self.check_valks(current_name)
             test_report = blue_yellow_accessories.Yellow_Ring_of_Crescent_Guardian(item_name=current_name, adv_valks=advices_of_valks,
                                                                                    begin_lev=begin_level, end_lev=end_level,
-                                                                                   tests=repeat_tests, show_one_test=check_for_one_test)
+                                                                                   tests=repeat_tests, show_one_test=check_for_one_test,
+                                                                                   use_crone=check_for_crone)
         elif 'Accessories_Life_Mastery' in current_name:
             if end_level > 5:
                 end_level = 2
@@ -210,7 +211,7 @@ class MainWindow(QMainWindow):
             test_report = blue_yellow_accessories.Yellow_Ring_of_Crescent_Guardian(adv_valks=None, item_name=current_name,
                                                                                    begin_lev=begin_level, end_lev=end_level,
                                                                                    tests=repeat_tests, show_one_test=check_for_one_test,
-                                                                                   find_fails=True)
+                                                                                   find_fails=True, use_crone=check_for_crone)
         elif ('Green_Grade_Main_Weapon' in current_name) or ('RU_Green_Grade' in current_name):
             if end_level <= 7:
                 end_level = 8

@@ -5464,7 +5464,13 @@
             "4": 110,
             "5": 120
         },
-        "crons_amount": "None",
+        "crons_amount": {
+            "1": 24,
+            "2": 74,
+            "3": 224,
+            "4": 625,
+            "5": 2999
+        },
         "use_the_same_item": true,
         "auction_price": {
             "1": 139000000,

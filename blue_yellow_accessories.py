@@ -465,8 +465,10 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
 def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
                                    name_of_item, stuff_price, use_the_same_item,
                                    auction_price, one_fail, best_failstacks,
-                                   soft_cap_fails, black_stone_price, show_one_test):
+                                   soft_cap_fails, black_stone_price, show_one_test,
+                                   crons_amount, use_crone):
     spent_items = 1
+    crone_stone_price = 2000000
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     if show_one_test == True:
         temp_begin_lev = begin_lev
@@ -541,12 +543,14 @@ def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
         advice_of_valks = {}
         attempt = 0
         spent_items = 0
+        spent_crone_stone = 0
         spent_black_stones = 0
         nadera_level_1, nadera_level_2, nadera_level_3, nadera_level_4 = 2, 3, 4, 5
         while attempt < tests:
             one_attempt_roll = 0
             one_attempt_item = 0
             one_attempt_black_stones = 0
+            one_attempt_crone_stone = 0
             attempt += 1
             temp_level = begin_lev
             collected_fails = 0
@@ -580,6 +584,9 @@ def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
                 else:
                     fails = collected_fails
                 chance = ((one_fail[str(temp_level + 1)][fails])*100)
+                if use_crone:
+                    one_attempt_crone_stone += crons_amount[str(
+                        temp_level + 1)]
                 if 1 <= random.randint(1, 10000) <= chance:
                     increased_lev = True
                     temp_level += 1
@@ -587,41 +594,56 @@ def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
                 else:
                     increased_lev = False
                     collected_fails = fails + 1
-                    if temp_level != 0:
-                        all_enh_items[temp_level] += 1
-                    if collected_fails > celiing_fail[temp_level]:
-                        collected_fails = celiing_fail[temp_level]
-                    if temp_level + 1 == nadera_level_1:
-                        save_on_nedara_1 = collected_fails
-                        increased_lev = True
-                        collected_fails = 0
-                    elif temp_level + 1 == nadera_level_2:
-                        save_on_nedara_2 = collected_fails
-                        increased_lev = True
-                        collected_fails = 0
-                    elif temp_level + 1 == nadera_level_3:
-                        save_on_nedara_3 = collected_fails
-                        increased_lev = True
-                        collected_fails = 0
-                    elif temp_level + 1 == nadera_level_4:
-                        save_on_nedara_4 = collected_fails
-                        increased_lev = True
-                        collected_fails = 0
-                    temp_level = begin_lev
+                    accessories_save_level = False
+                    if use_crone:
+                        if 1 <= random.randint(1, 100) <= 60:
+                            accessories_save_level = True
+                    if (not use_crone) or (not accessories_save_level):
+                        if temp_level != 0:
+                            all_enh_items[temp_level] += 1
+                        if collected_fails > celiing_fail[temp_level]:
+                            collected_fails = celiing_fail[temp_level]
+                        if temp_level + 1 == nadera_level_1:
+                            save_on_nedara_1 = collected_fails
+                            increased_lev = True
+                            collected_fails = 0
+                        elif temp_level + 1 == nadera_level_2:
+                            save_on_nedara_2 = collected_fails
+                            increased_lev = True
+                            collected_fails = 0
+                        elif temp_level + 1 == nadera_level_3:
+                            save_on_nedara_3 = collected_fails
+                            increased_lev = True
+                            collected_fails = 0
+                        elif temp_level + 1 == nadera_level_4:
+                            save_on_nedara_4 = collected_fails
+                            increased_lev = True
+                            collected_fails = 0
+                    if use_crone:
+                        if not accessories_save_level:
+                            temp_level -= 1
+                            if temp_level < 0:
+                                temp_level = 0
+                    else:
+                        temp_level = begin_lev
             all_rolls.append(one_attempt_roll)
             rolls += one_attempt_roll
             temp_worth = one_attempt_item * stuff_price + \
-                one_attempt_black_stones * black_stone_price
+                one_attempt_black_stones * black_stone_price + \
+                one_attempt_crone_stone * crone_stone_price
             all_expenses.append(temp_worth)
             spent_items += one_attempt_item
             spent_black_stones += one_attempt_black_stones
+            spent_crone_stone += one_attempt_crone_stone
             one_case[temp_worth] = [one_attempt_roll,
                                     one_attempt_item, one_attempt_black_stones]
             if (end_lev - begin_lev == 5) and (attempt % 100) == 0:
                 print(f'{attempt} from {tests} tests finished...')
         spent_items = int(spent_items / tests)
         spent_black_stones = int(spent_black_stones / tests)
-        full_price = spent_items * stuff_price + spent_black_stones * black_stone_price
+        spent_crone_stone = int(spent_crone_stone / tests)
+        full_price = spent_items * stuff_price + spent_black_stones * black_stone_price + \
+            spent_crone_stone * crone_stone_price
         for key in sorted(list(one_case.keys())):
             string.append(
                 f'{conv_nice_view(key)} silver, {one_case[key][0]} rolls'
@@ -666,6 +688,9 @@ def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
         temp_price = spent_black_stones * black_stone_price
         string.append(
             f'Spent {spent_black_stones} black stones = {conv_nice_view(temp_price)}')
+        temp_price = spent_crone_stone * crone_stone_price
+        string.append(
+            f'Spent {spent_crone_stone} crone stones = {conv_nice_view(temp_price)}')
         if advice_of_valks:
             for key in list(advice_of_valks.keys()):
                 string.append(
@@ -745,7 +770,7 @@ def enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
         return string
 
 
-def Yellow_Ring_of_Crescent_Guardian(adv_valks, begin_lev=0, end_lev=5, tests=1000, item_name='Accessories_Yellow_Ring_of_Crescent_Guardian',
+def Yellow_Ring_of_Crescent_Guardian(adv_valks, use_crone, begin_lev=0, end_lev=5, tests=1000, item_name='Accessories_Yellow_Ring_of_Crescent_Guardian',
                                      show_one_test=False, find_fails=False):
     items_prices = load_prices()
     stuff_price = items_prices[item_name]
@@ -766,7 +791,8 @@ def Yellow_Ring_of_Crescent_Guardian(adv_valks, begin_lev=0, end_lev=5, tests=10
         report = enhancement_yellow_accessories(begin_lev, end_lev, tests, base_persent,
                                                 name_of_item, stuff_price, use_the_same_item,
                                                 auction_price, one_fail, best_failstacks,
-                                                soft_cap_fails, black_stone_price, show_one_test)
+                                                soft_cap_fails, black_stone_price, show_one_test,
+                                                crons_amount, use_crone)
     else:
         if end_lev == 5:
             report = find_silver_pen_fails(begin_lev, end_lev, tests, base_persent,

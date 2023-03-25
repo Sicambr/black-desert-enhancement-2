@@ -364,7 +364,7 @@ def add_item_yellow_accessories():
     best_failstacks = [10, 20, 30, 30, 30]
     soft_cap_fails = {1: 18, 2: 40, 3: 44, 4: 110, 5: 120}
     ceiling_persent = {1: 90, 2: 66, 3: 51.9, 4: 30.5, 5: 6.5}
-    crons_amount = 'None'
+    crons_amount = {1: 24, 2: 74, 3: 224, 4: 625, 5: 2999}
     use_the_same_item = True
     auction_price = {1: 139000000, 2: 498000000,
                      3: 1370000000, 4: 4950000000, 5: 59000000000}
