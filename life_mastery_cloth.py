@@ -338,7 +338,8 @@ def best_way_restore_dur(item_price, durability, item_grade, memory_fragment_pri
 def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, name_of_item,
                 con_black_gem_price, total_durability, total_price, begin_lev, end_lev,
                 price_dur_restore, item_price, memory_fragment_price, item_grade,
-                auction_price, one_fail, crons_amount, total_rolls, full_tests_result):
+                auction_price, one_fail, crons_amount, total_rolls, full_tests_result,
+                all_stuff_made):
     memory_fr_restore = {'RED': 1, 'YELLOW': 1,
                          'BLUE': 2, 'GREEN': 5, 'WHITE': 10}
     string = []
@@ -357,7 +358,6 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
     string.append('')
     string.append('EXPENSES:')
     string.append('We got next average values: ')
-    string.append(f'Rolls: {total_rolls}')
     temp_worth = total_black_gems * black_gem_price
     string.append(
         f'Spent {total_black_gems} black gems = {conv_nice_view(temp_worth)} silver')
@@ -416,6 +416,17 @@ def test_report(total_black_gems, total_con_black_gems, tests, black_gem_price, 
         f'Premium profit (85%) = {conv_nice_view(temp_worth)} silver')
     string.append('')
     string.append('ADDITIONAL INFORMATION:')
+    if all_stuff_made and (17 in all_stuff_made):
+        string.append('We could create: ')
+        for number in all_stuff_made.keys():
+            if number >= 17:
+                string.append(f'+{number} = {all_stuff_made[number]} items')
+    string.append(f'Rolls: {total_rolls}')
+    string.append(
+        'If you will spend 1 second for 1 click, you will do it:')
+    string.append(f'{total_rolls} seconds = {int(total_rolls / 60)} minutes '
+                  f'= {int(total_rolls / 3600)} hours = {int (total_rolls / 86400)} days.')
+    string.append('')
     zero_price_no_premium = auction_price[str(end_lev)]
     string.append(
         f'On auction house item +{end_lev} costs: {conv_nice_view(zero_price_no_premium)} silver')
@@ -527,6 +538,7 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         total_dur = 0
         total_price = 0
         total_rolls = 0
+        all_stuff_made = dict()
         for i in range(tests):
             spent_durability = 0
             spent_black_gems = 0
@@ -542,6 +554,10 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
                 rolls += 1
                 if 1 <= random.randint(1, 10000) <= (base_persent[str(temp_begin_lev + 1)]*100):
                     temp_begin_lev += 1
+                    if temp_begin_lev not in all_stuff_made:
+                        all_stuff_made[temp_begin_lev] = 1
+                    else:
+                        all_stuff_made[temp_begin_lev] += 1
                 else:
                     spent_durability += lost_durability[str(
                         temp_begin_lev + 1)]
@@ -561,10 +577,13 @@ def enhancement(begin_lev, end_lev, tests, base_persent, lost_durability, black_
         total_dur = math.ceil(total_dur / tests)
         total_price = math.ceil(total_price / tests)
         total_rolls = math.ceil(total_rolls / tests)
+        for index in all_stuff_made.keys():
+            all_stuff_made[index] = int(all_stuff_made[index] / tests)
         string = test_report(total_gem, total_con_gem, tests, black_gem_price, name_of_item,
                              con_black_gem_price, total_dur, total_price, begin_lev, end_lev,
                              price_dur_restore, stuff_price, memory_fragment_price, item_grade,
-                             auction_price, one_fail, crons_amount, total_rolls, full_tests_result)
+                             auction_price, one_fail, crons_amount, total_rolls, full_tests_result,
+                             all_stuff_made)
         return string
 
 
@@ -637,7 +656,6 @@ def enhancement_silv_emb_clothes(begin_lev, end_lev, tests, base_persent,
         all_rolls = []
         all_expenses = []
         one_case = {}
-
         celiing_fail = get_failstack_ceiling(one_fail)
         stone_amount = {}
         for i in range(121):
