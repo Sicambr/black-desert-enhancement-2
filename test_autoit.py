@@ -23,4 +23,4 @@ z = SecondClass()
 z.data = 999
 z.display()
 
-the_way = "https://www.youtube.com/watch?v=ulxIfcE6KnY"
+the_way = "https://www.youtube.com/watch?v=-_kFDmYlcs4&t=3s"

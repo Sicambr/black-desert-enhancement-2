@@ -5,6 +5,7 @@ import blue_yellow_accessories
 import how_collect_fails
 import green_weapon
 import yellow_weapon
+import ship_gear
 import black_star
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout

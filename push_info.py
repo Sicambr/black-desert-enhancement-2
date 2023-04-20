@@ -279,26 +279,6 @@ def add_yellow_weapon():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-def convert_to_normal_database(file_way):
-    first_conv = [line.strip()
-                  for line in open(file_way)]
-    normal_data_view = {}
-    for i in range(1, 8):
-        normal_data_view[str(i)] = {0: 100}
-    current_level = ''
-    number = 0
-    for item in first_conv:
-        if item.startswith('+'):
-            normal_data_view[item[1:]] = {}
-            current_level = item[1:]
-            number = 0
-        else:
-            normal_data_view[current_level][number] = round(
-                float(item[:-1].replace(',', '.')), 2)
-            number += 1
-    return normal_data_view
-
-
 def add_blackstar_weapon():
     item = json.load(open('data.txt'))
     base_persent = {1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 90, 9: 20.41, 10: 14.2857,
@@ -347,15 +327,6 @@ def add_blackstar_weapon():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-def add_item_to_big_data_tables():
-    file_way = 'C:/Users/cnc/Desktop/111.txt'
-    stuff = 'Weapons_(Black_Star)'
-    table_fails_stacks = convert_to_normal_database(file_way)
-    item = json.load(open('big_data_tables.json'))
-    item[stuff] = table_fails_stacks
-    json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
-
-
 def add_item_yellow_accessories():
     item = json.load(open('data.txt'))
     base_persent = {1: 25, 2: 10, 3: 7.5, 4: 2.5, 5: 0.5}
@@ -377,6 +348,64 @@ def add_item_yellow_accessories():
     item['Accessories_Yellow_Ring_of_Crescent_Guardian'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
+
+def add_blue_carrack_gear():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 10, 2: 9, 3: 7, 4: 5, 5: 4,
+                    6: 2.5, 7: 1.5, 8: 1, 9: 0.8, 10: 0.5}
+    one_fail = 'into_big_data_table.json'
+    best_failstacks = [0] * 10
+    max_fails = {1: 100, 2: 100, 3: 100, 4: 150, 5: 150, 6: 150, 7: 200, 8: 250,
+                 9: 350, 10: 350}
+    sunset_black_stone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1,
+                          7: 1, 8: 1, 9: 1, 10: 1}
+    soft_cap_fails = {1: 55, 2: 60, 3: 70, 4: 70, 5: 70, 6: 75, 7: 65, 8: 90, 9: 66,
+                      10: 100}
+    ceiling_persent = {1: 90, 2: 90, 3: 90, 4: 90, 5: 90, 6: 90, 7: 90, 8: 90, 9: 90,
+                       10: 90}
+    lost_durability = {1: 10, 2: 10, 3: 10, 4: 10, 5: 10, 6: 10, 7: 10, 8: 10, 9: 10,
+                       10: 10}
+    use_the_same_item = False
+    item_grade = 'BLUE'
+    item_type = 'SHIP_Blue_Carrack_Gear'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent, 'soft_cap_fails': soft_cap_fails,
+                    'use_the_same_item': use_the_same_item, 'sunset_black_stone': sunset_black_stone,
+                    'item_grade': item_grade, 'item_type': item_type,
+                    'lost_durability': lost_durability, 'max_fails': max_fails}
+    item['Carrack_Blue_Gear'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
+def convert_to_normal_database(file_way):
+    first_conv = [line.strip()
+                  for line in open(file_way)]
+    normal_data_view = {}
+    for i in range(1, 8):
+        normal_data_view[str(i)] = {0: 100}
+    current_level = ''
+    number = 0
+    for item in first_conv:
+        if item.startswith('+'):
+            normal_data_view[item[1:]] = {}
+            current_level = item[1:]
+            number = 0
+        else:
+            normal_data_view[current_level][number] = round(
+                float(item[:-1].replace(',', '.')), 2)
+            number += 1
+    return normal_data_view
+
+
+def add_item_to_big_data_tables():
+    file_way = 'C:/Users/ZzZ/Desktop/111.txt'
+    stuff = 'Carrack_Blue_Gear'
+    table_fails_stacks = convert_to_normal_database(file_way)
+    item = json.load(open('big_data_tables.json'))
+    item[stuff] = table_fails_stacks
+    json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
+
+
 # add_item_manos()
 # add_item_loggia()
 # add_item_geranoa()
@@ -394,3 +423,5 @@ def add_item_yellow_accessories():
 
 # add_default_price()
 # add_item_yellow_accessories()
+
+# add_blue_carrack_gear()
