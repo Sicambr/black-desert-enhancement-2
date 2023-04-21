@@ -140,7 +140,6 @@ def standart_enhancement_carrack(end_lev, tests, base_persent, best_failstacks,
                                  name_of_item, one_fail,
                                  max_fails, valks, begin_lev, use_crone, black_stone_price,
                                  stuff_price, eng_language):
-    crone_stone_price = 2000000
     if one_fail == 'into_big_data_table.json':
         item = json.load(open('big_data_tables.json'))
         one_fail = item[name_of_item.replace(' ', '_')]
@@ -152,7 +151,7 @@ def standart_enhancement_carrack(end_lev, tests, base_persent, best_failstacks,
     # fails = best_failstacks
     fails = valks
     string = []
-    tests = 1000
+    tests = 10000
     safety_up = use_crone
 
     all_expenses = []
@@ -238,7 +237,13 @@ def standart_enhancement_carrack(end_lev, tests, base_persent, best_failstacks,
         string.append(
             f'Spent {int(spent_black_stones)} black stones = {conv_nice_view(temp_expenses)} silver')
         string.append(
-            f'Spent {spent_sunset_black_stones} sunset black stones')
+            f'Spent {spent_sunset_black_stones} sunset black stones = {spent_sunset_black_stones * 500} raven coins:')
+        string.append(
+            f'      inclide {spent_sunset_black_stones} solar black stones ({spent_sunset_black_stones * 200} raven coins)')
+        string.append(
+            f'      inclide {spent_sunset_black_stones} lunar black stones ({spent_sunset_black_stones * 300} raven coins)')
+        string.append(
+            f'      inclide {spent_sunset_black_stones * 10} starlight powder')
         temp_expenses = spent_memory * stuff_price
         total_expenses += temp_expenses
         string.append(
@@ -252,6 +257,58 @@ def standart_enhancement_carrack(end_lev, tests, base_persent, best_failstacks,
             if all_enhanc_attempt[key] != 0 and key != end_lev:
                 string.append(
                     f'+{key} : {int(all_enhanc_attempt[key] / tests)} times')
+    else:
+        string.append('')
+        string.append('<<<ПОЛНЫЙ ОТЧЕТ>>>')
+        string.append(f'РЕЗУЛЬТАТ {tests} ТЕСТОВ')
+        string.append('')
+        string.append(f'Предмет: {name_of_item}')
+        string.append(f'Заточка с +{begin_lev} до +{end_lev}')
+        string.append('')
+        string.append('ОСОБЕННОСТИ:')
+        string.append("Этот предмет использует систему накапливания фэйлов."
+                      " Можете использовать советы валкса или любые другие фэйлы.")
+        string.append(
+            "Этот предмет не теряет уровень заточки при неудаче с +6 на +10.")
+        string.append(
+            "Этот предмет не использует камни крон для безопасной точки.")
+        string.append('')
+        string.append('ЗАТРАТЫ:')
+        string.append(f'Мы получили следующие средние результаты по тестам:')
+        temp = int(rolls / tests)
+        string.append(f'ПОПЫТОК ЗАТОЧИТЬ: {temp}')
+        string.append(
+            'Если тратить 1 секунду на 1 клик мышкой, то уйдет времени:')
+        string.append(f'{temp} секунд = {int(temp / 60)} минут '
+                      f'= {int(temp / 3600)} часов = {int (temp / 86400)} дней.')
+        string.append(f'Мы использовали модель начальных фэйлов: {fails}')
+        temp_expenses = int(spent_black_stones) * black_stone_price
+        total_expenses += temp_expenses
+        string.append(
+            f'Потрачено {int(spent_black_stones)} черный камней = {conv_nice_view(temp_expenses)} серебра')
+        string.append(
+            f'Потрачено {spent_sunset_black_stones} черных камней зари = {spent_sunset_black_stones * 500} монет ворон:')
+        string.append(
+            f'      включает {spent_sunset_black_stones} солнечных черных камней ({spent_sunset_black_stones * 200} монет ворон)')
+        string.append(
+            f'      включает {spent_sunset_black_stones} лунных черных камней ({spent_sunset_black_stones * 300} монет ворон)')
+        string.append(
+            f'      включает {spent_sunset_black_stones * 10} звездного порошка')
+        temp_expenses = spent_memory * stuff_price
+        total_expenses += temp_expenses
+        string.append(
+            f'Потрачено {spent_memory} обрывков воспоминаний = {conv_nice_view(temp_expenses)} серебра')
+        string.append(
+            f'ИТОГО ЗАТРАТ= {conv_nice_view(total_expenses)} серебра')
+        string.append('')
+        string.append('ПОЛЕЗНАЯ СТАТИСТИКА:')
+        string.append(
+            'При данной модели начальных фэйлов, мы делали попытки заточить на уровнях:')
+        for key in all_enhanc_attempt:
+            if all_enhanc_attempt[key] != 0 and key != end_lev:
+                string.append(
+                    f'+{key} : {int(all_enhanc_attempt[key] / tests)} раз')
+
     return string
 
 
@@ -268,7 +325,7 @@ def conv_nice_view(number):
 
 def carrack_blue_parts(valks=None, begin_lev=0, end_lev=10, tests=1000, item_name='Carrack_Blue_Gear',
                        show_one_test=False, find_fails=False, use_crone=0):
-    eng_language = 1
+    eng_language = 0
     items_prices = load_prices()
     black_stone_price = items_prices['Black_Stone_Weapon']
     stuff_price = items_prices['Memory_Fragment']
