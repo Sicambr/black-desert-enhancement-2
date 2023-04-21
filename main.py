@@ -184,6 +184,15 @@ class MainWindow(QMainWindow):
                                                            begin_lev=begin_level, end_lev=end_level,
                                                            tests=repeat_tests, show_one_test=check_for_one_test,
                                                            find_fails=False, use_crone=check_for_crone)
+        elif 'Carrack_Blue_Gear' in current_name:
+            if end_level > 10:
+                end_level = 10
+                self.end_with.setText('10')
+            advices_of_valks = self.check_valks(current_name)
+            test_report = ship_gear.carrack_blue_parts(item_name=current_name, valks=advices_of_valks,
+                                                       begin_lev=begin_level, end_lev=end_level,
+                                                       tests=repeat_tests, show_one_test=check_for_one_test,
+                                                       find_fails=False, use_crone=check_for_crone)
         else:
             test_report = 'NOT READY'
         for i in test_report:
