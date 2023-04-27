@@ -32,6 +32,7 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
     spent_black_stones = 0
     spent_con_black_stones = 0
     lost_durability = 0
+    all_money = 0
     total_expenses = 0
     spent_cron_stones = 0
     rolls = 0
@@ -91,22 +92,17 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     one_case_con_black_stones += 1
                     lost_durability += 10
                     one_case_durability += 10
+                    all_enh_items.append(temp_level)
                 elif temp_level == 16:
                     collected_fails += 3
                     spent_con_black_stones += 1
                     one_case_con_black_stones += 1
                     lost_durability += 10
                     one_case_durability += 10
-                    if collected_fails == 30:
-                        all_collected_fails[50] += 1
-                    # if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
-                    #     temp_fails = collected_fails
-                    #     collected_fails = save_nadera_1
-                    #     save_nadera_1 = temp_fails + 21
-                    if (collected_fails >= 9) and (collected_fails + 21 > save_nadera_1):
-                        temp_fails = collected_fails
-                        collected_fails = save_nadera_1
-                        save_nadera_1 = temp_fails + 21
+                    all_enh_items.append(temp_level)
+                    if collected_fails >= 15:
+                        all_enh_items.append('(' + str(collected_fails) + ')')
+
                 elif temp_level >= 17:
                     changed_grade = True
                     spent_con_black_stones += 1
@@ -138,8 +134,6 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     lost_durability += 10
                     one_case_durability += 10
                     temp_level -= 1
-#                    if temp_level in all_enh_items.keys():
-#                        all_enh_items[temp_level] += 1
                     all_enh_items.append(temp_level)
                 else:
                     lost_durability += 5
@@ -155,7 +149,8 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         one_case_worth += int(one_case_durability / 10) * stuff_price
         one_case_worth += one_case_cron_stones * crone_stone_price
         string.append(f'{conv_nice_view(one_case_worth)} expenses')
-
+        all_money += ((auction_price[str(end_lev)]*0.85) - one_case_worth)
+        string.append(f'balance = {conv_nice_view(all_money)} silver')
         all_expenses.append(one_case_worth)
 
     spent_cron_stones = int(spent_cron_stones / tests)
