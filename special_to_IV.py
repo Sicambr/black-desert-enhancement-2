@@ -24,7 +24,6 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
     string = []
     tests = 10
     safety_up = use_crone
-
     all_expenses = []
     all_collected_fails = {50: 0}
     all_enh_items = list()
@@ -36,6 +35,12 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
     total_expenses = 0
     spent_cron_stones = 0
     rolls = 0
+    string.append('')
+    string.append(f'FULL REPORT FOR {tests} TESTS:')
+    string.append(f'Item price = {conv_nice_view(stuff_price)} silver')
+    string.append(
+        f'Auction house price = {conv_nice_view(auction_price[str(end_lev)])} silver')
+    string.append('')
     while attempt < tests:
         attempt += 1
         one_case_black_stones = 0
@@ -71,6 +76,9 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                 current_fails = fails[temp_level] + collected_fails
             if current_fails > max_fails[str(temp_level + 1)]:
                 current_fails = max_fails[str(temp_level + 1)]
+            if current_fails >= 30:
+                all_enh_items.append('(' + str(current_fails) +
+                                     'F -> ' + str(temp_level + 1) + ')')
             chance = (
                 (one_fail[str(temp_level + 1)][str(current_fails)])*100)
             if 1 <= random.randint(1, 10000) <= chance:
@@ -83,6 +91,9 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     spent_con_black_stones += 1
                     one_case_con_black_stones += 1
                 temp_level += 1
+                if current_fails >= 30:
+                    string.append(str(all_enh_items))
+                    all_enh_items.clear()
                 all_enh_items.append(temp_level)
             else:
                 changed_grade = False
@@ -100,9 +111,6 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     lost_durability += 10
                     one_case_durability += 10
                     all_enh_items.append(temp_level)
-                    if collected_fails >= 15:
-                        all_enh_items.append('(' + str(collected_fails) + ')')
-
                 elif temp_level >= 17:
                     changed_grade = True
                     spent_con_black_stones += 1
@@ -133,6 +141,9 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                             save_nadera_3 = current_fails + 6
                     lost_durability += 10
                     one_case_durability += 10
+                    if current_fails >= 30:
+                        string.append(str(all_enh_items))
+                        all_enh_items.clear()
                     temp_level -= 1
                     all_enh_items.append(temp_level)
                 else:
@@ -141,16 +152,19 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     spent_black_stones += 1
                     one_case_black_stones += 1
                     collected_fails += 1
-        string.append('')
+
         string.append(str(all_enh_items))
         one_case_worth = 0
         one_case_worth += one_case_black_stones * black_stone_price
         one_case_worth += one_case_con_black_stones * con_black_stone_price
         one_case_worth += int(one_case_durability / 10) * stuff_price
         one_case_worth += one_case_cron_stones * crone_stone_price
+        string.append(
+            f'{one_case_black_stones}, {conv_nice_view(one_case_worth)} expenses')
         string.append(f'{conv_nice_view(one_case_worth)} expenses')
         all_money += ((auction_price[str(end_lev)]*0.85) - one_case_worth)
-        string.append(f'balance = {conv_nice_view(all_money)} silver')
+        string.append(f'TOTAL BALANCE = {conv_nice_view(all_money)} silver')
+        string.append('')
         all_expenses.append(one_case_worth)
 
     spent_cron_stones = int(spent_cron_stones / tests)
