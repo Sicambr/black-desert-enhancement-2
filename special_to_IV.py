@@ -27,6 +27,7 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
     all_expenses = []
     all_collected_fails = {50: 0}
     all_enh_items = list()
+    all_valks_used = dict()
     attempt = 0
     spent_black_stones = 0
     spent_con_black_stones = 0
@@ -59,19 +60,31 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
             rolls += 1
             if changed_grade:
                 if temp_level == 17 and save_nadera_1 != 0:
+                    all_enh_items.append(
+                        f'(load N1 -> {save_nadera_1} F)')
                     current_fails = save_nadera_1
                     save_nadera_1 = 0
                 elif temp_level == 18 and save_nadera_2 != 0:
                     current_fails = save_nadera_2
+                    all_enh_items.append(
+                        f'(load N2 -> {save_nadera_2} F)')
                     save_nadera_2 = 0
                 elif temp_level == 19 and save_nadera_3 != 0:
                     current_fails = save_nadera_3
+                    all_enh_items.append(
+                        f'(load N3 -> {save_nadera_3} F)')
                     save_nadera_3 = 0
                 else:
                     current_fails = fails[temp_level]
                     if temp_level >= 7:
                         spent_black_stones += stone_amount[current_fails]
                         one_case_black_stones += stone_amount[current_fails]
+                    if temp_level > 15 and stone_amount[current_fails] > 0:
+                        all_enh_items.append(
+                            f'(use {stone_amount[current_fails]} st)')
+                    elif temp_level > 15 and stone_amount[current_fails] == 0:
+                        all_enh_items.append(
+                            f'(VALKS {current_fails})')
             else:
                 current_fails = fails[temp_level] + collected_fails
             if current_fails > max_fails[str(temp_level + 1)]:
@@ -159,11 +172,32 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         one_case_worth += one_case_con_black_stones * con_black_stone_price
         one_case_worth += int(one_case_durability / 10) * stuff_price
         one_case_worth += one_case_cron_stones * crone_stone_price
+        string.append('expenses:')
         string.append(
-            f'{one_case_black_stones}, {conv_nice_view(one_case_worth)} expenses')
-        string.append(f'{conv_nice_view(one_case_worth)} expenses')
-        all_money += ((auction_price[str(end_lev)]*0.85) - one_case_worth)
-        string.append(f'TOTAL BALANCE = {conv_nice_view(all_money)} silver')
+            f'  {one_case_black_stones} Black stones = '
+            f'{conv_nice_view(one_case_black_stones * black_stone_price)} silver')
+        string.append(
+            f'  {one_case_con_black_stones} Concentrated black stones = '
+            f'{conv_nice_view(one_case_con_black_stones * con_black_stone_price)} silver')
+        string.append(
+            f'  {int(one_case_durability / 10)} Items = '
+            f'{conv_nice_view(int(one_case_durability / 10) * stuff_price)} silver')
+        string.append(
+            f'ALL EXPENSES = {conv_nice_view(one_case_worth)} silver')
+        temp_money = ((auction_price[str(end_lev)]*0.85) - one_case_worth)
+        if temp_money > 0:
+            string.append(
+                f'PROFIT = {conv_nice_view(temp_money)} silver')
+        else:
+            string.append(
+                f'LOST = -{conv_nice_view(-1*temp_money)} silver')
+        all_money += temp_money
+        if all_money > 0:
+            string.append(
+                f'TOTAL BALANCE = {conv_nice_view(all_money)} silver')
+        else:
+            string.append(
+                f'TOTAL BALANCE = -{conv_nice_view(-1*all_money)} silver')
         string.append('')
         all_expenses.append(one_case_worth)
 
