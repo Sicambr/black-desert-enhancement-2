@@ -28,6 +28,7 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
     all_collected_fails = {50: 0}
     all_enh_items = list()
     all_valks_used = dict()
+    one_case_all_valks = dict()
     attempt = 0
     spent_black_stones = 0
     spent_con_black_stones = 0
@@ -46,6 +47,7 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         attempt += 1
         one_case_black_stones = 0
         all_enh_items.clear()
+        one_case_all_valks.clear()
         one_case_con_black_stones = 0
         one_case_durability = 0
         one_case_cron_stones = 0
@@ -85,6 +87,10 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
                     elif temp_level > 15 and stone_amount[current_fails] == 0:
                         all_enh_items.append(
                             f'(VALKS {current_fails})')
+                        if current_fails not in one_case_all_valks:
+                            one_case_all_valks[current_fails] = 1
+                        else:
+                            one_case_all_valks[current_fails] += 1
             else:
                 current_fails = fails[temp_level] + collected_fails
             if current_fails > max_fails[str(temp_level + 1)]:
@@ -172,6 +178,11 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         one_case_worth += one_case_con_black_stones * con_black_stone_price
         one_case_worth += int(one_case_durability / 10) * stuff_price
         one_case_worth += one_case_cron_stones * crone_stone_price
+        for key, item in one_case_all_valks.items():
+            if key not in all_valks_used:
+                all_valks_used[key] = item
+            else:
+                all_valks_used[key] += item
         string.append('expenses:')
         string.append(
             f'  {one_case_black_stones} Black stones = '
@@ -182,6 +193,8 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         string.append(
             f'  {int(one_case_durability / 10)} Items = '
             f'{conv_nice_view(int(one_case_durability / 10) * stuff_price)} silver')
+        for key, item in one_case_all_valks.items():
+            string.append(f'+{key} valks = {item}')
         string.append(
             f'ALL EXPENSES = {conv_nice_view(one_case_worth)} silver')
         temp_money = ((auction_price[str(end_lev)]*0.85) - one_case_worth)
@@ -201,10 +214,25 @@ def check_profit_from_100_enh(end_lev, tests, base_persent,
         string.append('')
         all_expenses.append(one_case_worth)
 
-    spent_cron_stones = int(spent_cron_stones / tests)
-    spent_black_stones /= tests
-    spent_con_black_stones /= tests
-    spent_items = int((int(lost_durability / 10)) / tests)
+    string.append(f'RESULT OF {tests} ENHANCEMENTS:')
+    temp_worth = spent_black_stones * black_stone_price
+    string.append(
+        f'{spent_black_stones} black stones = {conv_nice_view(temp_worth)}')
+    temp_worth = spent_con_black_stones * con_black_stone_price
+    string.append(
+        f'{spent_con_black_stones} concentrated black stones = {conv_nice_view(temp_worth)}')
+    spent_items = (int(lost_durability / 10))
+    temp_worth = spent_items * stuff_price
+    string.append(f'{spent_items} items = {conv_nice_view(temp_worth)}')
+    for key, item in all_valks_used.items():
+        string.append(f'+{key} valks = {item}')
+    if all_money > 0:
+        string.append(
+            f'TOTAL PROFIT = {conv_nice_view(all_money)} silver')
+    else:
+        string.append(
+            f'TOTAL LOST = -{conv_nice_view(-1*all_money)} silver')
+    string.append('')
 
     string.append('')
 
