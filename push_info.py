@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['SPECIAL_Green_Grade_to_IV'] = 569800
+    all_items['Fallen_Gods_Armor'] = 30000000000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -377,35 +377,6 @@ def add_blue_carrack_gear():
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
-def convert_to_normal_database(file_way):
-    first_conv = [line.strip()
-                  for line in open(file_way)]
-    normal_data_view = {}
-    for i in range(1, 8):
-        normal_data_view[str(i)] = {0: 100}
-    current_level = ''
-    number = 0
-    for item in first_conv:
-        if item.startswith('+'):
-            normal_data_view[item[1:]] = {}
-            current_level = item[1:]
-            number = 0
-        else:
-            normal_data_view[current_level][number] = round(
-                float(item[:-1].replace(',', '.')), 2)
-            number += 1
-    return normal_data_view
-
-
-def add_item_to_big_data_tables():
-    file_way = 'C:/Users/ZzZ/Desktop/111.txt'
-    stuff = 'Carrack_Blue_Gear'
-    table_fails_stacks = convert_to_normal_database(file_way)
-    item = json.load(open('big_data_tables.json'))
-    item[stuff] = table_fails_stacks
-    json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
-
-
 def add_green_weapon_for_cash_test():
     item = json.load(open('data.txt'))
     base_persent = {1: 100, 2: 100, 3: 100, 4: 100, 5: 100, 6: 100, 7: 100, 8: 70, 9: 40.82, 10: 28.58,
@@ -447,6 +418,59 @@ def add_green_weapon_for_cash_test():
                     'lost_durability': lost_durability, 'black_stone': black_stone,
                     'con_black_stone': con_black_stone, 'max_fails': max_fails}
     item['SPECIAL_Green_Grade_to_IV'] = all_settings
+    json.dump(item, fp=open('data.txt', 'w'), indent=4)
+
+
+def convert_to_normal_database(file_way):
+    first_conv = [line.strip()
+                  for line in open(file_way)]
+    normal_data_view = {}
+    for i in range(1, 8):
+        normal_data_view[str(i)] = {0: 100}
+    current_level = ''
+    number = 0
+    for item in first_conv:
+        if item.startswith('+'):
+            normal_data_view[item[1:]] = {}
+            current_level = item[1:]
+            number = 0
+        else:
+            normal_data_view[current_level][number] = round(
+                float(item[:-1].replace(',', '.')), 5)
+            number += 1
+    return normal_data_view
+
+
+def add_item_to_big_data_tables():
+    file_way = 'C:/Users/ZzZ/Desktop/111.txt'
+    stuff = 'Fallen_Gods_Armor'
+    table_fails_stacks = convert_to_normal_database(file_way)
+    item = json.load(open('big_data_tables.json'))
+    item[stuff] = table_fails_stacks
+    json.dump(item, fp=open('big_data_tables.json', 'w'), indent=4)
+
+
+def add_fallen_gods_armor():
+    item = json.load(open('data.txt'))
+    base_persent = {1: 2, 2: 1, 3: 0.5, 4: 0.2, 5: 0.0025}
+    one_fail = 'into_big_data_table.json'
+    best_failstacks = [0] * 5
+    max_fails = {1: 350, 2: 350, 3: 350, 4: 350, 5: 350}
+    flawless_chaotic_blackstone = {1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+    ceiling_persent = {1: 350, 2: 350, 3: 350, 4: 350, 5: 350}
+    crons_amount = {2: 1500, 3: 2100, 4: 2700, 5: 4000}
+    lost_durability = {1: 30, 2: 30, 3: 30, 4: 30, 5: 30}
+    auction_price = {1: 31000000000, 2: 38600000000,
+                     3: 74500000000, 4: 212000000000, 5: 515000000000}
+    use_the_same_item = False
+    item_grade = 'RED'
+    item_type = 'ARMOR_Red_Armor'
+    all_settings = {'base_persent': base_persent, 'best_failstacks': best_failstacks,
+                    'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
+                    'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
+                    'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
+                    'lost_durability': lost_durability, 'max_fails': max_fails}
+    item['Fallen_Gods_Armor'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
 
