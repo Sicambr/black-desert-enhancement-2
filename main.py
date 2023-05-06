@@ -8,6 +8,7 @@ import yellow_weapon
 import special_to_IV
 import ship_gear
 import black_star
+import fallen_gods_armor
 from push_info import load_data
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
 from PyQt5.QtWidgets import QComboBox, QWidget, QLineEdit, QRadioButton, QLabel, QGroupBox
@@ -203,6 +204,15 @@ class MainWindow(QMainWindow):
                                                                 begin_lev=begin_level, end_lev=end_level,
                                                                 tests=repeat_tests, show_one_test=check_for_one_test,
                                                                 find_fails=False, use_crone=check_for_crone)
+        elif 'Fallen_Gods_Armor' in current_name:
+            if end_level > 5:
+                end_level = 5
+                self.end_with.setText('5')
+            advices_of_valks = self.check_valks(current_name)
+            test_report = fallen_gods_armor.Red_Fallen_Gods_Armor(item_name=current_name, valks=advices_of_valks,
+                                                                  begin_lev=begin_level, end_lev=end_level,
+                                                                  tests=repeat_tests, show_one_test=check_for_one_test,
+                                                                  find_fails=False, use_crone=check_for_crone)
         else:
             test_report = 'NOT READY'
         for i in test_report:

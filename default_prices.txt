@@ -61,5 +61,8 @@
     "Flawless_Magical_Black_Stone": 3190000,
     "Accessories_Yellow_Ring_of_Crescent_Guardian": 69000000,
     "SPECIAL_Green_Grade_to_IV": 569800,
-    "Fallen_Gods_Armor": 30000000000
+    "Fallen_Gods_Armor": 30000000000,
+    "Sharp_Black_Crystal_Shard": 1800000,
+    "Hard_Black_Crystal_Shard": 1500000,
+    "Caphras_Stone": 2800000
 }

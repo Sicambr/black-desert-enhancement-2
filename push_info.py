@@ -13,7 +13,7 @@ def load_data():
 
 def add_default_price():
     all_items = json.load(open('default_prices.txt'))
-    all_items['Fallen_Gods_Armor'] = 30000000000
+    all_items['Caphras_Stone'] = 2800000
     json.dump(all_items, fp=open('default_prices.txt', 'w'), indent=4)
 
 
@@ -469,7 +469,8 @@ def add_fallen_gods_armor():
                     'one_fail': one_fail, 'ceiling_persent': ceiling_persent,
                     'crons_amount': crons_amount, 'use_the_same_item': use_the_same_item,
                     'auction_price': auction_price, 'item_grade': item_grade, 'item_type': item_type,
-                    'lost_durability': lost_durability, 'max_fails': max_fails}
+                    'lost_durability': lost_durability, 'max_fails': max_fails,
+                    'flawless_chaotic_blackstone': flawless_chaotic_blackstone}
     item['Fallen_Gods_Armor'] = all_settings
     json.dump(item, fp=open('data.txt', 'w'), indent=4)
 
@@ -482,16 +483,13 @@ def add_fallen_gods_armor():
 # add_item_militia_longsword()
 # convert_to_normal_database()
 # add_item_militia_longsword()
-
-# add_item_to_big_data_tables()
 # add_green_weapon()
 # add_yellow_weapon()
 # add_blackstar_weapon()
-
-
-# add_default_price()
 # add_item_yellow_accessories()
-
 # add_blue_carrack_gear()
-
 # add_green_weapon_for_cash_test()
+
+# add_item_to_big_data_tables()
+# add_default_price()
+# add_fallen_gods_armor()
