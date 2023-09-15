@@ -1,5 +1,4 @@
-
-class FirstClass:
+class Firstclass:
     def setdata(self, value):
         self.data = value
 
@@ -7,20 +6,37 @@ class FirstClass:
         print(self.data)
 
 
-class SecondClass(FirstClass):
+class Secondclass(Firstclass):
     def display(self):
         print('Current value = "%s"' % self.data)
 
 
-x = FirstClass()
-y = FirstClass()
+class rec:
+    pass
 
-x.setdata(45)
+
+x = Firstclass()
+y = Firstclass()
+
+x.setdata('King Artur')
+y.setdata(34)
+
+x.display()
+y.display()
+
+x.data = ('nemo')
 x.display()
 
+x.anonthername = 'lel'
+print(x.anonthername)
 
-z = SecondClass()
-z.data = 999
+z = Secondclass()
+z.setdata(42)
 z.display()
 
-the_way = "https://www.youtube.com/watch?v=-_kFDmYlcs4&t=3s"
+x = rec()
+rec.name = 'Bob'
+y = rec()
+print(x.name)
+print(y.name)
+print(rec.__dict__)

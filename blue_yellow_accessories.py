@@ -133,9 +133,11 @@ def find_silver_pen_fails(begin_lev, end_lev, tests, base_persent,
                           one_fail, black_stone_price):
     one_fail = unpack_one_fail(one_fail.copy(), base_persent)
     celiing_fail = get_failstack_ceiling(one_fail)
-    stone_amount = {0: 0, 5: 5, 10: 12, 15: 21,
-                    20: 33, 25: 53, 30: 84, 40: 0, 44: 0,
-                    50: 0, 80: 0, 100: 0, 120: 0}
+    stone_amount = dict()
+    for i in range(121):
+        stone_amount[i] = 0
+    stone_amount[5], stone_amount[10], stone_amount[15], stone_amount[20] = 5, 12, 21, 33
+    stone_amount[25], stone_amount[30] = 53, 84
 
     def count_expenses(valkas_list):
         tests = 1000
